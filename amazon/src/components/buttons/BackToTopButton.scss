@@ -1,0 +1,45 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.back-to-top-button {
+  position: fixed;
+  right: 0px;
+  bottom: 80px;
+  padding: 12px;
+  background-color: var(--main-color-primary);
+  border-radius: 8px 0px 0px 8px;
+  line-height: 0px;
+
+  &:not(:disabled):hover {
+    padding: 9.5px;
+    background-color: var(--minor-color-primary-hover);
+    border: 2.5px solid var(--main-color-primary);
+  }
+
+  &:not(:disabled):active {
+    padding: 12px;
+    background-color: var(--minor-color-primary-active);
+    border: 0px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  @include desktop {
+    right: 56px;
+    bottom: 32px;
+    border-radius: 4px;
+  }
+
+  svg {
+    height: 24px;
+    width: 24px;
+
+    path {
+    stroke: var(--minor-color-text);
+    stroke-width: 1.5px;
+    }
+  }
+}
