@@ -1,10 +1,10 @@
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
 import Footer from "../../components/Footer";
-import "./Home.scss";
+import "./Main.scss";
 
 
-function Home() {
+function Main() {
   return (
     <>
       <Header searchBar={true} cart={true}></Header>
@@ -17,4 +17,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Main;
