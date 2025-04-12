@@ -6,25 +6,21 @@
   position: fixed;
   right: 0px;
   bottom: 80px;
-  padding: 12px;
+  padding: 9.5px;
   background-color: var(--main-color-primary);
+  border: 2.5px solid var(--main-color-primary);
   border-radius: 8px 0px 0px 8px;
   line-height: 0px;
+  z-index: 50;
 
   &:not(:disabled):hover {
-    padding: 9.5px;
     background-color: var(--minor-color-primary-hover);
     border: 2.5px solid var(--main-color-primary);
   }
 
   &:not(:disabled):active {
-    padding: 12px;
     background-color: var(--minor-color-primary-active);
-    border: 0px;
-  }
-
-  &:disabled {
-    opacity: 0.5;
+    border: 2.5px solid var(--minor-color-primary-active);
   }
 
   @include desktop {
@@ -33,13 +29,13 @@
     border-radius: 4px;
   }
 
-  svg {
+  .arrow-up-icon {
     height: 24px;
     width: 24px;
 
     path {
-    stroke: var(--minor-color-text);
-    stroke-width: 1.5px;
+      stroke-width: 1.5px;
+      stroke: var(--minor-color-text);
     }
   }
 }

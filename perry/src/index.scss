@@ -3,8 +3,8 @@
 
 
 * {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   box-sizing: border-box;
 }
 
@@ -27,11 +27,19 @@ button, input {
 button {
   background-color: transparent;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+svg {
+  display: block;
 }
 
 ::placeholder {

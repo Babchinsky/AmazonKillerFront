@@ -1,0 +1,7 @@
+$breakpoint-tablet: 768px; 
+$breakpoint-desktop: 1024px;
+
+:root {
+  --breakpoint-tablet: #{$breakpoint-tablet};
+  --breakpoint-desktop: #{$breakpoint-desktop};
+}

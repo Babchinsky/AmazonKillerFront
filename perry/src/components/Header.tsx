@@ -1,4 +1,9 @@
 import { Link } from "react-router";
+import Menu from "../assets/icons/menu.svg?react";
+import Logo from "../assets/icons/logo.svg?react";
+import Search from "../assets/icons/search.svg?react";
+import User from "../assets/icons/user.svg?react";
+import CartEmpty from "../assets/icons/cart-empty.svg?react";
 import "./Header.scss";
 
 
@@ -9,73 +14,38 @@ interface HeaderProps {
   
 function Header(props: HeaderProps) {
   return (
-    <>
-      <header className="header-container">
-        <div className="header-left-container">
-          <button className="menu-button">
-            <svg className="menu-icon-small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className="menu-icon-path" d="M3 7.16406H21" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="menu-icon-path" d="M3 11.9639H21" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="menu-icon-path" d="M3 16.8359H21" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <svg className="menu-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className="menu-icon-path" d="M4 9.55176H28" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="menu-icon-path" d="M4 15.9521H28" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="menu-icon-path" d="M4 22.4482H28" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+    <header className="header-container">
+      <div className="header-left-container">
+        <button className="menu-button">
+          <Menu className="menu-icon" />
+        </button>
 
-          <div className="logo-container">
-            <Link to="/">
-              <svg className="logo-icon" viewBox="0 0 83 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path className="logo-icon-path" d="M30.9718 19.4879V20.1793C30.9718 20.6288 30.6146 20.986 30.1651 20.986H16.7396C16.2902 20.986 15.9329 20.6288 15.9329 20.1793V19.4879C15.9329 19.0385 16.2902 18.6812 16.7396 18.6812H30.1651C30.603 18.6697 30.9718 19.0385 30.9718 19.4879ZM30.1651 9.84227H16.7396C16.2902 9.84227 15.9329 10.1995 15.9329 10.649V11.3404C15.9329 11.7898 16.2902 12.1471 16.7396 12.1471H30.1651C30.6146 12.1471 30.9718 11.7898 30.9718 11.3404V10.649C30.9718 10.211 30.6146 9.84227 30.1651 9.84227ZM30.1536 1.02637H16.7281C16.2786 1.02637 15.9214 1.38361 15.9214 1.83305V2.52449C15.9214 2.97393 16.2786 3.33118 16.7281 3.33118H30.1536C30.603 3.33118 30.9603 2.97393 30.9603 2.52449V1.83305C30.9603 1.38361 30.603 1.02637 30.1536 1.02637Z" />
-                <path className="logo-icon-path" d="M63.5122 20.9737C63.2126 20.9737 62.9244 20.8585 62.694 20.628L54.0509 11.6392C53.7167 11.305 53.6245 10.8095 53.7974 10.3716C53.9703 9.93369 54.3966 9.65711 54.8576 9.64559C57.9461 9.63406 59.2252 8.91957 59.7669 8.32032C60.1702 7.87088 60.3315 7.28315 60.2509 6.53409C60.078 4.69024 58.3955 3.24973 56.4249 3.24973H50.1212C49.4874 3.24973 48.9688 2.73115 48.9688 2.0858C48.9688 1.44046 49.4874 0.921875 50.1212 0.921875H56.4249C59.5709 0.921875 62.2676 3.29583 62.5442 6.32666C62.6709 7.73259 62.3022 8.96567 61.4724 9.89912C60.7003 10.7519 59.5825 11.3511 58.0844 11.6738C57.8193 11.7314 57.7156 12.0541 57.9 12.25L64.3073 18.9801C64.7568 19.4295 64.7568 20.167 64.3073 20.628C64.0999 20.8585 63.8003 20.9737 63.5122 20.9737ZM7.47071 0.933399H1.16705C0.533231 0.933399 0.0146484 1.46351 0.0146484 2.10885V19.8098C0.0146484 20.4551 0.533231 20.9853 1.16705 20.9853C1.80088 20.9853 2.31946 20.4551 2.31946 19.8098V3.63003C2.31946 3.43412 2.48079 3.27278 2.66518 3.27278H7.45919C9.4298 3.27278 11.1123 4.72481 11.2852 6.58019C11.3543 7.34077 11.193 7.9285 10.8012 8.37794C10.2711 8.97719 8.98036 9.69168 5.89192 9.71473C5.25809 9.71473 4.73951 10.2448 4.75103 10.8902C4.75103 11.5355 5.26962 12.0541 5.90344 12.0541C9.10713 12.0426 11.2621 11.3511 12.5067 9.94521C13.3365 9.01176 13.7167 7.76716 13.5785 6.3497C13.3134 3.31888 10.6283 0.933399 7.47071 0.933399ZM80.5332 0.933399C79.8994 0.933399 79.3808 1.47503 79.3808 2.1319V8.35489C79.3808 9.04634 79.3923 8.98872 79.3808 9.49577C79.3693 9.85302 79.1503 10.0028 78.8853 10.0605C77.1221 10.1987 74.2411 10.4062 72.3857 9.73778C69.8043 8.80433 69.6084 6.24599 69.6084 2.44305V2.14342C69.6084 1.47503 69.0898 0.944924 68.456 0.944924C67.8222 0.944924 67.3036 1.48655 67.3036 2.14342V2.44305C67.3036 5.8196 67.2921 10.4523 71.6251 12.008C72.8121 12.4344 74.3217 12.5842 75.9582 12.5842C76.9262 12.5842 77.9518 12.5266 78.9659 12.4575C79.1734 12.4459 79.3347 12.6073 79.3347 12.8147C79.3347 13.414 79.3347 14.14 79.3347 15.0273C79.3347 15.811 79.0236 16.4909 78.4128 17.0786C77.3065 18.1388 75.3013 18.7265 73.4113 18.5422C71.4062 18.3462 70.0463 17.3782 69.1359 15.4768C68.8478 14.8775 68.1564 14.647 67.5917 14.9351C67.027 15.2348 66.7965 15.9492 67.0731 16.5485C68.3408 19.1875 70.4036 20.6626 73.2039 20.9392C73.5151 20.9737 73.8262 20.9853 74.1374 20.9853C76.3845 20.9853 78.5626 20.2016 79.98 18.8648C81.0748 17.8161 81.6626 16.5024 81.6626 15.0388C81.6626 11.9158 81.6741 10.821 81.6856 9.99131C81.6856 9.48425 81.6971 9.06938 81.6971 8.37794V2.15495C81.6856 1.46351 81.167 0.933399 80.5332 0.933399ZM42.2273 12.3998C42.0313 12.2039 42.1351 11.8697 42.4116 11.8121C43.9098 11.4779 45.0276 10.8787 45.7997 10.0144C46.6294 9.06938 47.0097 7.82478 46.8714 6.3958C46.5833 3.3304 43.8982 0.933399 40.7522 0.933399H34.4485C33.8147 0.933399 33.2961 1.46351 33.2961 2.10885V19.7983C33.2961 20.4551 33.8147 20.9737 34.4485 20.9737C35.0823 20.9737 35.6009 20.4436 35.6009 19.7983V3.65308C35.6009 3.45717 35.7623 3.29583 35.9466 3.29583H40.7407C42.7113 3.29583 44.3938 4.75939 44.5666 6.62628C44.6358 7.3984 44.4744 7.98612 44.0826 8.43556C43.5525 9.03481 42.2618 9.76083 39.1734 9.77235C38.7124 9.77235 38.286 10.0605 38.1132 10.4984C37.9403 10.9363 38.0325 11.4433 38.3667 11.7775L47.0097 20.6165C47.4592 21.0774 48.1852 21.0774 48.6346 20.6165C49.0841 20.1555 49.0841 19.4065 48.6346 18.9455L42.2273 12.3998Z" />
-              </svg>
-            </Link>
-          </div>
+        <div className="logo-container">
+          <Link to="/">
+            <Logo className="logo-icon" />
+          </Link>
         </div>
+      </div>
 
-        <div className={`search-bar-container ${!props.searchBar ? "hidden" : ""}`}>
-          <input className="search-bar-input" placeholder="Search..." />
-          <button className="search-bar-button">
-            <svg className="search-icon-small" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className="search-icon-path" d="M9.324 9.40439C8.604 10.3484 6.944 10.8004 6.2 10.8004C3.88 10.8004 2 8.92039 2 6.60039C2 4.28039 3.88 2.40039 6.2 2.40039C8.52 2.40039 10.4 4.28039 10.4 6.60039C10.4 7.05639 10.328 7.49639 10.192 7.90839" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="search-icon-path" d="M14.0002 13.6003L9.32422 9.4043" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <svg className="search-icon" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className="search-icon-path" d="M14.6857 14.1056C13.6057 15.5216 11.1157 16.1996 9.99971 16.1996C6.51971 16.1996 3.69971 13.3796 3.69971 9.89961C3.69971 6.41961 6.51971 3.59961 9.99971 3.59961C13.4797 3.59961 16.2997 6.41961 16.2997 9.89961C16.2997 10.5836 16.1917 11.2436 15.9877 11.8616" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="search-icon-path" d="M21.6995 20.4004L14.6855 14.1064" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
+      <div className={`search-bar-container ${!props.searchBar ? "hidden" : ""}`}>
+        <input className="search-bar-input" placeholder="Search..." />
+        <button className="search-bar-button">
+          <Search className="search-icon" />
+        </button>
+      </div>
 
-        <div className="header-right-container">
-          <button className="user-button">
-            <svg className="user-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path className="user-icon-path" d="M25.7121 27.9913C25.7121 24.0953 24.1761 19.5273 20.5521 17.5113C19.8161 17.1033 18.9921 16.7993 18.0801 16.6233C18.0801 16.6233 16.2241 16.0953 13.2321 16.6233C12.3201 16.7833 11.4961 17.1033 10.7601 17.5113C7.1361 19.5273 5.6001 24.0953 5.6001 27.9913" strokeLinecap="round" strokeLinejoin="round" />
-              <path className="user-icon-path" d="M20.4819 9.416C20.4819 11.993 18.3929 14.082 15.8159 14.082C13.2389 14.082 11.1499 11.993 11.1499 9.416C11.1499 6.83904 13.2389 4.75 15.8159 4.75C18.3929 4.75 20.4819 6.83904 20.4819 9.416Z" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+      <div className="header-right-container">
+        <button className="user-button">
+          <User className="user-icon" />
+        </button>
+        
+        {props.cart && (
+          <button className="cart-button">
+            <CartEmpty className="cart-icon" />
           </button>
-          
-          {props.cart && (
-            <button className="cart-button">
-              <svg className="cart-icon-small" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path className="cart-icon-path" d="M3 4.30762H5.28C7.29 4.30762 6.714 7.13362 6.426 8.35162C6.036 9.98962 6.156 11.7356 8.106 12.2096C8.496 12.3056 8.898 12.3356 9.294 12.3356H16.218C16.218 12.3356 16.41 12.3356 16.698 12.3716C18.732 12.6176 18.576 15.2816 16.53 15.2996C16.506 15.2996 16.476 15.2996 16.452 15.2996H8.682" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M9.01807 4.97363H19.9921C20.7901 4.97363 21.2701 5.86763 20.8261 6.53363L18.0361 10.7156" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M9.75597 19.6916C10.4949 19.6916 11.094 19.0926 11.094 18.3536C11.094 17.6147 10.4949 17.0156 9.75597 17.0156C9.01701 17.0156 8.41797 17.6147 8.41797 18.3536C8.41797 19.0926 9.01701 19.6916 9.75597 19.6916Z" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M16.4459 19.6916C17.1849 19.6916 17.7839 19.0926 17.7839 18.3536C17.7839 17.6147 17.1849 17.0156 16.4459 17.0156C15.707 17.0156 15.1079 17.6147 15.1079 18.3536C15.1079 19.0926 15.707 19.6916 16.4459 19.6916Z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <svg className="cart-icon" viewBox="0 0 33 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path className="cart-icon-path" d="M4.69971 5.74414H7.73971C10.4197 5.74414 9.65171 9.51214 9.26771 11.1361C8.74771 13.3201 8.90771 15.6481 11.5077 16.2801C12.0277 16.4081 12.5637 16.4481 13.0917 16.4481H22.3237C22.3237 16.4481 22.5797 16.4481 22.9637 16.4961C25.6757 16.8241 25.4677 20.3761 22.7397 20.4001C22.7077 20.4001 22.6677 20.4001 22.6357 20.4001H12.2757" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M12.7241 6.63281H27.3561C28.4201 6.63281 29.0601 7.82481 28.4681 8.71281L24.7481 14.2888" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M13.7078 26.2565C14.6931 26.2565 15.4918 25.4578 15.4918 24.4725C15.4918 23.4872 14.6931 22.6885 13.7078 22.6885C12.7226 22.6885 11.9238 23.4872 11.9238 24.4725C11.9238 25.4578 12.7226 26.2565 13.7078 26.2565Z" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cart-icon-path" d="M22.6273 26.2565C23.6125 26.2565 24.4113 25.4578 24.4113 24.4725C24.4113 23.4872 23.6125 22.6885 22.6273 22.6885C21.642 22.6885 20.8433 23.4872 20.8433 24.4725C20.8433 25.4578 21.642 26.2565 22.6273 26.2565Z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          )}
-        </div>
-      </header>
-    </>
+        )}
+      </div>
+    </header>
   );
 }
 

@@ -1,4 +1,11 @@
-<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M32.14 34.9897C32.14 30.1197 30.22 24.4097 25.69 21.8897C24.77 21.3797 23.74 20.9997 22.6 20.7797C22.6 20.7797 20.28 20.1197 16.54 20.7797C15.4 20.9797 14.37 21.3797 13.45 21.8897C8.92 24.4097 7 30.1197 7 34.9897" stroke="#0E2042" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="19.77" cy="11.77" r="6.02" stroke="#0E2042" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#0E2042;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<path class="st0" d="M32.1,35c0-4.9-1.9-10.6-6.4-13.1c-0.9-0.5-2-0.9-3.1-1.1c0,0-2.3-0.7-6.1,0c-1.1,0.2-2.2,0.6-3.1,1.1
+	C8.9,24.4,7,30.1,7,35"/>
+<circle class="st0" cx="19.8" cy="11.8" r="6"/>
 </svg>

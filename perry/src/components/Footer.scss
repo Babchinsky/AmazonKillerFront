@@ -61,33 +61,23 @@
         gap: 8px;
         line-height: 0px;
   
-        .social-media-icon-small {
-          display: block;
+        .social-media-icon {
           height: 24px;
           width: 24px;
   
           @include desktop {
-            display: none;
-          }
-        }
-  
-        .social-media-icon {
-          display: none;
-  
-          @include desktop {
-            display: block;
             height: 32px;
             width: 32px;
           }
-        }
-  
-        .social-media-icon-path {
-          stroke: var(--main-color-text);
-          stroke-width: 1.5px;
-        }
-  
-        .instagram-icon-path {
-          fill: var(--main-color-text);
+
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--main-color-text);
+          }
+
+          circle {
+            fill: var(--main-color-text);
+          }
         }
       }
     }
@@ -122,27 +112,16 @@
       font-size: 14px;
       line-height: 24px;
   
-      .logo-icon-small {
-        display: block;
+      .logo-icon {
         width: 62px;
   
         @include desktop {
-          display: none;
-        }
-      }
-  
-      .logo-icon {
-        display: none;
-  
-        @include desktop {
-          display: block;
           width: 82px;
         }
-      }
-  
-      .logo-icon-path {
-        fill: var(--main-color-text);
-        stroke-width: 0px;
+
+        path {
+          fill: var(--main-color-text);
+        }
       }
     }
   }
