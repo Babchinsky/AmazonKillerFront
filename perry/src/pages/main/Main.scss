@@ -191,10 +191,6 @@
 
     .divider {
       margin: 0px 16px;
-      height: 1.5px;
-      background-color: var(--minor-color-blue);
-      border: none;
-      border-radius: 5px;
   
       @include desktop {
         margin: 0px;

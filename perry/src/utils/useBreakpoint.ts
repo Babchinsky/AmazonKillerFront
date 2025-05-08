@@ -2,18 +2,24 @@ import { useEffect, useState } from "react";
 
 
 function useBreakpoint(breakpoint: number): boolean {
-  const [doesMatch, setDoesMatch] = useState(window.innerWidth >= breakpoint);
+  const [isAbove, setIsAbove] = useState(() => window.innerWidth >= breakpoint);
 
   useEffect(() => {
-    const handleResize = () => {
-      setDoesMatch(window.innerWidth >= breakpoint);
+    const mq = window.matchMedia(`(min-width: ${breakpoint}px)`);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsAbove(e.matches);
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    mq.addEventListener("change", handler);
+    setIsAbove(mq.matches);
+
+    return () => {
+      mq.removeEventListener("change", handler);
+    };
   }, [breakpoint]);
 
-  return doesMatch;
+  return isAbove;
 }
 
 export { useBreakpoint };

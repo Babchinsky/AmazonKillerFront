@@ -1,0 +1,40 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.row-number-toggle-container {
+  display: flex;
+
+  .row-number-toggle-left-button, .row-number-toggle-right-button {
+    padding: 12px 18px;
+    height: fit-content;
+    width: fit-content;
+    background-color: var(--minor-color-object);
+    transition: 0.2s;
+    cursor: pointer;
+
+    .product-quantity-icon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  .row-number-toggle-left-button {
+    border-top: 2px solid var(--minor-color-text);
+    border-left: 2px solid var(--minor-color-text);
+    border-bottom: 2px solid var(--minor-color-text);
+    border-radius: 4px 0px 0px 4px;
+  }
+
+  .row-number-toggle-right-button {
+    border-top: 2px solid var(--minor-color-text);
+    border-right: 2px solid var(--minor-color-text);
+    border-bottom: 2px solid var(--minor-color-text);
+    border-radius: 0px 4px 4px 0px;
+  }
+
+  .row-number-toggle-active-button {
+    background-color: var(--main-color-primary);
+    border-color: var(--main-color-primary);
+  }
+}

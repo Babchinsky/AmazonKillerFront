@@ -1,5 +1,5 @@
-@use "../styles/themes/default.scss" as *;
-@use "../styles/media-queries.scss" as *;
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
 
 
 .card-carousel-container {
@@ -50,7 +50,7 @@
       line-height: 0px;
 
       &:not(:disabled):hover {
-        box-shadow: 0 1px 7px -5px rgba(32, 80, 173, 0.45);
+        box-shadow: 0px 1px 7px -5px rgba(32, 80, 173, 0.45);
       }
     
       &:not(:disabled):active {

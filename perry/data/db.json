@@ -1,0 +1,764 @@
+{
+  "categories": [
+    {
+      "id": "1a2b3c4d-0000-0000-0000-111111111111",
+      "name": "Fashion"
+    },
+    {
+      "id": "1a2b3c4d-0000-0000-0000-222222222222",
+      "name": "Women's Fashion",
+      "parentId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-women-fashion",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "1a2b3c4d-0000-0000-0000-333333333333",
+      "name": "Casual Women's Clothing",
+      "parentId": "1a2b3c4d-0000-0000-0000-222222222222",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-casual-women",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "tops-001",
+      "name": "Tops",
+      "parentId": "1a2b3c4d-0000-0000-0000-333333333333",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-tops",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "tops-001-1",
+      "name": "T-shirts and Tank Tops",
+      "parentId": "tops-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-tshirts",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "tops-001-2",
+      "name": "Blouses and Shirts",
+      "parentId": "tops-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-blouses",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "tops-001-3",
+      "name": "Sweaters and Cardigans",
+      "parentId": "tops-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-sweaters",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "bottoms-001",
+      "name": "Bottoms",
+      "parentId": "1a2b3c4d-0000-0000-0000-333333333333",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-bottoms",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "bottoms-001-1",
+      "name": "Jeans and Denim",
+      "parentId": "bottoms-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-jeans",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "bottoms-001-2",
+      "name": "Pants and Trousers",
+      "parentId": "bottoms-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-pants",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "bottoms-001-3",
+      "name": "Skirts",
+      "parentId": "bottoms-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-skirts",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "outerwear-001",
+      "name": "Outerwear",
+      "parentId": "1a2b3c4d-0000-0000-0000-333333333333",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-outerwear",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "outerwear-001-1",
+      "name": "Jackets and Blazers",
+      "parentId": "outerwear-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-jackets",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "outerwear-001-2",
+      "name": "Coats and Parkas",
+      "parentId": "outerwear-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-coats",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "outerwear-001-3",
+      "name": "Vests",
+      "parentId": "outerwear-001",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-vests",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "dresses-001",
+      "name": "Dresses",
+      "parentId": "1a2b3c4d-0000-0000-0000-333333333333",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-dresses",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "evening-001",
+      "name": "Evening Gowns and Cocktail Dresses",
+      "parentId": "1a2b3c4d-0000-0000-0000-222222222222",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-evening",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "designer-001",
+      "name": "Designer Women's Clothing",
+      "parentId": "1a2b3c4d-0000-0000-0000-222222222222",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-designer",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "lingerie-001",
+      "name": "Lingerie and Underwear",
+      "parentId": "1a2b3c4d-0000-0000-0000-222222222222",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-lingerie",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    },
+    {
+      "id": "men-fashion-001",
+      "name": "Men's Fashion",
+      "parentId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "mainCategoryId": "1a2b3c4d-0000-0000-0000-111111111111",
+      "descriptionId": "desc-men-fashion",
+      "categoryPic": "/images/default-image.jpg",
+      "status": "Active"
+    }
+  ],
+  "products": [
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000001",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-02-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000002",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000003",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-04-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000004",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000005",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000006",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000007",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000008",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000009",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000010",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000011",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000012",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000013",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000014",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000015",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000016",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000017",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000018",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-03-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000019",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000020",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "rating": 4,
+      "code": "SOM-001",
+      "reviewsCount": 1547,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 22.88,
+      "discount": 17,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": false,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000021",
+      "name": "Everyday Deadlift Shoes Cross-Trainer Sneakers for Men and Women",
+      "rating": 4,
+      "code": "SOM-002",
+      "reviewsCount": 110,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 18.99,
+      "discount": 0,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000022",
+      "name": "VANLINKER Small Retro Skinny Cat Eye Sunglasses for Women, Trendy Tiny Square Shades VL9555",
+      "rating": 4,
+      "code": "SOM-003",
+      "reviewsCount": 2110,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 11.99,
+      "discount": 0,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000023",
+      "name": "Classic Analog Alarm Clock, 4-inch Super Silent Non-Ticking Small Clock with Night Light, Battery Operated, Simple Design, Twin Bell Loud Alarm, Old-Fashioned Style, for Heavy Sleepers, Bedroom, Bedside, Desk - White",
+      "rating": 4,
+      "code": "SOM-004",
+      "reviewsCount": 114,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 9.99,
+      "discount": 0,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000024",
+      "name": "Zeagoo Women's Casual Summer Shirt Dress with Long Sleeves, Button Down Front, Pockets - Beach Cover-Up",
+      "rating": 4,
+      "code": "SOM-005",
+      "reviewsCount": 20042,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 38.74,
+      "discount": 0,
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000025",
+      "name": "Fresh Vitamin Nectar Moisture Glow Face Cream - Unboxed, 1.6oz/50mL",
+      "rating": 4,
+      "code": "SOM-006",
+      "reviewsCount": 9,
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "price": 52.00,
+      "discount": 48,
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-04-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000026",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 4,
+      "price": 18.99,
+      "discount": 0,
+      "reviewsCount": 1547,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000027",
+      "name": "Luxurious Green Lingerie Set High-Quality Fabric Top and Panties for Ultimate Comfort and Style",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 3,
+      "price": 18.99,
+      "discount": 32,
+      "reviewsCount": 50,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000028",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 4,
+      "price": 18.99,
+      "discount": 0,
+      "reviewsCount": 1547,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-04-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000029",
+      "name": "REORIA Women's Slimming Double Lined Scoop Neck Sleeveless Bodysuit - Backless Sexy Basic Tank Top",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 4,
+      "price": 17.99,
+      "discount": 17,
+      "reviewsCount": 18,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-02-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000030",
+      "name": "Hanes Men's Heavyweight Cotton Crewneck Tee - Available in Tall Sizes, Single or Double Pack",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 4,
+      "price": 26.00,
+      "discount": 41,
+      "reviewsCount": 1025,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 0,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-05-07T12:00:00.000Z",
+      "updatedAt": null
+    },
+    {
+      "id": "dfe8c401-1a2a-4e90-9e23-000000000031",
+      "name": "SOMALER Women's Cotton Wide Brim Sun Hat - UPF50+ UV Protection, Packable Beach Bucket Cap for Summer Travel",
+      "productPics": [
+        "/images/default-image.jpg"
+      ],
+      "rating": 4,
+      "price": 18.99,
+      "discount": 17,
+      "reviewsCount": 1574,
+      "detailsId": "abc11111-1111-1111-1111-111111111111",
+      "categoryId": "dresses-001",
+      "quantity": 100,
+      "salesCount": 1000,
+      "isTrending": true,
+      "createdAt": "2025-02-07T12:00:00.000Z",
+      "updatedAt": null
+    }
+  ]
+}

@@ -11,18 +11,22 @@
   width: 171px;
   background-color: var(--minor-color-object);
   border-radius: 4px;
-  box-shadow: 0 4px 11px -5px rgba(32, 80, 173, 0.15);
+  box-shadow: 0px 4px 11px -5px rgba(32, 80, 173, 0.15);
   font-weight: 400;
   letter-spacing: 2%;
   color: var(--minor-color-text);
   cursor: pointer;
+
+  &:not(:disabled):hover {
+    outline: 2px solid var(--minor-color-blue);
+  }
 
   @include desktop {
     padding: 16px;
     height: 264px;
     width: 239px;
     border-radius: 8px;
-    box-shadow: 0 4px 11px -5px rgba(32, 80, 173, 0.25);
+    box-shadow: 0px 4px 11px -5px rgba(32, 80, 173, 0.25);
   }
 
   .category-card-top-container {

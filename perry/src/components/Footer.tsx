@@ -15,40 +15,40 @@ function Footer() {
         <div className="support-container">
           <p className="support-title">Support</p>
           <div className="support-links">
-            <Link to="/">Contact us</Link>
-            <Link to="/">FAQ</Link>
+            <Link className="link" to="/">Contact us</Link>
+            <Link className="link" to="/">FAQ</Link>
           </div>
         </div>
 
         <div className="legal-notice-container">
           <p className="legal-notice-title">Legal notice</p>
           <div className="legal-notice-links">
-            <Link to="/">Terms and Conditions</Link>
-            <Link to="/">License agreement</Link>
-            <Link to="/">Privacy Policy</Link>
+            <Link className="link" to="/">Terms and Conditions</Link>
+            <Link className="link" to="/">License agreement</Link>
+            <Link className="link" to="/">Privacy Policy</Link>
           </div>
         </div>
 
         <div className="social-media-container">
           <p className="social-media-title">Social media</p>
           <div className="social-media-links">
-            <Link to="https://www.facebook.com/">
+            <Link className="link" to="https://www.facebook.com/">
               <Facebook className="social-media-icon" />
             </Link>
 
-            <Link to="https://x.com/">
+            <Link className="link" to="https://x.com/">
               <X className="social-media-icon" />
             </Link>
 
-            <Link to="https://www.instagram.com/">
+            <Link className="link" to="https://www.instagram.com/">
               <Instagram className="social-media-icon" />
             </Link>
 
-            <Link to="https://www.gmail.com/">
+            <Link className="link" to="https://www.gmail.com/">
               <Gmail className="social-media-icon" />
             </Link>
 
-            <Link to="https://telegram.org/">
+            <Link className="link" to="https://telegram.org/">
               <Telegram className="social-media-icon" />
             </Link>
           </div>
@@ -57,7 +57,7 @@ function Footer() {
 
       <div className="footer-bottom-container">
         <div className="logo-container">
-          <Link to="/">
+          <Link className="link" to="/">
             <Logo className="logo-icon" />
           </Link>
         </div>

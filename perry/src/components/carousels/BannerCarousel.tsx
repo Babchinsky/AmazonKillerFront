@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ArrowLeft from "../assets/icons/arrow-left.svg?react";
-import ArrowRight from "../assets/icons/arrow-right.svg?react";
+import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
+import ArrowRight from "../../assets/icons/arrow-right.svg?react";
 import "./BannerCarousel.scss";
 
 
@@ -9,7 +9,7 @@ interface BannerCarouselProps {
 }
 
 function BannerCarousel(props: BannerCarouselProps) {
-  const [imageIndex, setImageIndex] = useState(0);
+  const [imageIndex, setImageIndex] = useState<number>(0);
 
   const showPrevImage = () => {
     setImageIndex((index: number) => {

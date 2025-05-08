@@ -11,7 +11,7 @@ interface CategoryCardProps {
   
 function CategoryCard(props: CategoryCardProps) {
   return (
-    <Link to={props.link}>
+    <Link className="link" to={props.link}>
       <div className="category-card-container">
         <div className="category-card-top-container">
           <img className="category-image" alt="Category" src={props.image} />

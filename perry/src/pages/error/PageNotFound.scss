@@ -1,2 +1,63 @@
 @use "../../styles/themes/default.scss" as *;
 @use "../../styles/media-queries.scss" as *;
+
+
+.page-not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: var(--main-color-error-page);
+
+  .page-not-found-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    @include tablet {
+      width: fit-content;
+    }
+
+    .page-not-found-content-image {
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .page-not-found-content-title {
+      margin-top: 8px;
+      text-align: center;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 2%;
+      color: var(--main-color-text);
+
+      @include tablet {
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 28px;
+        letter-spacing: -1.5%;
+      }
+    }
+
+    .return-to-main-page-button {
+      margin-top: 18px;
+      padding-left: 13.5px;
+      padding-right: 13.5px;
+      width: 260px;
+      border-radius: 8px;
+      font-size: 16px;
+      line-height: 20px;
+
+      @include tablet {
+        margin-top: 40px;
+        padding: 13.5px 9.5px;
+        width: 400px;
+        font-size: 18px;
+        line-height: 28px;
+      }
+    }
+  }
+}

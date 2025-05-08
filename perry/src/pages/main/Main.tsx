@@ -1,14 +1,20 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state/store";
+import { getCategories } from "../../state/categories/categories-slice";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
+import CategoryType from "../../types/category-type";
+import ProductType from "../../types/product-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
-import BannerCarousel from "../../components/BannerCarousel";
-import Footer from "../../components/Footer";
+import BannerCarousel from "../../components/carousels/BannerCarousel";
 import CategoryCard from "../../components/cards/CategoryCard";
 import ProductCard from "../../components/cards/ProductCard";
-import CardCarousel from "../../components/CardCarousel";
+import CardCarousel from "../../components/carousels/CardCarousel";
 import TextButton from "../../components/buttons/TextButton";
+import Footer from "../../components/Footer";
 import banner1Mobile from "../../assets/images/banners/banner-1-mobile.png";
 import banner1Desktop from "../../assets/images/banners/banner-1-desktop.png";
 import bannerAuthMobile from "../../assets/images/banners/banner-authentication-mobile.png";
@@ -19,88 +25,125 @@ import "./Main.scss";
 
 
 function Main() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  
+  const dispatch = useDispatch<AppDispatch>();
+
   const breakpointTablet = parseInt(getCssVariable("--breakpoint-tablet"), 10);
   const isTablet = useBreakpoint(breakpointTablet);
   const bannerCarouselImages = isTablet ? [banner1Desktop] : [banner1Mobile];
   const bannerAuth = isTablet ? bannerAuthDesktop : bannerAuthMobile;
 
-  const categoryCards = Array.from({length: 12}).map((_, index) => (
-    <CategoryCard
-      key={index}
-      title={`${index + 1} Lorem ipsum dolor sit amet, consectetur adipiscing elit`}
-      image={defaultImage}
-      link="/"
+  const [trendingProducts, setTrendingProducts] = useState<ProductType[]>([]);
+  const [saleProducts, setSaleProducts] = useState<ProductType[]>([]);
+
+  const categories = useSelector((state: RootState) => state.categories.categories);
+  const dressesCategory = categories.find(
+    (category: CategoryType) => category.name.toLowerCase() === "dresses"
+  );
+  const categoryCards = dressesCategory
+  ? Array.from({length: 12}, (_, index) => (
+      <CategoryCard
+        key={`${dressesCategory.id}-${index}`}
+        title={dressesCategory.name}
+        image={dressesCategory.picture || defaultImage}
+        link={`/products/${dressesCategory.name.toLowerCase().replace(/\s+/g, "-")}?id=${dressesCategory.id}`}
+      />
+    ))
+  : [];
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/products?isTrending=true`)
+      .then((response) => response.json())
+      .then((data) => {
+        const shuffled = [...data].sort(() => Math.random() - 0.5);
+        setTrendingProducts(shuffled.slice(0, 12));
+      })
+      .catch((error) => console.error("Error fetching trending products:", error));
+  }, []);
+
+  useEffect(() => {
+    fetch(`${apiUrl}/products?discount_gte=1`)
+      .then((response) => response.json())
+      .then((data) => {
+        const shuffled = [...data].sort(() => Math.random() - 0.5);
+        setSaleProducts(shuffled.slice(0, 12));
+      })
+      .catch((error) => console.error("Error fetching sale products:", error));
+  }, []);
+
+  const trendingProductCards = trendingProducts.map((product) => (
+    <ProductCard
+      key={product.id}
+      title={product.name}
+      image={product.productPics[0]}
+      link={`/product/${product.id}`}
+      rating={product.rating}
+      reviewsCount={product.reviewsCount}
+      price={product.price}
+      discount={product.discount}
+      quantity={product.quantity}
     />
   ));
 
-  const trendingProductCards = Array.from({length: 12}).map((_, index) => (
+  const saleProductCards = saleProducts.map((product) => (
     <ProductCard
-      key={index}
-      title={`${index + 1} Lorem ipsum dolor sit amet, consectetur adipiscing elit`}
-      image={defaultImage}
-      link="/"
-      rating={4}
-      reviews={100}
-      price={20.50}
-      discount={0}
-      stockQuantity={1000}
-    />
-  ));
-
-  const saleProductCards = Array.from({length: 12}).map((_, index) => (
-    <ProductCard
-      key={index}
-      title={`${index + 1} Lorem ipsum dolor sit amet, consectetur adipiscing elit`}
-      image={defaultImage}
-      link="/"
-      rating={4}
-      reviews={200}
-      price={20.50}
-      discount={50}
-      stockQuantity={500}
+      key={product.id}
+      title={product.name}
+      image={product.productPics[0]}
+      link={`/product/${product.id}`}
+      rating={product.rating}
+      reviewsCount={product.reviewsCount}
+      price={product.price}
+      discount={product.discount}
+      quantity={product.quantity}
     />
   ));
 
   return (
     <>
-      <Header searchBar={true} cart={true}></Header>
-      <BackToTopButton></BackToTopButton>
+      <Header searchBar={true} cart={true} />
+      <BackToTopButton />
 
       <section className="main-content-section">
         <div className="main-content-container">
-          <BannerCarousel images={bannerCarouselImages}></BannerCarousel>
-          <CardCarousel cards={categoryCards} wrap={false}></CardCarousel>
+          <BannerCarousel images={bannerCarouselImages} />
+          <CardCarousel cards={categoryCards} wrap={false} />
 
-          <hr className="divider"></hr>
+          <hr className="divider" />
           
           <div className="content-container">
             <div className="content-title-container">
               <h2>Trending deals</h2>
-              <Link className="see-all-link" to="/">
+              <Link className="see-all-link link" to="/">
                 <span>See all</span>
                 <ArrowRight className="arrow-right-icon" />
               </Link> 
             </div>
 
-            <CardCarousel cards={trendingProductCards} wrap={true}></CardCarousel>
+            <CardCarousel cards={trendingProductCards} wrap={true} />
           </div>
 
-          <hr className="divider"></hr>
+          <hr className="divider" />
             
-          <CardCarousel cards={categoryCards} wrap={false}></CardCarousel>
+          <CardCarousel cards={categoryCards} wrap={false} />
 
-          <hr className="divider"></hr>
+          <hr className="divider" />
           
           <div className="content-container">
             <div className="content-title-container">
               <h2>Sale</h2>
-              <Link className="see-all-link" to="/">
+              <Link className="see-all-link link" to="/">
                 <span>See all</span>
                 <ArrowRight className="arrow-right-icon" />
               </Link>
             </div>
 
-            <CardCarousel cards={saleProductCards} wrap={true} link="/products"></CardCarousel>
+            <CardCarousel cards={saleProductCards} wrap={true} link="/products" />
           </div>
 
           <hr className="divider"></hr>
@@ -117,7 +160,7 @@ function Main() {
               </div>
               
               <div className="banner-content-buttons">
-                <TextButton type="primary" content="Sign up"></TextButton>
+                <TextButton type="primary" content="Sign up" />
                 <button className="log-in-button">Log in</button>
               </div>
             </div>
@@ -125,7 +168,7 @@ function Main() {
         </div>
       </section>
 
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }

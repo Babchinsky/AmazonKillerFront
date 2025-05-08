@@ -1,16 +1,17 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
-import { getCssVariable } from "../utils/getCssVariable";
-import { useBreakpoint } from "../utils/useBreakpoint";
-import CategoryCard from "./cards/CategoryCard";
-import TextButton from "./buttons/TextButton";
-import ArrowLeft from "../assets/icons/arrow-left.svg?react";
-import ArrowRight from "../assets/icons/arrow-right.svg?react";
+import { getCssVariable } from "../../utils/getCssVariable";
+import { useBreakpoint } from "../../utils/useBreakpoint";
+import CategoryCard from "../cards/CategoryCard";
+import ProductCard from "../cards/ProductCard";
+import TextButton from "../buttons/TextButton";
+import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
+import ArrowRight from "../../assets/icons/arrow-right.svg?react";
 import "./CardCarousel.scss";
 
 
 interface CardCarouselProps {
-  cards: ReactElement<typeof CategoryCard>[];
+  cards: ReactElement<typeof CategoryCard>[] | ReactElement<typeof ProductCard>[];
   wrap: boolean;
   link?: string;
 }
@@ -21,8 +22,8 @@ function CardCarousel(props: CardCarouselProps) {
   
   const cardCarouselContainerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const [cardIndex, setCardIndex] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(1);
+  const [cardIndex, setCardIndex] = useState<number>(0);
+  const [cardsPerView, setCardsPerView] = useState<number>(1);
   const cardCarouselContainerGap = 16;
   
   const updateCardsPerView = () => {
@@ -33,12 +34,6 @@ function CardCarousel(props: CardCarouselProps) {
       setCardsPerView(Math.max(1, count));
     }
   };
-
-  useEffect(() => {
-    updateCardsPerView();
-    window.addEventListener("resize", updateCardsPerView);
-    return () => window.removeEventListener("resize", updateCardsPerView);
-  }, []);
 
   const showPrevCards = () => {
     setCardIndex((index: number) => {
@@ -67,6 +62,16 @@ function CardCarousel(props: CardCarouselProps) {
 
   const visibleCards = props.cards.slice(cardIndex, cardIndex + cardsPerView);
 
+  useEffect(() => {
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  useEffect(() => {
+    updateCardsPerView();
+  }, [props.cards]);
+
   return (
     <div className="card-carousel-container" ref={cardCarouselContainerRef}>
       {(props.wrap && !isDesktop) ? (
@@ -80,7 +85,7 @@ function CardCarousel(props: CardCarouselProps) {
           </div>
           
           <div className="see-all-button-container">
-            <Link to={props.link || "/"}>
+            <Link className="link" to={props.link || "/"}>
               <TextButton type="secondary" content="See all"></TextButton>            
             </Link>
           </div>
@@ -88,7 +93,7 @@ function CardCarousel(props: CardCarouselProps) {
       ) : (
         <>
           <div className="cards-container">
-            {visibleCards.map((card: ReactElement<typeof CategoryCard>, index: number) => (
+            {visibleCards.map((card, index) => (
               <div key={index} className="card" ref={index === 0 ? cardRef : null}>
                 {card}
               </div>

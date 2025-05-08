@@ -19,6 +19,11 @@ body {
   font-family: var(--font-family);
 }
 
+button, .link {
+  transition-property: background-color, border, outline, box-shadow, opacity;
+  transition-duration: 0.2s;
+}
+
 button, input {
   border: 0px;
   outline: none;
@@ -26,11 +31,18 @@ button, input {
 
 button {
   background-color: transparent;
+  font-family: inherit;
   cursor: pointer;
 
   &:disabled {
     opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
   }
+}
+
+input {
+  background-color: transparent;
 }
 
 a {
@@ -84,7 +96,18 @@ h3 {
 }
 
 
+.divider {
+  height: 1.5px;
+  background-color: var(--minor-color-blue);
+  border: none;
+  border-radius: 5px;
+}
+
 .hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
