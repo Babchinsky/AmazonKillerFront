@@ -31,7 +31,7 @@ function ProductList() {
   const [searchParams] = useSearchParams();
   const currentCategoryId = searchParams.get("id");
 
-  const hasInitialized = useRef(false);
+  const hasInitialized = useRef<boolean>(false);
 
   const breakpointDesktop = parseInt(getCssVariable("--breakpoint-desktop"), 10);
   const isDesktop = useBreakpoint(breakpointDesktop);

@@ -23,9 +23,9 @@ function Footer() {
         <div className="legal-notice-container">
           <p className="legal-notice-title">Legal notice</p>
           <div className="legal-notice-links">
-            <Link className="link" to="/">Terms and Conditions</Link>
-            <Link className="link" to="/">License agreement</Link>
-            <Link className="link" to="/">Privacy Policy</Link>
+            <Link className="link" to="/legal-notice?tab=0">Terms and Conditions</Link>
+            <Link className="link" to="/legal-notice?tab=1">License agreement</Link>
+            <Link className="link" to="/legal-notice?tab=2">Privacy Policy</Link>
           </div>
         </div>
 
