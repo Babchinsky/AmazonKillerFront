@@ -33,7 +33,7 @@ function BannerCarousel(props: BannerCarouselProps) {
 
   return (
     <div className="banner-carousel-container">
-      <img alt="Banner" src={props.images[imageIndex]} />
+      <img className="banner-image" alt="Banner" src={props.images[imageIndex]} />
 
       {props.images.length > 1 && (
         <div className="arrows-container">

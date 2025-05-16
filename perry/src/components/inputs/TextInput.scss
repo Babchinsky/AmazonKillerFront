@@ -1,0 +1,104 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.text-input-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  font-weight: 400;
+  letter-spacing: 2%;
+  color: var(--minor-color-text);
+
+  .text-input-content-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 54px;
+    width: 100%;
+
+    @include desktop {
+      height: 61px;
+    }
+
+    .label, .label-error {
+      position: absolute;
+      top: 0px;
+      left: 20px;
+      padding: 0px 4px;
+      background-color: var(--minor-color-object);
+      font-size: 14px;
+      line-height: 18px;
+      pointer-events: none;
+      z-index: 10;
+
+      @include desktop {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .label-error {
+      color: var(--minor-color-destructive);
+    }
+
+    .input-container {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      bottom: 0px;
+      left: 0px;
+      padding: 12px 20px;
+      width: 100%;
+      background-color: var(--minor-color-object);
+      border: 1.5px solid rgba(var(--main-color-halftone), 0.5);
+      border-radius: 4px;
+
+      .input {
+        flex: 1;
+        height: 20px;
+        font-size: 12px;    
+        line-height: 16px;
+        color: inherit;
+
+        &::placeholder {
+          color: rgba(var(--main-color-halftone), 0.25);
+        }
+
+        @include desktop {
+          height: 24px;
+          font-size: 14px;    
+          line-height: 24px;
+        }
+      }
+
+      .toggle-password-button {
+        padding-left: 20px;
+
+        .eye-icon {
+          height: 20px;
+          width: 20px;
+
+          @include desktop {
+            height: 24px;
+            width: 24px;
+          }
+        }
+      }
+    }
+  }
+
+  .text-input-error {
+    margin-top: 8px;
+    padding: 0px 20px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--minor-color-destructive);
+
+    @include desktop {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+}

@@ -77,7 +77,7 @@
         gap: 24px;
       }
 
-      .auth-container {
+      .menu-auth-container {
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -87,12 +87,12 @@
           gap: 8px;
         }
 
-        .auth-top-container {
+        .menu-auth-top-container {
           display: flex;
           justify-content: space-between;
           align-items: start;
 
-          .auth-image {
+          .menu-auth-image {
             height: 48px;
             width: 48px;
             filter: drop-shadow(0px 0px 16px rgba(17, 57, 117, 0.25));
@@ -148,7 +148,7 @@
           }
         }
 
-        .auth-bottom-container {
+        .menu-auth-bottom-container {
           display: flex;
           flex-direction: column;
           gap: 8px;

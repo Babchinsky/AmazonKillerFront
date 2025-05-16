@@ -6,7 +6,7 @@ import { getCategories } from "../../state/categories/categories-slice";
 import TextButton from "../buttons/TextButton";
 import MenuHeaderComboBox from "../combo-boxes/MenuHeaderComboBox";
 import DoubleLeft from "../../assets/icons/double-left.svg?react";
-import Bubble from "../../assets/images/bubble.png";
+import bubble from "../../assets/images/authentication/bubble.png";
 import CloseMenu from "../../assets/icons/close-menu.svg?react";
 import Faq from "../../assets/icons/faq.svg?react";
 import Logo from "../../assets/icons/logo.svg?react";
@@ -15,6 +15,8 @@ import "./MenuHeader.scss";
 
 interface MenuHeaderProps {
   onClose: () => void;
+  onLogIn: () => void;
+  onSignUp: () => void;
 }
 
 function MenuHeader(props: MenuHeaderProps) {
@@ -36,10 +38,10 @@ function MenuHeader(props: MenuHeaderProps) {
       <div className="menu-container">
         <div className="menu-content-container">
           <div className="menu-content-top-container">
-            <div className="auth-container">
-              <div className="auth-top-container">
+            <div className="menu-auth-container">
+              <div className="menu-auth-top-container">
                 <div>
-                  <img className="auth-image" alt="Profile" src={Bubble} />
+                  <img className="menu-auth-image" alt="Profile" src={bubble} />
                   <p className="username">Not signed in</p>
                   <p className="user-role">Log in to enjoy a more pleasant experience</p>
                 </div>
@@ -49,9 +51,9 @@ function MenuHeader(props: MenuHeaderProps) {
                 </button>
               </div>
               
-              <div className="auth-bottom-container">
-                <TextButton className="sign-up-button" type="primary" content="Sign up" />
-                <TextButton className="log-in-button" type="secondary" content="Log in" />
+              <div className="menu-auth-bottom-container">
+                <TextButton className="sign-up-button" type="primary" content="Sign up" onClick={props.onSignUp} />
+                <TextButton className="log-in-button" type="secondary" content="Log in" onClick={props.onLogIn} />
               </div>
             </div>
 

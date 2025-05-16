@@ -22,11 +22,11 @@ function FilterComboBox(props: FilterComboBoxProps) {
   const filteredOptions = props.options.filter(option => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
   const optionsClass = `options-${props.type}`.trim();
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleOptionToggle = (option: string) => {
+  const toggleOption = (option: string) => {
     setSelectedOptions(prevSelected =>
       prevSelected.includes(option)
         ? prevSelected.filter(o => o !== option)
@@ -65,7 +65,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
                 className="search-bar-input"
                 placeholder="Search..."
                 value={searchQuery}
-                onChange={handleSearchChange}
+                onChange={changeSearch}
               />
             </div>
           )}
@@ -78,7 +78,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
                     <Checkbox 
                       label={option.label} 
                       isChecked={selectedOptions.includes(option.id)} 
-                      onChange={() => handleOptionToggle(option.id)} 
+                      onChange={() => toggleOption(option.id)} 
                     />
                   </li>
                 ))}
@@ -92,7 +92,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
                     <Checkbox
                       isChecked={selectedOptions.includes(option.id)} 
                       check={option.label}
-                      onChange={() => handleOptionToggle(option.id)} 
+                      onChange={() => toggleOption(option.id)} 
                     />
                   </div>
                 ))}

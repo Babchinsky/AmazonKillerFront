@@ -28,8 +28,9 @@ import "./ProductList.scss";
 
 function ProductList() {
   const dispatch = useDispatch<AppDispatch>();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const currentCategoryId = searchParams.get("id");
+  const currentPageNumber = parseInt(searchParams.get("page") || "1", 10);
 
   const hasInitialized = useRef<boolean>(false);
 
@@ -83,7 +84,7 @@ function ProductList() {
 
   const [isBigProductCard, setIsBigProductCard] = useState<boolean>(true);
   const productsPerPage = isBigProductCard ? 12 : 30;
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(currentPageNumber);
   const totalPages = Math.ceil(sortedFilteredProducts.length / productsPerPage);
   
   const displayedProducts = sortedFilteredProducts.slice(
@@ -225,6 +226,14 @@ function ProductList() {
       setCurrentPage(total);
     }
   }, [productsPerPage, products.length, currentPage]);
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", currentPage.toString());
+    setSearchParams(newParams, { replace: true });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
   
   return (
     <>

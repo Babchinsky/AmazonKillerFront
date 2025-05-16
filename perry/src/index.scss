@@ -55,8 +55,7 @@ svg {
 }
 
 ::placeholder {
-  color: var(--minor-color-text);
-  opacity: 0.5;
+  color: rgba(var(--main-color-halftone), 0.5);
 }
 
 h1 {
@@ -108,6 +107,11 @@ h3 {
   pointer-events: none;
 }
 
-.no-scroll {
+.body-no-scroll {
   overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.html-no-scroll {
+  scrollbar-gutter: stable;
 }
