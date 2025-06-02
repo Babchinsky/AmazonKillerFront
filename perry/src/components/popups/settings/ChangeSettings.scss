@@ -1,0 +1,107 @@
+@use "../../../styles/themes/default.scss" as *;
+@use "../../../styles/media-queries.scss" as *;
+
+
+.change-settings-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(var(--main-color-halftone), 0.25);
+  z-index: 200;
+}
+
+.change-settings-container, .small-change-settings-container {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+  background: var(--minor-color-object);
+  border-radius: 8px;
+  z-index: 210;
+
+  .change-settings-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    color: var(--minor-color-text);
+
+    .left-title-container, .center-title-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+
+      .title {
+        width: 100%;
+        font-weight: 600;
+        font-size: 32px;
+        line-height: 36px;
+        letter-spacing: -1.5%;
+      }
+
+      .divider {
+        width: 100%;
+      }
+    }
+
+    .left-title-container {
+      .title {
+        text-align: left;
+      }
+    }
+
+    .center-title-container {
+      .title {
+        text-align: center;
+      }
+    }
+
+    .left-description, .center-description {
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 28px;
+      letter-spacing: 2%;
+    }
+
+    .left-description {
+      text-align: left;
+    }
+
+    .center-description {
+      text-align: center;
+    }
+
+    .change-settings-buttons-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+
+      .change-settings-button {
+        flex: 1;
+        padding: 7px 9.5px;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: 2%;
+      }
+    }
+  }
+}
+
+.change-settings-container {
+  width: 565px;
+}
+
+.small-change-settings-container {
+  width: 464px;
+}

@@ -1,4 +1,4 @@
-import "./Checkout.scss";
+import checkoutStyles from "./Checkout.module.scss";
 
 
 function Checkout() {

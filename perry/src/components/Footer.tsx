@@ -1,64 +1,64 @@
 import { Link } from "react-router";
-import Facebook from "../assets/icons/facebook.svg?react";
-import X from "../assets/icons/x.svg?react";
-import Instagram from "../assets/icons/instagram.svg?react";
-import Gmail from "../assets/icons/gmail.svg?react";
-import Telegram from "../assets/icons/telegram.svg?react";
-import Logo from "../assets/icons/logo.svg?react";
-import "./Footer.scss";
+import FacebookIcon from "../assets/icons/facebook.svg?react";
+import XIcon from "../assets/icons/x.svg?react";
+import InstagramIcon from "../assets/icons/instagram.svg?react";
+import GmailIcon from "../assets/icons/gmail.svg?react";
+import TelegramIcon from "../assets/icons/telegram.svg?react";
+import LogoIcon from "../assets/icons/logo.svg?react";
+import footerStyles from "./Footer.module.scss";
 
   
 function Footer() {
   return (
-    <footer className="footer-container">
-      <div className="footer-top-container">
-        <div className="support-container">
-          <p className="support-title">Support</p>
-          <div className="support-links">
-            <Link className="link" to="/">Contact us</Link>
-            <Link className="link" to="/">FAQ</Link>
+    <footer>
+      <div className={footerStyles.topContainer}>
+        <div className={footerStyles.supportContainer}>
+          <p>Support</p>
+          <div className={footerStyles.supportLinks}>
+            <Link className="link main-color-text-link" to="/">Contact us</Link>
+            <Link className="link main-color-text-link" to="/">FAQ</Link>
           </div>
         </div>
 
-        <div className="legal-notice-container">
-          <p className="legal-notice-title">Legal notice</p>
-          <div className="legal-notice-links">
-            <Link className="link" to="/legal-notice?tab=0">Terms and Conditions</Link>
-            <Link className="link" to="/legal-notice?tab=1">License agreement</Link>
-            <Link className="link" to="/legal-notice?tab=2">Privacy Policy</Link>
+        <div className={footerStyles.legalNoticeContainer}>
+          <p>Legal notice</p>
+          <div className={footerStyles.legalNoticeLinks}>
+            <Link className="link main-color-text-link" to="/legal-notice?tab=0">Terms and Conditions</Link>
+            <Link className="link main-color-text-link" to="/legal-notice?tab=1">License agreement</Link>
+            <Link className="link main-color-text-link" to="/legal-notice?tab=2">Privacy Policy</Link>
           </div>
         </div>
 
-        <div className="social-media-container">
-          <p className="social-media-title">Social media</p>
-          <div className="social-media-links">
+        <div className={footerStyles.socialMediaContainer}>
+          <p>Social media</p>
+          <div className={footerStyles.socialMediaLinks}>
             <Link className="link" to="https://www.facebook.com/">
-              <Facebook className="social-media-icon" />
+              <FacebookIcon className={`${footerStyles.socialMediaIcon} main-color-text-icon`} />
             </Link>
 
             <Link className="link" to="https://x.com/">
-              <X className="social-media-icon" />
+              <XIcon className={`${footerStyles.socialMediaIcon} main-color-text-icon`} />
             </Link>
 
             <Link className="link" to="https://www.instagram.com/">
-              <Instagram className="social-media-icon" />
+              <InstagramIcon className={`${footerStyles.socialMediaIcon} main-color-text-icon`} />
             </Link>
 
             <Link className="link" to="https://www.gmail.com/">
-              <Gmail className="social-media-icon" />
+              <GmailIcon className={`${footerStyles.socialMediaIcon} main-color-text-icon`} />
             </Link>
 
             <Link className="link" to="https://telegram.org/">
-              <Telegram className="social-media-icon" />
+              <TelegramIcon className={`${footerStyles.socialMediaIcon} main-color-text-icon`} />
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="footer-bottom-container">
-        <div className="logo-container">
+      <div className={footerStyles.bottomContainer}>
+        <div className={footerStyles.logoContainer}>
           <Link className="link" to="/">
-            <Logo className="logo-icon" />
+            <LogoIcon className={footerStyles.logoIcon} />
           </Link>
         </div>
 

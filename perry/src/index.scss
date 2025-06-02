@@ -8,30 +8,51 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html, body, #root, .page {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--main-color-text);
 }
 
 body {
+  background-color: var(--main-color-text);
   font-family: var(--font-family);
+  font-weight: 400;
+  color: var(--minor-color-text);
 }
 
-button, .link {
-  transition-property: background-color, border, outline, box-shadow, opacity;
+main {
+  flex-grow: 1;
+}
+
+.transition {
+  // transition-property: background-color, border, outline, box-shadow, opacity;
   transition-duration: 0.2s;
 }
 
-button, input {
-  border: 0px;
-  outline: none;
+.appear-transition {
+  opacity: 0;
+  animation: fadeIn 0.75s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+button, .link {
+  @extend .transition;
 }
 
 button {
   background-color: transparent;
+  border: 0px;
   font-family: inherit;
+  color: inherit;
   cursor: pointer;
 
   &:disabled {
@@ -41,8 +62,103 @@ button {
   }
 }
 
+.main-color-secondary-link {
+  color: var(--main-color-secondary) !important;
+
+  &:not(:disabled):active {
+    color: var(--minor-color-blue) !important;
+  }
+}
+
+.main-color-text-link {
+  color: var(--main-color-text) !important;
+
+  &:not(:disabled):active {
+    color: var(--minor-color-blue) !important;
+  }
+}
+
+.minor-color-text-link {
+  color: var(--minor-color-text) !important;
+
+  &:not(:disabled):active {
+    color: rgba(var(--main-color-halftone), 0.5) !important;
+  }
+}
+
+.main-color-text-icon {
+  path, circle {
+    @extend .transition;
+  }
+
+  path {
+    stroke: var(--main-color-text) !important;
+  }
+
+  circle {
+    fill: var(--main-color-text) !important;
+  }
+
+  &:not(:disabled):active {
+    path {
+      stroke: var(--minor-color-blue) !important;
+    }
+
+    circle {
+      fill: var(--minor-color-blue) !important;
+    }
+  }
+}
+
+.minor-color-text-icon {
+  path, circle {
+    @extend .transition;
+  }
+
+  path {
+    stroke: var(--minor-color-text) !important;
+  }
+
+  circle {
+    fill: var(--minor-color-text) !important;
+  }
+
+  &:not(:disabled):active {
+    path {
+      stroke: rgba(var(--main-color-halftone), 0.5) !important;
+    }
+
+    circle {
+      fill: rgba(var(--main-color-halftone), 0.5) !important;
+    }
+  }
+}
+
+.minor-color-text-icon-link:active {
+  p {
+    @extend .transition;
+    color: rgba(var(--main-color-halftone), 0.5) !important;
+  }
+
+  svg {
+    path {
+      @extend .transition;
+      stroke: rgba(var(--main-color-halftone), 0.5) !important;
+    }
+
+    circle {
+      @extend .transition;
+      fill: rgba(var(--main-color-halftone), 0.5) !important;
+    }
+  }
+}
+
 input {
   background-color: transparent;
+  border: 0px;
+  outline: none;
+  font-family: inherit;
+  color: inherit;
 }
 
 a {

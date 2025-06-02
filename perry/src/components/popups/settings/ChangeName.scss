@@ -1,0 +1,11 @@
+.change-settings-container, .small-change-settings-container {
+  .change-settings-content-container {
+    .new-name-form-container {
+      margin-top: -12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+  }
+}

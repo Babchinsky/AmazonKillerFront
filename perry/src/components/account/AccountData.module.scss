@@ -1,0 +1,16 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.accountDataContainer {
+  display: flex;
+  flex-direction: column;
+
+  .accountDataDivider {
+    margin-top: 14px;
+
+    @include desktop {
+      margin-top: 16px;
+    }
+  }
+}

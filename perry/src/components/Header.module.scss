@@ -1,0 +1,181 @@
+@use "../styles/themes/default.scss" as *;
+@use "../styles/media-queries.scss" as *;
+
+
+header {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0px;
+  padding: 10px 16px;
+  width: 100%;
+  background-color: var(--main-color-secondary);
+  z-index: 75;
+
+  @include desktop {
+    padding: 12px 32px;
+  }
+
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+
+    .leftContainer, .rightContainer {
+      display: flex;
+      align-items: center;
+    }
+    
+    .leftContainer {
+      gap: 12px;
+    }
+    
+    .rightContainer {
+      justify-items: end;
+      gap: 8px;
+    }
+
+    .menuButton, .cartButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px;
+
+      .menuIcon, .cartEmptyIcon {
+        height: 24px;
+        width: 24px;
+      
+        @include desktop {
+          height: 32px;
+          width: 32px;
+        }
+
+        path {
+          stroke-width: 1.5px;
+        }
+      }
+    }
+
+    .logoContainer {
+      display: none;
+    
+      @include desktop {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0px 10px;
+        height: 100%;
+      }
+
+      .logoIcon {
+        width: 82px;
+
+        path {
+          fill: var(--main-color-text);
+        }
+      }
+    }
+
+    .searchBarContainer {
+      display: flex;
+      justify-content: space-between;
+      margin: 0px 20px;
+      width: 100%;
+    
+      @include desktop {
+        margin: 0px 32px;
+      }
+
+      input {
+        padding: 8px 12px;
+        width: 100%;
+        background-color: var(--minor-color-object);
+        border-radius: 4px 0px 0px 4px;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 2%;
+      
+        @include desktop {
+          padding: 8px 20px;
+          font-size: 14px;
+          line-height: 24px;
+        }
+      }
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5.5px 9.5px;
+        background-color: var(--main-color-primary);
+        border: 2.5px solid var(--main-color-primary);
+        border-radius: 0px 4px 4px 0px;
+
+        &:not(:disabled):hover {
+          background-color: var(--minor-color-primary-hover);
+          border: 2.5px solid var(--main-color-primary);
+        }
+      
+        &:not(:disabled):active {
+          background-color: var(--minor-color-primary-active);
+          border: 2.5px solid var(--minor-color-primary-active);
+        }
+      
+        @include desktop {
+          padding: 5.5px 13.5px;
+
+          &:not(:disabled):hover {
+            background-color: var(--minor-color-primary-hover);
+            border: 2.5px solid var(--main-color-primary);
+          }
+        
+          &:not(:disabled):active {
+            background-color: var(--minor-color-primary-active);
+            border: 2.5px solid var(--minor-color-primary-active);
+          }
+        }
+
+        .searchIcon {
+          height: 16px;
+          width: 16px;
+
+          @include desktop {
+            height: 24px;
+            width: 24px;
+          }
+
+          path {
+            stroke-width: 1.5px;
+          }
+        }
+      }
+    }
+
+    .userButton {
+      display: none;
+    
+      @include desktop {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+      }
+
+      .userIcon {
+        display: none;
+
+        @include desktop {
+          display: block;
+          height: 32px;
+          width: 32px;
+        }
+
+        path {
+          stroke-width: 1.5px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,177 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding-top: 76px;
+  padding-bottom: 40px;
+
+  @include desktop {
+    padding: 104px 32px 64px 32px;
+  }
+
+  .productListSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .productListContainer {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      max-width: 1600px;
+      color: var(--minor-color-text);
+
+      .breadcrumb, h1 {
+        padding: 0px 16px;
+        
+        @include desktop {
+          padding: 0px;
+        }
+      }
+
+      h1 {
+        margin-top: 0px;
+
+        @include desktop {
+          margin-top: 13px;
+        }
+      }
+
+      .listContainer {
+        display: flex;
+        gap: 24px;
+        margin-top: 0px;
+
+        @include desktop {
+          margin-top: 32px;
+        }
+
+        .listLeftContainer {
+          display: none;
+
+          @include desktop {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 382px;
+          }
+        }
+
+        .listRightContainer {
+          display: flex;
+          flex-direction: column;
+          gap: 0px;
+          flex: 1;
+
+          .comboBoxesContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 16px 0px 16px;
+
+            @include desktop {
+              justify-content: left;
+              gap: 24px;
+              padding: 0px;
+            }
+
+            .appliedFiltersContainer {
+              flex: 1;
+
+              button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .filterIcon {
+                  height: 32px;
+                  width: 32px;
+
+                  path {
+                    stroke-width: 1.5px;
+                    stroke: var(--minor-color-text);
+                  }
+                }
+              }
+            }
+
+            .rowNumberToggle {
+              display: none;
+
+              @include desktop {
+                display: block;
+              }
+            }
+          }
+
+          .listDivider {
+            margin-top: 11px;
+
+            @include desktop {
+              margin-top: 24px;
+            }
+          }
+
+          .bigProductCardList, .productCardList {
+            gap: 16px;
+            margin-top: 16px;
+
+            @include desktop {
+              margin-top: 40px;
+            }
+          }
+
+          .bigProductCardList {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          .productCardList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 0px 16px;
+
+            @include desktop {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              padding: 0px;
+            }
+          }
+
+          .pagination {
+            margin-top: 24px;
+
+            @include desktop {
+              margin-top: 48px;
+            }
+          }
+
+          .productCardListMessage {
+            margin-top: 16px;
+            padding: 0px 16px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            letter-spacing: 2%;
+            color: var(--minor-color-text);
+
+            @include desktop {
+              margin-top: 40px;
+              font-size: 18px;
+              line-height: 28px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

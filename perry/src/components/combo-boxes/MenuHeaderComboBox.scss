@@ -11,6 +11,7 @@
   line-height: 18px;
   letter-spacing: 2%;
   color: var(--minor-color-text);
+  user-select: none;
 
   @include tablet {
     font-size: 16px;
@@ -84,24 +85,22 @@
       }
 
       .category-link {
-        .category {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-    
-          .category-icon {
-            height: 24px;
-            width: 24px;
-            
-            @include tablet {
-              height: 32px;
-              width: 32px;
-            }
-    
-            path {
-              stroke-width: 1.5px;
-              stroke: var(--minor-color-text);
-            }
+        display: flex;
+        align-items: center;
+        gap: 12px;
+          
+        .category-icon {
+          height: 24px;
+          width: 24px;
+          
+          @include tablet {
+            height: 32px;
+            width: 32px;
+          }
+  
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
           }
         }
       }

@@ -1,6 +1,6 @@
-import StarFull from "../assets/icons/star-full.svg?react";
-import StarEmpty from "../assets/icons/star-empty.svg?react";
-import "./Stars.scss";
+import StarFullIcon from "../assets/icons/star-full.svg?react";
+import StarEmptyIcon from "../assets/icons/star-empty.svg?react";
+import starsStyles from "./Stars.module.scss";
 
 
 interface StarsProps {
@@ -11,9 +11,9 @@ function Stars(props: StarsProps) {
   const maxCount = 5;
 
   return (
-    <div className="stars-container">
+    <div className={starsStyles.starsContainer}>
       {Array.from({length: maxCount}, (_, i) =>
-        i < props.count ? <StarFull key={i} className="star-icon" /> : <StarEmpty key={i} className="star-icon" />
+        i < props.count ? <StarFullIcon key={i} className={starsStyles.starIcon} /> : <StarEmptyIcon key={i} className={starsStyles.starIcon} />
       )}
     </div>
   );

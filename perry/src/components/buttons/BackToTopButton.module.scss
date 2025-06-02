@@ -1,0 +1,29 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.button {
+  position: fixed;
+  bottom: 80px;
+  right: 0px;
+  padding: 9.5px;
+  border-radius: 8px 0px 0px 8px;
+  line-height: 0px;
+  z-index: 50;
+
+  @include desktop {
+    bottom: 32px;
+    right: 56px;
+    border-radius: 4px;
+  }
+
+  .arrowUpIcon {
+    height: 24px;
+    width: 24px;
+
+    path {
+      stroke-width: 1.5px;
+      stroke: var(--minor-color-text);
+    }
+  }
+}

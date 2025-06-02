@@ -13,6 +13,14 @@
   .breadcrumb-item {
     display: flex;
 
+    &:nth-child(2) {
+      margin-left: 2px;
+
+      @include desktop {
+        margin-left: 0px;
+      }
+    }
+    
     .home-icon {
       height: 24px;
       width: 24px;
@@ -42,14 +50,6 @@
     
       .slash {
         user-select: none;
-      }
-    }
-
-    &:nth-child(2) {
-      margin-left: 2px;
-
-      @include desktop {
-        margin-left: 0px;
       }
     }
   }

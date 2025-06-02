@@ -9,8 +9,8 @@ import TermsAndConditions from "../../components/legal-notice/TermsAndConditions
 import LicenseAgreement from "../../components/legal-notice/LicenseAgreement";
 import PrivacyPolicy from "../../components/legal-notice/PrivacyPolicy";
 import Footer from "../../components/Footer";
-import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
-import "./LegalNotice.scss";
+import ArrowLeftIcon from "../../assets/icons/arrow-left.svg?react";
+import legalNoticeStyles from "./LegalNotice.module.scss";
 
 
 function LegalNotice() {
@@ -19,10 +19,10 @@ function LegalNotice() {
   const initialTab = tab !== null ? parseInt(tab) : -1;
   const [currentTab, setCurrentTab] = useState<number>(initialTab);
 
-  const content = useRef<HTMLDivElement>(null);
-
   const breakpointDesktop = parseInt(getCssVariable("--breakpoint-desktop"), 10);
   const isDesktop = useBreakpoint(breakpointDesktop);
+
+  const content = useRef<HTMLDivElement>(null);
 
   const [crumbs, setCrumbs] = useState<CrumbType[]>([
     { name: "Home", path: "/" },
@@ -40,6 +40,14 @@ function LegalNotice() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [searchParams]);
+
+  useEffect(() => {
     const tabParam = searchParams.get("tab");
     const tabIndex = tabParam !== null ? parseInt(tabParam, 10) : -1;
 
@@ -55,70 +63,67 @@ function LegalNotice() {
   }, [currentTab]);
 
   useEffect(() => {
-    if (isDesktop) {
-      if (currentTab === -1) {
-        setCurrentTab(0);
-        setSearchParams({ tab: "0" });
-      }
-    } 
-    else {
-      if (currentTab !== -1) {
-        setCurrentTab(-1);
-        setSearchParams({});
-      }
+    if (isDesktop && currentTab === -1) {
+      const tabParam = searchParams.get("tab");
+      const tabIndex = tabParam !== null ? parseInt(tabParam, 10) : 0;
+      
+      setCurrentTab(tabIndex);
+      setSearchParams({tab: tabIndex.toString()});
     }
   }, [isDesktop]);
 
   return (
-    <>
+    <div className="page appear-transition">
       <Header searchBar={true} cart={true}></Header>
 
-      <section className="legal-notice-content-section">
-        <div className="legal-notice-content-container">
-          <div className="legal-notice-content-top-container">
-            {currentTab === -1 ? (
-              <Breadcrumb className="legal-notice-breadcrumb" crumbs={crumbs} />
-            ) : (
-              <div className="back-button-container">
-                <button className="back-button" onClick={clickBack}>
-                  <ArrowLeft className="arrow-left-icon" />
-                  <span>Back</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="legal-notice-content-bottom-container">
-            <div className="content-container">
-              {(isDesktop || currentTab === -1) && (
-                <div className="content-left-container">
-                  <h3>Legal notice</h3>
-                  <div className="tabs-container">
-                    <button className={`${currentTab === 0 ? "selected-tab" : "tab"}`} onClick={() => selectTab(0)}>Terms and conditions</button>
-                    <button className={`${currentTab === 1 ? "selected-tab" : "tab"}`} onClick={() => selectTab(1)}>License agreement</button>
-                    <button className={`${currentTab === 2 ? "selected-tab" : "tab"}`} onClick={() => selectTab(2)}>Privacy policy</button>
-                  </div>
-                </div>
-              )}
-
-              {isDesktop && (
-                <div className="content-container-divider divider" />
-              )}
-
-              {currentTab !== -1 && (
-                <div className="content-right-container" ref={content}>
-                  {currentTab === 0 && <TermsAndConditions />}
-                  {currentTab === 1 && <LicenseAgreement />}
-                  {currentTab === 2 && <PrivacyPolicy />}
+      <main>
+        <section className={legalNoticeStyles.legalNoticeSection}>
+          <div className={legalNoticeStyles.legalNoticeContainer}>
+            <div className={legalNoticeStyles.topContainer}>
+              {currentTab === -1 ? (
+                <Breadcrumb className={legalNoticeStyles.breadcrumb} crumbs={crumbs} />
+              ) : (
+                <div className={legalNoticeStyles.backButtonContainer}>
+                  <button onClick={clickBack}>
+                    <ArrowLeftIcon className={legalNoticeStyles.arrowLeftIcon} />
+                    <span>Back</span>
+                  </button>
                 </div>
               )}
             </div>
+
+            <div className={legalNoticeStyles.bottomContainer}>
+              <div className={legalNoticeStyles.contentContainer}>
+                {(isDesktop || currentTab === -1) && (
+                  <div className={legalNoticeStyles.leftContainer}>
+                    <h3>Legal notice</h3>
+                    <div className={legalNoticeStyles.tabsContainer}>
+                      <button className={`${currentTab === 0 ? legalNoticeStyles.selectedTab : legalNoticeStyles.tab}`} onClick={() => selectTab(0)}>Terms and conditions</button>
+                      <button className={`${currentTab === 1 ? legalNoticeStyles.selectedTab : legalNoticeStyles.tab}`} onClick={() => selectTab(1)}>License agreement</button>
+                      <button className={`${currentTab === 2 ? legalNoticeStyles.selectedTab : legalNoticeStyles.tab}`} onClick={() => selectTab(2)}>Privacy policy</button>
+                    </div>
+                  </div>
+                )}
+
+                {isDesktop && (
+                  <div className={`${legalNoticeStyles.contentDivider} divider`} />
+                )}
+
+                {currentTab !== -1 && (
+                  <div className={legalNoticeStyles.rightContainer} ref={content}>
+                    {currentTab === 0 && <TermsAndConditions />}
+                    {currentTab === 1 && <LicenseAgreement />}
+                    {currentTab === 2 && <PrivacyPolicy />}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <Footer></Footer>
-    </>
+    </div>
   );
 }
 

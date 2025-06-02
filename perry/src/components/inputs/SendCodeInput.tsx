@@ -1,16 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
 import "./SendCodeInput.scss";
 
+
+export interface SendCodeInputHandle {
+  getCode: () => string;
+}
 
 interface SendCodeInputProps {
   isError?: boolean;
   onSubmit?: (code: string) => void;
 }
 
-function SendCodeInput(props: SendCodeInputProps) {  
+const SendCodeInput = forwardRef<SendCodeInputHandle, SendCodeInputProps>((props, ref) => {
   const codeLength = 6;
   const [code, setCode] = useState<string[]>(Array(codeLength).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  useImperativeHandle(ref, () => ({
+    getCode: () => code.join(""),
+  }));
 
   const [timer, setTimer] = useState<number>(0);
   const [hasSentCode, setHasSentCode] = useState<boolean>(false);
@@ -75,7 +84,9 @@ function SendCodeInput(props: SendCodeInputProps) {
         {code.map((value, index) => (
           <input
             key={index}
-            ref={(el: HTMLInputElement | null) => { inputsRef.current[index] = el; }}
+            ref={(el) => {
+              inputsRef.current[index] = el;
+            }}
             type="text"
             inputMode="numeric"
             maxLength={1}
@@ -101,6 +112,6 @@ function SendCodeInput(props: SendCodeInputProps) {
       </button>
     </div>
   );
-}
+});
 
 export default SendCodeInput;

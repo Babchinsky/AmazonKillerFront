@@ -47,8 +47,52 @@ const resetPasswordFormSchema = z.object({
   }
 });
 
+const changePasswordFormSchema = z.object({
+  password: z.string()
+    .min(passwordMinValue, "This field is necessary to continue!")
+    .refine((val) => passwordRegex.test(val), {
+      message: "This field is necessary to continue!"
+    }),
+  newPassword: z.string()
+    .superRefine((value, ctx) => {
+      const errors: string[] = [];
+
+      if (!/[A-Z]/.test(value)) {
+        errors.push(`contain at least 1 uppercase letter`);
+      }
+      if (!/[a-z]/.test(value)) {
+        errors.push(`${errors.length === 0 ? "contain at least" : ""} 1 lowercase letter`);
+      }
+      if (!/\d/.test(value)) {
+        errors.push(`${errors.length === 0 ? "contain at least" : ""} 1 digit`);
+      }
+      if (value.length < passwordMinValue) {
+        errors.push(`${errors.length > 0 ? "and" : ""} be at least ${passwordMinValue} characters long`);
+      }
+
+      if (errors.length > 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Password must ${errors.join(", ")}`,
+        });
+      }
+    }),
+  repeatPassword: z.string()
+    .nonempty("Passwords must match")
+})
+.superRefine((data, ctx) => {
+  if (data.newPassword !== data.repeatPassword) {
+    ctx.addIssue({
+      path: ["repeatPassword"],
+      message: "Passwords must match",
+      code: z.ZodIssueCode.custom
+    });
+  }
+});
+
 type ForgotPasswordFormType = z.infer<typeof forgotPasswordFormSchema>;
 type ResetPasswordFormType = z.infer<typeof resetPasswordFormSchema>;
+type ChangePasswordFormType = z.infer<typeof changePasswordFormSchema>;
 
-export type { ForgotPasswordFormType, ResetPasswordFormType };
-export { forgotPasswordFormSchema, resetPasswordFormSchema };
+export type { ForgotPasswordFormType, ResetPasswordFormType, ChangePasswordFormType };
+export { forgotPasswordFormSchema, resetPasswordFormSchema, changePasswordFormSchema };

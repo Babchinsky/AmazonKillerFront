@@ -1,0 +1,306 @@
+@use "../../../styles/themes/default.scss" as *;
+@use "../../../styles/media-queries.scss" as *;
+
+
+.auth-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(var(--main-color-halftone), 0.5);
+  z-index: 200;
+}
+
+.auth-container {
+  position: fixed;
+  display: flex;
+  gap: 24px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 28px 58px 28px;
+  height: 100%;
+  width: 100%;
+  max-height: 618px;
+  background: var(--minor-color-object);
+  border-radius: 8px;
+  z-index: 210;
+
+  @include desktop {
+    padding: 24px;
+    height: 680px;
+    max-height: none;
+    max-width: 678px;
+
+    @media (min-width: 1344px) {
+      max-width: 1280px;
+    }
+  }
+
+  .auth-content-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0px;
+
+    @include desktop {
+      flex-direction: row;
+      padding: 56px 32px;
+    }
+
+    .auth-close-button {
+      position: absolute;
+      display: block;
+      top: 0px;
+      right: 0px;
+      transform: translateX(+50%);
+
+      @include desktop {
+        display: none;
+      }
+
+      .close-icon {
+        height: 24px;
+        width: 24px;
+
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--minor-color-text);
+        }
+      }
+    }
+
+    .auth-back-button {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      top: 0px;
+      left: -12px;
+      text-align: center;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 2%;
+      color: var(--minor-color-text);
+
+      @include desktop {
+        left: 0px;
+      }
+
+      .arrow-left-icon {
+        height: 24px;
+        width: 24px;
+
+        @include desktop {
+          height: 40px;
+          width: 40px;
+        }
+
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--main-color-secondary);
+        }
+      }
+    }
+
+    .auth-form-container, .finish-auth-form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      max-height: 460px;
+
+      @include desktop {
+        max-height: none;
+        max-width: 440px;
+      }
+
+      .auth-form-top-container, .auth-form-middle-container, .auth-form-bottom-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .auth-form-top-container {
+        text-align: center;
+        color: var(--minor-color-text);
+        gap: 4px;
+
+        @include desktop {
+          gap: 6px;
+        }
+
+        .title {
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 24px;
+          letter-spacing: -1.5%;
+
+          @include desktop {
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 48px;
+            letter-spacing: -2%;
+          }
+        }
+
+        .subtitle {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 20px;
+          letter-spacing: 2%;
+
+          @include desktop {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 28px;
+            letter-spacing: -1.5%;
+          }
+        }
+      }
+
+      .auth-form-middle-container {
+        gap: 0px;
+        padding: 0px 12px;
+
+        @include desktop {
+          gap: 4px;
+        }
+
+        .auth-options-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 4px;
+
+          .stay-signed-in-label-checkbox {
+            margin-left: -2px;
+            font-size: 12px;
+
+            @include desktop {
+              margin-left: 0px;
+              font-size: 14px;
+            }
+          }
+
+          .forgot-password-button {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 24px;
+            letter-spacing: 2%;
+            text-align: right;
+            color: var(--minor-color-text);
+
+            @include desktop {
+              font-size: 14px;
+              line-height: 24px;
+            }
+          }
+        }
+      }
+
+      .auth-form-bottom-container {
+        gap: 8px;
+        padding: 0px 12px;
+        text-align: center;
+
+        @include desktop {
+          gap: 16px;
+        }
+
+        .auth-button, .auth-finish-button {
+          padding: 8px 24px;
+          width: 100%;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 2%;
+
+          @include desktop {
+            padding: 11.5px 9.5px;
+          }
+        }
+
+        .auth-finish-button {
+          margin-top: 120px;
+        }
+
+        .account-info-container {
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          gap: 6px;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 16px;
+          letter-spacing: 2%;
+          color: var(--minor-color-text);
+
+          @include desktop {
+            font-size: 16px;
+            line-height: 24px;
+          }
+
+          .account-button {
+            font-weight: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: var(--main-color-secondary);
+          }
+        }
+      }
+
+      .auth-legal-notice {
+        position: absolute;
+        bottom: 0px;
+        text-align: center;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 2%;
+        color: rgba(var(--main-color-halftone), 0.5);
+
+        @include desktop {
+          font-size: 16px;
+          line-height: 24px;
+        }
+
+        .highlight {
+          color: var(--main-color-secondary);
+        }
+      }
+    }
+
+    .auth-form-container {
+      justify-content: space-between;
+    }
+
+    .finish-auth-form-container {
+      justify-content: center;
+      gap: 80px;
+
+      @include desktop {
+        gap: 120px;
+      }
+    }
+  }
+
+  .auth-banner-image {
+    display: none;
+    
+    @media (min-width: 1344px) {
+      display: block;
+      height: 100%;
+      width: 100%;
+      max-width: 530px;
+      object-fit: contain;
+    }
+  }
+}

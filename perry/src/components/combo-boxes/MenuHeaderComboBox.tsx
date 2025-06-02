@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import CategoryType from "../../types/category-type";
-import TextButton from "../buttons/TextButton";
+import CategoryType from "../../types/categories/category-type";
+import TextButton from "../buttons/Button";
 import ArrowDown from "../../assets/icons/arrow-down.svg?react";
 import Category from "../../assets/icons/category.svg?react";
 import Hanger from "../../assets/icons/hanger.svg?react";
@@ -43,11 +43,9 @@ function MenuHeaderComboBox(props: MenuHeaderComboBoxProps) {
           {props.categories.length > 0 && (
             <div className="categories-container">
               {props.categories.slice(0, 5).map(category => (
-                <Link key={category.id} className="category-link link" to={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}>
-                  <div className="category">
-                    <Hanger className="category-icon" />
-                    {category.name}
-                  </div>
+                <Link key={category.id} className="category-link link minor-color-text-icon-link" to={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}>
+                  <Hanger className="category-icon" />
+                  <p>{category.name}</p>
                 </Link>
               ))}
             </div>

@@ -1,9 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import CategoryType from "../../types/category-type";
+import CategoryType from "../../types/categories/category-type";
+// import CategoryTreeType from "../../types/categories/category-tree-type";
+// import CategoryFiltersType from "../../types/categories/category-filters-type";
 
 
-const initialState: any = {
-  categories: []
+type CategoriesState = {
+  categories: CategoryType[];
+  // categoryTree: CategoryTreeType[];
+  // categoryFilters: CategoryFiltersType | null;
+};
+
+const initialState: CategoriesState = {
+  categories: [],
+  // categoryTree: [],
+  // categoryFilters: null
 };
 
 export const getCategories = createAsyncThunk(
@@ -19,8 +29,8 @@ export const getCategories = createAsyncThunk(
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data: CategoryType[] = await response.json();
-      return data;
+      const result: CategoryType[] = await response.json();
+      return result;
     } 
     catch (error: any) {
       return rejectWithValue(error.message);
@@ -28,22 +38,51 @@ export const getCategories = createAsyncThunk(
   }
 );
 
+// export const getCategoryTree = createAsyncThunk(
+//   "categories/getCategoryTree",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/tree`);
+//       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+//       const result: CategoryTreeType[] = await response.json();
+//       return result;
+//     } 
+//     catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+// 
+// export const getCategoryFilters = createAsyncThunk(
+//   "categories/getCategoryFilters",
+//   async (id: string, { rejectWithValue }) => {
+//     try {
+//       const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/${id}/filters`);
+//       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+//       const result: CategoryFiltersType = await response.json();
+//       return result;
+//     } 
+//     catch (error: any) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(getCategories.pending, () => {
-      console.log("getCategories pending");
-    })
     .addCase(getCategories.fulfilled, (state, action) => {
-      console.log("getCategories success");
       state.categories = action.payload;
-    })
-    .addCase(getCategories.rejected, () => {
-      console.log("getCategories rejected");
-    })
+    });
+    // .addCase(getCategoryTree.fulfilled, (state, action) => {
+    //   state.categoryTree = action.payload;
+    // })
+    // .addCase(getCategoryFilters.fulfilled, (state, action) => {
+    //   state.categoryFilters = action.payload;
+    // });
   }
 }); 
 

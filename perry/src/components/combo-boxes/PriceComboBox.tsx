@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import TextButton from "../buttons/TextButton";
+import TextButton from "../buttons/Button";
 import ArrowDown from "../../assets/icons/arrow-down.svg?react";
 import "./ComboBox.scss";
 import "./PriceComboBox.scss";

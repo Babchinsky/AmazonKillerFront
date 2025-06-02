@@ -1,0 +1,237 @@
+@use "../../../styles/themes/default.scss" as *;
+@use "../../../styles/media-queries.scss" as *;
+
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(var(--main-color-halftone), 0.5);
+  z-index: 200;
+}
+
+.closeButton {
+  display: none;
+  
+  @include tablet {
+    display: block;
+    position: fixed;
+    top: 24px;
+    left: 389px;
+    padding: 12px;
+    background-color: var(--minor-color-object);
+    border-radius: 50px;
+    line-height: 0px;
+    z-index: 210;
+    
+    &:not(:disabled):hover {
+      box-shadow: 0 1px 7px -5px rgba(32, 80, 173, 0.45);
+    }
+  
+    &:not(:disabled):active {
+      background-color: var(--minor-color-blue);
+    }
+  }
+
+  .doubleLeftIcon {
+    height: 32px;
+    width: 32px;
+
+    path {
+      stroke-width: 3px;
+      stroke: var(--main-color-secondary);
+    }
+  }
+}
+
+.menuContainer {
+  position: fixed;
+  padding: 16px 16px 24px 16px;
+  height: 100%;
+  width: 100%;
+  background-color: var(--minor-color-object);
+  z-index: 210;
+
+  @include tablet {
+    padding: 24px;
+    width: 365px;
+  }
+
+  .contentContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+
+    .contentTopContainer, .contentBottomContainer {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contentTopContainer {
+      gap: 16px;
+
+      @include tablet {
+        gap: 24px;
+      }
+
+      .authContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+
+        @include tablet {
+          gap: 8px;
+        }
+
+        .authTopContainer {
+          display: flex;
+          justify-content: space-between;
+          align-items: start;
+
+          img {
+            height: 48px;
+            width: 48px;
+            filter: drop-shadow(0px 0px 16px rgba(17, 57, 117, 0.25));
+          }
+
+          .fullName {
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 2%;
+            color: var(--minor-color-text);
+
+            @include tablet {
+              font-size: 18px;
+              line-height: 28px;
+            }
+          }
+
+          .role {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+            letter-spacing: 2%;
+            color: var(--minor-color-text);
+
+            @include tablet {
+              font-size: 14px;
+              line-height: 24px;
+            }
+          }
+
+          .contentCloseButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 80px;
+            height: 32px;
+            width: 32px;
+            line-height: 0px;
+
+            @include tablet {
+              display: none;
+            }
+
+            .closeMenuIcon {
+              path {
+                stroke-width: 1.5px;
+                stroke: var(--minor-color-text);
+              }
+            }
+          }
+        }
+
+        .authBottomContainer {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .signUpButton, .logInButton {
+          padding: 7.5px 9.5px;
+
+          @include tablet {
+            padding: 9.5px;
+            font-size: 16px;
+            line-height: 24px;
+          }
+        }
+      }
+
+      .settingsFaqContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .settingsContainer, .faqContainer, .exitContainer {
+        .settingsLink, .faqLink, .exitButton {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 18px;
+          letter-spacing: 2%;
+          color: var(--minor-color-text);
+
+          @include tablet {
+            font-size: 16px;
+            line-height: 24px;
+          }
+
+          .settingsIcon, .faqIcon, .exitIcon {
+            height: 24px;
+            width: 24px;
+
+            @include tablet {
+              height: 32px;
+              width: 32px;
+            }
+
+            path {
+              stroke-width: 1.5px;
+              stroke: var(--minor-color-text);
+            }
+          }
+        }
+      }
+    }
+
+    .contentBottomContainer {
+      align-items: center;
+      gap: 16px;
+
+      @include tablet {
+        display: none;
+      }
+
+      .logoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        line-height: 0px;
+
+        .logoIcon {
+          width: 80px;
+          
+          path {
+            fill: var(--main-color-secondary);
+          }
+        }
+      }
+    }
+
+    .contentDivider {
+      width: 100%;
+    }
+  }
+}

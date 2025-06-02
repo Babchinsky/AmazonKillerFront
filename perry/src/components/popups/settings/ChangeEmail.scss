@@ -1,0 +1,25 @@
+.change-settings-container, .small-change-settings-container {
+  .change-settings-content-container {
+    .new-email-form-container {
+      margin-top: -20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+
+      .left-title-container {
+        margin-top: 28px;
+      }
+
+      .left-description {
+        margin-top: 8px;
+      }
+
+      .new-email-send-code-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 24px;
+      }
+    }
+  }
+}

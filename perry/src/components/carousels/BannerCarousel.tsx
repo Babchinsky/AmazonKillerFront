@@ -1,7 +1,8 @@
 import { useState } from "react";
-import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
-import ArrowRight from "../../assets/icons/arrow-right.svg?react";
-import "./BannerCarousel.scss";
+import Button from "../buttons/Button";
+import ArrowLeftIcon from "../../assets/icons/arrow-left.svg?react";
+import ArrowRightIcon from "../../assets/icons/arrow-right.svg?react";
+import bannerCarouselStyles from "./BannerCarousel.module.scss";
 
 
 interface BannerCarouselProps {
@@ -32,18 +33,24 @@ function BannerCarousel(props: BannerCarouselProps) {
   };
 
   return (
-    <div className="banner-carousel-container">
-      <img className="banner-image" alt="Banner" src={props.images[imageIndex]} />
+    <div className={bannerCarouselStyles.bannerCarouselContainer}>
+      <img alt="Banner" src={props.images[imageIndex]} />
 
       {props.images.length > 1 && (
-        <div className="arrows-container">
-          <button onClick={showPrevImage} className="arrow-button">
-            <ArrowLeft className="arrow-left-icon" />
-          </button>
+        <div className={bannerCarouselStyles.arrowsContainer}>
+          <Button
+            className={bannerCarouselStyles.arrowButton}
+            type="secondary"
+            leftIcon={<ArrowLeftIcon className={bannerCarouselStyles.arrowLeftIcon} />}
+            onClick={showPrevImage}
+          />
 
-          <button onClick={showNextImage} className="arrow-button">
-            <ArrowRight className="arrow-right-icon" />
-          </button>
+          <Button
+            className={bannerCarouselStyles.arrowButton}
+            type="secondary"
+            leftIcon={<ArrowRightIcon className={bannerCarouselStyles.arrowRightIcon} />}
+            onClick={showNextImage}
+          />
         </div>
       )}
     </div>

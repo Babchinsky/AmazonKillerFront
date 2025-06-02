@@ -1,0 +1,120 @@
+@use "../styles/themes/default.scss" as *;
+@use "../styles/media-queries.scss" as *;
+
+
+footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  letter-spacing: 2%;
+  color: var(--main-color-text);
+
+  .topContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 16px;
+    background-color: var(--main-color-secondary);
+  
+    @include desktop {
+      flex-direction: row;
+      justify-content: center;
+      gap: 84px;
+      padding: 32px;
+    }
+
+    .supportContainer, .legalNoticeContainer, .socialMediaContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 200px;
+  
+      p {
+        font-size: 16px;
+        line-height: 20px;
+      
+        @include desktop {
+          font-size: 20px;
+          line-height: 32px;
+        }
+      }
+    }
+
+    .supportContainer, .legalNoticeContainer {
+      .supportLinks, .legalNoticeLinks {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 14px;
+        line-height: 18px;
+      
+        @include desktop {
+          font-size: 16px;
+          line-height: 24px;
+        }
+      }
+    }
+
+    .socialMediaContainer {
+      .socialMediaLinks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+  
+        .socialMediaIcon {
+          height: 24px;
+          width: 24px;
+  
+          @include desktop {
+            height: 32px;
+            width: 32px;
+          }
+
+          path {
+            stroke-width: 1.5px;
+          }
+        }
+      }
+    }
+  }
+  
+  .bottomContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: var(--minor-color-blue-dark);
+    font-size: 12px;
+    line-height: 16px;
+
+    @include desktop {
+      justify-content: center;
+      gap: 32px;
+      padding: 16px 0px;
+      font-size: 14px;
+      line-height: 24px;
+    }
+  
+    .logoContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0px 10px;
+      height: 100%;
+      font-size: 14px;
+      line-height: 24px;
+  
+      .logoIcon {
+        width: 62px;
+  
+        @include desktop {
+          width: 82px;
+        }
+
+        path {
+          fill: var(--main-color-text);
+        }
+      }
+    }
+  }
+}

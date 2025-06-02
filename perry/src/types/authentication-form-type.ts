@@ -1,5 +1,5 @@
 type AuthFormType =
-  | "logIn"
+    "logIn"
   | "signUp"
   | "name"
   | "finishSignUp"

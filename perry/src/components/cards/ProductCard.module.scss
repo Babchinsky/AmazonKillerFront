@@ -1,0 +1,506 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.bigProductCardLinkContainer, .productCardLinkContainer {
+  position: relative;
+  display: block;
+  cursor: pointer;
+
+  &:hover .productBorder {
+    border: 2px solid var(--minor-color-blue);
+  }
+
+  .overlayContainer {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    z-index: 26;
+    cursor: default;
+
+    .overlay {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-color: var(--minor-color-object);
+      opacity: 0.5;
+    }
+
+    .titleContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+      color: var(--minor-color-text);
+      z-index: 27;
+
+      .stockAlertButton {
+        line-height: 24px;
+      }
+    }
+  }
+
+  .productBorder {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border: 2px solid transparent;
+    transition-duration: 0.15s;
+    pointer-events: none;
+    z-index: 25;
+  }
+
+  .productLink {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+
+    .productCardContainer {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      background-color: var(--minor-color-object);
+      box-shadow: 0px 4px 11px -5px rgba(32, 80, 173, 0.25);
+
+      .topContainer {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1/1;
+
+        img {
+          display: block;
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+
+        .discountContainer {
+          display: flex;
+          justify-content: end;
+          position: absolute;
+          top: 0px;
+          padding: 6px;
+          height: 100%;
+          width: 100%;
+
+          .discountIconContainer {
+            position: relative;
+
+            .discountIcon {
+              height: 100%;
+              width: 100%;
+              filter: drop-shadow(0px 4px 8px rgba(8, 8, 8, 0.25));
+
+              path {
+                fill: var(--main-color-primary);
+              }
+            }
+
+            p {
+              position: absolute;
+              text-align: center;
+              font-weight: 700;
+              letter-spacing: 2%;
+              color: var(--minor-color-text);
+            }
+          }
+        }
+      }
+
+      .bottomContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        color: var(--minor-color-text);
+        
+        .dataContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+
+          .title {
+            display: -webkit-box;
+            width: 100%;
+            text-align: center;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+
+          .ratingReviewsContainer {
+            display: flex;
+            align-items: center;
+            font-weight: 400;
+            letter-spacing: 2%;
+            
+            .ratingContainer, .reviewsContainer {
+              display: flex;
+              align-items: center;
+            }
+
+            .starIcon, .commentsIcon {
+              path {
+                stroke-width: 1.5px;
+                stroke: var(--minor-color-text);
+              }
+            }
+            
+            .starIcon {
+              path {
+                fill: var(--minor-color-text);
+              }
+            }
+          }
+        }
+
+        .priceContainer {
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          gap: 8px;
+          color: var(--minor-color-text);
+
+          .newPriceContainer, .oldPrice {
+            display: flex;
+            align-items: center;
+          }
+
+          .newPriceContainer {
+            height: 32px;
+
+            .newPrice{
+              display: flex;
+              align-items: start;
+              line-height: normal;
+
+              .currency {
+                margin-right: 4px;
+              }
+              
+              .currencyMinor {
+                margin-left: 2px;
+                vertical-align: super;
+              }
+            }
+          }
+
+          .oldPrice {
+            height: 24px;
+            text-decoration: line-through;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+  }
+}
+
+.bigProductCardLinkContainer {
+  height: 534px;
+  width: 382px;
+
+  .overlayContainer {
+    .overlay {
+      border-radius: 8px;
+    }
+
+    .titleContainer {
+      gap: 14px;
+      margin-top: 133px;
+      padding: 0px 24px;
+
+      p {
+        font-weight: 600;
+        font-size: 40px;
+        line-height: 48px;
+        letter-spacing: -2%;
+      }
+
+      .stockAlertButton {
+        padding: 5.5px 9.5px;
+      }
+    }
+  }
+
+  .productBorder, .productCardContainer {
+    border-radius: 8px;
+  }
+
+  .productCardContainer {
+    gap: 12px;
+    padding: 24px;
+
+    .topContainer {
+      img {
+        border-radius: 4px;
+      }
+
+      .discountContainer {
+        .discountIconContainer {
+          height: 62px;
+          width: 99px;
+
+          p {
+            top: 10px;
+            left: 15px;
+            min-height: 31.2px;
+            min-width: 58.5px;
+            font-size: 18px;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+
+    .bottomContainer {
+      .dataContainer {
+        .title {
+          font-weight: 500;
+          font-size: 24px;
+          line-height: 28px;
+          letter-spacing: -1.5%;
+        }
+
+        .ratingReviewsContainer {
+          gap: 16px;
+          font-size: 18px;
+          line-height: 28px;
+
+          .ratingContainer, .reviewsContainer {
+            gap: 6px;
+          }
+
+          .starIcon, .commentsIcon {
+            height: 28px;
+            width: 28px;
+          }
+        }
+      }
+
+      .priceContainer {
+        .newPriceContainer {
+          .newPrice{
+            font-weight: 600;
+            font-size: 32px;
+            letter-spacing: -1.5%;
+            
+            .currencyMinor {
+              padding-top: 4px;
+              font-weight: 700;
+              font-size: 19px;
+            }
+          }
+        }
+
+        .oldPrice {
+          font-size: 18px;
+          line-height: 28px;
+          letter-spacing: 2%;
+        }
+      }
+    }
+  }
+}
+
+.productCardLinkContainer {
+  height: 270px;
+  width: 171px;
+
+  @include desktop {
+    height: 361px;
+    width: 225px;
+  }
+
+  .overlayContainer {
+    .overlay {
+      border-radius: 4px;
+
+      @include desktop {
+        border-radius: 8px;
+      }
+    }
+
+    .titleContainer {
+      gap: 8px;
+      margin-top: 54px;
+      padding: 0px 14px;
+
+      @include desktop {
+        gap: 12px;
+        margin-top: 73px;
+        padding: 0px 16px;
+      }
+
+      p {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+        letter-spacing: -1.5%;
+
+        @include desktop {
+          font-size: 24px;
+          line-height: 28px;
+        }
+      }
+
+      .stockAlertButton {
+        padding: 1.5px 21.5px;
+
+        @include desktop {
+          padding: 5.5px 29.5px;
+        }
+      }
+    }
+  }
+
+  .productBorder, .productCardContainer {
+    border-radius: 4px;
+
+    @include desktop {
+      border-radius: 8px;
+    }
+  }
+
+  .productCardContainer {
+    gap: 6px;
+    padding: 14px;
+
+    @include desktop {
+      gap: 10px;
+      padding: 16px;
+    }
+
+    .topContainer {
+      img {
+        border-radius: 2px;
+    
+        @include desktop {
+          border-radius: 4px;
+        }
+      }
+
+      .discountContainer {
+        .discountIconContainer {
+          height: 30px;
+          width: 48px;
+
+          @include desktop {
+            height: 40px;
+            width: 64px;
+          }
+
+          p {
+            top: 5px;
+            left: 5px;
+            min-height: 16px;
+            min-width: 34px;
+            font-size: 12px;
+            line-height: 16px;
+
+            @include desktop {
+              top: 4px;
+              left: 8px;
+              min-height: 24px;
+              min-width: 40px;
+              font-size: 14px;
+              line-height: 24px;
+            }
+          }
+        }
+      }
+    }
+
+    .bottomContainer {
+      .dataContainer {
+        @include desktop {
+          gap: 0px;
+        }
+
+        .title {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 18px;
+          letter-spacing: 2%;
+
+          @include desktop {
+            font-size: 18px;
+            line-height: 28px;
+          }
+        }
+
+        .ratingReviewsContainer {
+          gap: 12px;
+          font-size: 12px;
+          line-height: 16px;
+
+          @include desktop {
+            gap: 14px;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+          }
+
+          .ratingContainer, .reviewsContainer {
+            gap: 4px;
+          }
+
+          .starIcon, .commentsIcon {
+            height: 17px;
+            width: 17px;
+
+            @include desktop {
+              height: 24px;
+              width: 25px;
+            }
+          }
+        }
+      }
+
+      .priceContainer {
+        font-weight: 500;
+        letter-spacing: 2%;
+
+        .newPriceContainer {
+          .newPrice{
+            font-size: 16px;
+
+            @include desktop {
+              font-size: 20px;
+            }
+
+            .currencyMinor {
+              padding-top: 1px;
+              font-weight: 700;
+              font-size: 10px;
+
+              @include desktop {
+                padding-top: 2px;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+
+        .oldPrice {
+          font-size: 12px;
+          line-height: 16px;
+
+          @include desktop {
+            font-size: 16px;
+            line-height: 24px;
+          }
+        }
+      }
+    }
+  }
+}

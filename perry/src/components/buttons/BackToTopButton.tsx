@@ -1,5 +1,6 @@
-import ArrowUp from "../../assets/icons/arrow-up.svg?react";
-import "./BackToTopButton.scss";
+import Button from "./Button";
+import ArrowUpIcon from "../../assets/icons/arrow-up.svg?react";
+import buttonStyles from "./BackToTopButton.module.scss";
 
   
 function BackToTopButton() {
@@ -8,9 +9,12 @@ function BackToTopButton() {
   };
 
   return (
-    <button className="back-to-top-button" onClick={handleScrollUp}>
-      <ArrowUp className="arrow-up-icon" />
-    </button>
+    <Button
+      className={buttonStyles.button}
+      type="primary"
+      leftIcon={<ArrowUpIcon className={buttonStyles.arrowUpIcon} />}
+      onClick={handleScrollUp}
+    />
   );
 }
 

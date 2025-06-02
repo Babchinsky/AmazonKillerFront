@@ -6,9 +6,9 @@ import { getCategories } from "../../state/categories/categories-slice";
 import { getProductsByCategory } from "../../state/products/products-slice";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
-import CategoryType from "../../types/category-type";
+import CategoryType from "../../types/categories/category-type";
 import CrumbType from "../../types/crumb-type";
-import ProductType from "../../types/product-type";
+import ProductType from "../../types/products/product-type";
 import ComboBoxOptionType from "../../types/combo-box-option-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
@@ -22,8 +22,10 @@ import RowNumberToggle from "../../components/toggles/RowNumberToggle";
 import ProductCard from "../../components/cards/ProductCard";
 import Pagination from "../../components/pagination/Pagination";
 import Footer from "../../components/Footer";
-import FilterEmpty from "../../assets/icons/filter-empty.svg?react";
-import "./ProductList.scss";
+import DefaultImage from "../../assets/images/default.jpg";
+import FilterEmptyIcon from "../../assets/icons/filter-empty.svg?react";
+import productListStyles from "./ProductList.module.scss";
+import ProductCardType from "../../types/products/product-card-type";
 
 
 function ProductList() {
@@ -38,7 +40,7 @@ function ProductList() {
   const isDesktop = useBreakpoint(breakpointDesktop);
 
   const categories = useSelector((state: RootState) => state.categories.categories);
-  const products = useSelector((state: RootState) => state.products.productsByCategory);
+  const products = useSelector((state: RootState) => state.products.categoryProducts);
 
   const [currentCategory, setCurrentCategory] = useState<CategoryType>();
   const [crumbs, setCrumbs] = useState<CrumbType[]>([]);
@@ -56,23 +58,23 @@ function ProductList() {
     { id: "1", label: "By rating" },
     { id: "2", label: "Novelty" },
     { id: "3", label: "Cheap to expensive" },
-    { id: "4", label: "Expensive to cheap" },
+    { id: "4", label: "Expensive to cheap" }
   ];
 
   const [sortOption, setSortOption] = useState<ComboBoxOptionType>(sortOptions[0]);
 
   const sortedFilteredProducts = [...products]
-  .filter((product: ProductType) => {
+  .filter((product: ProductCardType) => {
     const priceRange = product.price >= minSelectedPrice && product.price <= maxSelectedPrice;
     const rating = selectedRatings.length === 0 || selectedRatings.includes(Math.floor(product.rating));
     return priceRange && rating;
   })
-  .sort((product1: ProductType, product2: ProductType) => {
+  .sort((product1: ProductCardType, product2: ProductCardType) => {
     switch (sortOption.label) {
       case "By rating":
         return product2.rating - product1.rating;
-      case "Novelty":
-        return new Date(product2.createdAt).getTime() - new Date(product1.createdAt).getTime();
+      // case "Novelty":
+      //   return new Date(product2.createdAt).getTime() - new Date(product1.createdAt).getTime();
       case "Cheap to expensive":
         return product1.price - product2.price;
       case "Expensive to cheap":
@@ -92,18 +94,17 @@ function ProductList() {
     currentPage * productsPerPage
   );
 
-  const productCards = displayedProducts.map((product: ProductType) => (
+  const productCards = displayedProducts.map((product: ProductCardType) => (
     <ProductCard
       key={product.id}
       isBig={isBigProductCard}
-      title={product.name}
-      image={product.productPics[0]}
       link={`/product/${product.id}`}
+      imageUrl={product.imageUrl.trim().length !== 0 ? product.imageUrl : DefaultImage}
+      name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
       price={product.price}
-      discount={product.discount}
-      quantity={product.quantity}
+      discountPercent={product.discountPercent ?? 0}
     />
   ));
 
@@ -143,6 +144,8 @@ function ProductList() {
   };
   
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+
     dispatch(getCategories());
   }, []);
 
@@ -196,7 +199,7 @@ function ProductList() {
       return;
     }
   
-    const prices = products.map((product: ProductType) => product.price);
+    const prices = products.map((product: ProductCardType) => product.price);
     const minPrice = Math.floor(Math.min(...prices));
     const maxPrice = Math.ceil(Math.max(...prices));
 
@@ -236,171 +239,174 @@ function ProductList() {
   }, [currentPage]);
   
   return (
-    <>
+    <div className="page appear-transition">
       <Header searchBar={true} cart={true}></Header>
-      <BackToTopButton></BackToTopButton>
+      
+      <main>
+        <BackToTopButton />
 
-      <section className="product-list-content-section">
-        <div className="product-list-content-container">
-          <Breadcrumb className="product-list-breadcrumb" crumbs={crumbs} />
+        <section className={productListStyles.productListSection}>
+          <div className={productListStyles.productListContainer}>
+            <Breadcrumb className={productListStyles.breadcrumb} crumbs={crumbs} />
 
-          <h1 className="category-name">{currentCategory?.name}</h1>
+            <h1>{currentCategory?.name}</h1>
 
-          {hasInitialized.current && (
-            <div className="list-container">
-              <div className="list-left-container">
-                <FilterComboBox
-                  type="list"
-                  title="Brand"
-                  isOpen={true}
-                  onSelect={(options) => selectOptions(options, "Brand")}
-                  options={[
-                    { id: "1", label: "Option 1" },
-                    { id: "2", label: "Option 2" },
-                    { id: "3", label: "Option 3" },
-                    { id: "4", label: "Option 4" },
-                    { id: "5", label: "Option 5" },
-                    { id: "6", label: "Option 6" },
-                    { id: "7", label: "Option 7" },
-                    { id: "8", label: "Option 8" },
-                    { id: "9", label: "Option 9" },
-                    { id: "10", label: "Option 10" }
-                  ]}
-                />
-
-                <FilterComboBox
-                  type="list"
-                  title="Fabric type"
-                  isOpen={true}
-                  onSelect={(options) => selectOptions(options, "Fabric type")}
-                  options={[
-                    { id: "1", label: "Option 1" },
-                    { id: "2", label: "Option 2" },
-                    { id: "3", label: "Option 3" },
-                    { id: "4", label: "Option 4" },
-                    { id: "5", label: "Option 5" },
-                    { id: "6", label: "Option 6" },
-                    { id: "7", label: "Option 7" },
-                    { id: "8", label: "Option 8" },
-                    { id: "9", label: "Option 9" },
-                    { id: "10", label: "Option 10" }
-                  ]}
-                />
-
-                <FilterComboBox
-                  type="grid"
-                  title="Size"
-                  isOpen={true}
-                  onSelect={(options) => selectOptions(options, "Size")}
-                  options={[
-                    { id: "1", label: "1" },
-                    { id: "2", label: "2" },
-                    { id: "3", label: "3" },
-                    { id: "4", label: "4" },
-                    { id: "5", label: "5" },
-                    { id: "6", label: "6" },
-                    { id: "7", label: "7" },
-                    { id: "8", label: "8" },
-                    { id: "9", label: "9" },
-                    { id: "10", label: "10" },
-                    { id: "11", label: "11" },
-                    { id: "12", label: "12" },
-                    { id: "13", label: "13" },
-                    { id: "14", label: "14" },
-                    { id: "15", label: "15" },
-                    { id: "16", label: "16" },
-                    { id: "17", label: "17" },
-                    { id: "18", label: "18" },
-                    { id: "19", label: "19" },
-                    { id: "20", label: "20" },
-                    { id: "21", label: "21" },
-                    { id: "22", label: "22" },
-                    { id: "23", label: "23" },
-                    { id: "24", label: "24" },
-                    { id: "25", label: "25" }
-                  ]}
-                />
-
-                <FilterComboBox
-                  type="list"
-                  title="Color"
-                  isOpen={true}
-                  onSelect={(options) => selectOptions(options, "Color")}
-                  options={[
-                    { id: "1", label: "Option 1" },
-                    { id: "2", label: "Option 2" },
-                    { id: "3", label: "Option 3" },
-                    { id: "4", label: "Option 4" },
-                    { id: "5", label: "Option 5" },
-                    { id: "6", label: "Option 6" },
-                    { id: "7", label: "Option 7" },
-                    { id: "8", label: "Option 8" },
-                    { id: "9", label: "Option 9" },
-                    { id: "10", label: "Option 10" }
-                  ]}
-                />
-
-                <PriceComboBox
-                  title="Price"
-                  isOpen={true}
-                  minPrice={minAvailablePrice}
-                  maxPrice={maxAvailablePrice}
-                  onPriceChange={selectPriceRange}
-                />
-
-                <RatingComboBox
-                  title="Customer reviews"
-                  isOpen={true}
-                  onSelect={selectRatingOptions}
-                />
-              </div>
-
-              <div className="list-right-container">
-                <div className="combo-boxes-container">
-                  <div className="list-applied-filters-container">
-                    {isDesktop ? (
-                      <AppliedFiltersComboBox isOpen={false} />
-                    ) : (
-                      <button className="applied-filters-button">
-                        <FilterEmpty className="filter-empty-icon" />
-                      </button>
-                    )}
-                  </div>
-
-                  <SortComboBox 
-                    isOpen={false} 
-                    options={sortOptions}
-                    selectedOption={sortOption}
-                    onSortChange={changeSort} 
+            {hasInitialized.current && (
+              <div className={productListStyles.listContainer}>
+                <div className={productListStyles.listLeftContainer}>
+                  <FilterComboBox
+                    type="list"
+                    title="Brand"
+                    isOpen={true}
+                    onSelect={(options) => selectOptions(options, "Brand")}
+                    options={[
+                      { id: "1", label: "Option 1" },
+                      { id: "2", label: "Option 2" },
+                      { id: "3", label: "Option 3" },
+                      { id: "4", label: "Option 4" },
+                      { id: "5", label: "Option 5" },
+                      { id: "6", label: "Option 6" },
+                      { id: "7", label: "Option 7" },
+                      { id: "8", label: "Option 8" },
+                      { id: "9", label: "Option 9" },
+                      { id: "10", label: "Option 10" }
+                    ]}
                   />
-                  <RowNumberToggle className="list-row-number-toggle" onToggleChange={changeRowToggle} />
+
+                  <FilterComboBox
+                    type="list"
+                    title="Fabric type"
+                    isOpen={true}
+                    onSelect={(options) => selectOptions(options, "Fabric type")}
+                    options={[
+                      { id: "1", label: "Option 1" },
+                      { id: "2", label: "Option 2" },
+                      { id: "3", label: "Option 3" },
+                      { id: "4", label: "Option 4" },
+                      { id: "5", label: "Option 5" },
+                      { id: "6", label: "Option 6" },
+                      { id: "7", label: "Option 7" },
+                      { id: "8", label: "Option 8" },
+                      { id: "9", label: "Option 9" },
+                      { id: "10", label: "Option 10" }
+                    ]}
+                  />
+
+                  <FilterComboBox
+                    type="grid"
+                    title="Size"
+                    isOpen={true}
+                    onSelect={(options) => selectOptions(options, "Size")}
+                    options={[
+                      { id: "1", label: "1" },
+                      { id: "2", label: "2" },
+                      { id: "3", label: "3" },
+                      { id: "4", label: "4" },
+                      { id: "5", label: "5" },
+                      { id: "6", label: "6" },
+                      { id: "7", label: "7" },
+                      { id: "8", label: "8" },
+                      { id: "9", label: "9" },
+                      { id: "10", label: "10" },
+                      { id: "11", label: "11" },
+                      { id: "12", label: "12" },
+                      { id: "13", label: "13" },
+                      { id: "14", label: "14" },
+                      { id: "15", label: "15" },
+                      { id: "16", label: "16" },
+                      { id: "17", label: "17" },
+                      { id: "18", label: "18" },
+                      { id: "19", label: "19" },
+                      { id: "20", label: "20" },
+                      { id: "21", label: "21" },
+                      { id: "22", label: "22" },
+                      { id: "23", label: "23" },
+                      { id: "24", label: "24" },
+                      { id: "25", label: "25" }
+                    ]}
+                  />
+
+                  <FilterComboBox
+                    type="list"
+                    title="Color"
+                    isOpen={true}
+                    onSelect={(options) => selectOptions(options, "Color")}
+                    options={[
+                      { id: "1", label: "Option 1" },
+                      { id: "2", label: "Option 2" },
+                      { id: "3", label: "Option 3" },
+                      { id: "4", label: "Option 4" },
+                      { id: "5", label: "Option 5" },
+                      { id: "6", label: "Option 6" },
+                      { id: "7", label: "Option 7" },
+                      { id: "8", label: "Option 8" },
+                      { id: "9", label: "Option 9" },
+                      { id: "10", label: "Option 10" }
+                    ]}
+                  />
+
+                  <PriceComboBox
+                    title="Price"
+                    isOpen={true}
+                    minPrice={minAvailablePrice}
+                    maxPrice={maxAvailablePrice}
+                    onPriceChange={selectPriceRange}
+                  />
+
+                  <RatingComboBox
+                    title="Customer reviews"
+                    isOpen={true}
+                    onSelect={selectRatingOptions}
+                  />
                 </div>
 
-                <hr className="divider"></hr>
-
-                {sortedFilteredProducts.length > 0 ? (
-                  <>
-                    <div className={`${isBigProductCard ? "big-product-card-list" : "product-card-list"}`}>
-                      {productCards}
+                <div className={productListStyles.listRightContainer}>
+                  <div className={productListStyles.comboBoxesContainer}>
+                    <div className={productListStyles.appliedFiltersContainer}>
+                      {isDesktop ? (
+                        <AppliedFiltersComboBox isOpen={false} />
+                      ) : (
+                        <button>
+                          <FilterEmptyIcon className={productListStyles.filterIcon} />
+                        </button>
+                      )}
                     </div>
-                    <Pagination
-                      className="list-pagination"
-                      currentPage={currentPage}
-                      totalPages={totalPages}
-                      onPageChange={setCurrentPage}
+
+                    <SortComboBox 
+                      isOpen={false} 
+                      options={sortOptions}
+                      selectedOption={sortOption}
+                      onSortChange={changeSort} 
                     />
-                  </>
-                ) : (
-                  <p className="product-card-list-message">No products found</p>
-                )}
+                    <RowNumberToggle className={productListStyles.rowNumberToggle} onToggleChange={changeRowToggle} />
+                  </div>
+
+                  <hr className={`${productListStyles.listDivider} divider`} />
+
+                  {sortedFilteredProducts.length > 0 ? (
+                    <>
+                      <div className={`${isBigProductCard ? productListStyles.bigProductCardList : productListStyles.productCardList}`}>
+                        {productCards}
+                      </div>
+                      <Pagination
+                        className={productListStyles.pagination}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                      />
+                    </>
+                  ) : (
+                    <p className={productListStyles.productCardListMessage}>No products found</p>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </section>
+            )}
+          </div>
+        </section>
+      </main>
 
       <Footer></Footer>
-    </>
+    </div>
   );
 }
 

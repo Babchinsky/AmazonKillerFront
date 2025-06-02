@@ -1,0 +1,98 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.legalDocsContainer {
+  display: flex;
+  flex-direction: column;
+
+  .titleContainer {
+    h3 {
+      margin-top: 8px;
+
+      @include desktop {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  .docsDivider {
+    margin-top: 14px;
+
+    @include desktop {
+      margin-top: 16px;
+    }
+  }
+
+  .infoContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    @include desktop {
+      margin-top: 24px;
+    }
+
+    .info {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 2%;
+
+      @include desktop {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+    
+    .infoTitle {
+      margin-top: 16px;
+      margin-bottom: 12px;
+
+      @include desktop {
+        margin-top: 24px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .infoHighlight, .infoLink {
+      color: var(--main-color-secondary);
+    }
+
+    .infoLink {
+      text-decoration: underline;
+    }
+
+    .infoList, .infoSublist {
+      position: relative;
+      list-style-type: none;
+      padding-left: 22px;
+
+      @include desktop {
+        padding-left: 23px;
+      }
+
+      .infoListHighlight, .infoSublistHighlight {
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 8px;
+        }
+
+        @include desktop {
+          &::before {
+            left: 7px;
+          }
+        }
+      }
+    }
+    
+    .infoList {
+      .infoListHighlight {
+        &::before {
+          color: var(--main-color-secondary);
+        }
+      }
+    }
+  }
+}

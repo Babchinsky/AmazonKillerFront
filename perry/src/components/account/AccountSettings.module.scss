@@ -1,0 +1,127 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.settingsListContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 33px;
+
+  .settingsContainer {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 19px 16px;
+    border-radius: 4px;
+
+    &:nth-child(even) {
+      background-color: var(--minor-color-object);
+    }
+
+    .settingsLeftContainer, .settingsRightContainer {
+      display: flex;
+      align-items: center;
+    }
+
+    .settingsLeftContainer {
+      justify-content: space-between;
+      flex: 1;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 2%;
+      color: var(--minor-color-text);
+
+      .description {
+        margin-top: 12px;
+        font-size: 16px;
+        line-height: normal;
+        color: #5a5a5a;
+      }        
+
+      .data {
+        margin-left: 126px;
+        text-align: right;
+      }
+    }
+
+    .settingsRightContainer {
+      position: relative;
+      gap: 12px;
+
+      .settingsButton {
+        padding: 9.5px 21.5px;
+        border-radius: 8px;
+      }
+
+      .changeNameButton, .changeEmailButton, .changePasswordButton {
+        padding: 9.5px 19px;
+        width: 183px;
+      }
+      
+      .infoButton {
+        .infoIcon {
+          height: 24px;
+          width: 24px;
+
+          &:not(:disabled):hover {
+            path {
+              stroke: var(--minor-color-text);
+            }
+          }
+
+          path {
+            stroke-width: 1.5px;
+            stroke: rgba(var(--main-color-halftone), 0.5);
+          }
+
+          circle {
+            fill: rgba(var(--main-color-halftone), 0.5);
+          }
+        }
+      }
+
+      .imageRequirementsContainer {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        top: 56px;
+        right: 0px;
+        padding: 16px 16px 26px 16px;
+        max-height: 236px;
+        min-width: 358px;
+        border: 1.5px solid rgba(var(--main-color-halftone), 0.5);
+        border-radius: 4px;
+        background-color: var(--minor-color-object);
+        box-shadow: 0px 0px 11px -5px rgba(32, 80, 173, 0.25);
+        font-weight: 300;
+        font-size: 16px;
+        line-height: 18px;
+        letter-spacing: normal;
+        color: var(--minor-color-text);
+        z-index: 50;
+
+        .title {
+          font-weight: 400;
+        }
+
+        .requirementsList {
+          position: relative;
+          list-style-type: none;
+          padding: 3px 0px 3px 25px;
+
+          .requirement {
+            padding: 3px 0px;
+
+            &::before {
+              content: "•";
+              position: absolute;
+              left: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

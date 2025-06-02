@@ -1,0 +1,114 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.cardCarouselContainer {
+  position: relative;
+  width: 100%;
+
+  .cardsWrapContainer, .cardsContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .cardsWrapContainer {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cardsContainer {
+    overflow: hidden;
+
+    @include tablet {
+      overflow: clip;
+      overflow-clip-margin: 12px;
+    }
+
+    .carouselContainer {
+      width: 100%;
+
+      @include tablet {
+        overflow: clip;
+        overflow-clip-margin: 12px;
+      }
+
+      .carousel {
+        position: relative;
+        display: flex;
+        width: 100%;
+
+        .currentCardsContainer, .nextCardsContainer, .prevCardsContainer {
+          display: flex;
+          width: 100%;
+          height: 100%;
+        }
+
+        .nextCardsContainer, .prevCardsContainer {
+          position: absolute;
+          top: 0px;
+        }
+
+        .prevCardsContainer {
+          left: 0px;
+        }
+
+        .nextCardsContainer {
+          right: 0px;
+        }
+      }
+
+      .productCardsGap, .categoryCardsGap {
+        gap: 16px;
+      }
+
+      .categoryCardsGap {
+        @include tablet {
+          gap: 24px;
+        }
+      }
+    }
+  }
+
+  .arrowsContainer {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0px 16px; 
+    width: 100%;
+    pointer-events: none;
+    z-index: 35;
+    
+    @include tablet {
+      padding: 0px 24px; 
+    }
+
+    .arrowButton {
+      padding: 6.5px;
+      background-color: var(--main-color-text);
+      border-width: 1.5px;
+      line-height: 0px;
+      pointer-events: auto;
+
+      .arrowLeftIcon, .arrowRightIcon {
+        height: 16px;
+        width: 16px;
+
+        path {
+          stroke: var(--main-color-secondary);
+          stroke-width: 1.5px;
+  
+          @include tablet {
+            stroke-width: 3px;
+          }
+        }
+      }
+    }
+  }
+
+  .seeAllButton {
+    margin-top: 11px;
+  }
+}

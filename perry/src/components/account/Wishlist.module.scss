@@ -1,0 +1,59 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .search-bar-container {
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    width: 346px;
+    border: 2px solid rgba(var(--main-color-halftone), 0.5);
+    border-radius: 4px;
+
+    .search-bar-input {
+      padding-left: 4px;
+      width: 100%;
+      font-family: inherit;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 2%;
+      color: var(--minor-color-text);
+
+      @include desktop {
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+
+    .search-bar-button {
+      .search-icon {
+        height: 24px;
+        width: 24px;
+
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--minor-color-text);
+        }
+      }
+    }
+  }
+}
+
+.wishlist-container {
+  display: flex;
+  margin-top: 24px;
+
+  .product-card-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    row-gap: 16px;
+    column-gap: 5.25px;
+    padding: 0px 24px;
+  }
+}

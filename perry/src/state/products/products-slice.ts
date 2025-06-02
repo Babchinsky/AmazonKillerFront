@@ -1,10 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import ProductType from "../../types/product-type";
+import ProductCardType from "../../types/products/product-card-type";
+import ProductType from "../../types/products/product-type";
 
 
-const initialState: any = {
+type ProductsStateType = {
+  products: ProductCardType[];
+  productById: ProductType | null;
+  categoryProducts: ProductCardType[];
+  trendingProducts: ProductCardType[];
+  saleProducts: ProductCardType[];
+};
+
+const initialState: ProductsStateType = {
   products: [],
-  productsByCategory: []
+  productById: null,
+  categoryProducts: [],
+  trendingProducts: [],
+  saleProducts: []
 };
 
 export const getProducts = createAsyncThunk(
@@ -20,8 +32,30 @@ export const getProducts = createAsyncThunk(
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data: ProductType[] = await response.json();
-      return data;
+      const result = await response.json();
+      return result.items;
+    } 
+    catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getProductById = createAsyncThunk(
+  "products/getProductById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/products/${id}`, 
+        {}
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result: ProductType = await response.json();
+      return result;
     } 
     catch (error: any) {
       return rejectWithValue(error.message);
@@ -42,8 +76,52 @@ export const getProductsByCategory = createAsyncThunk(
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const data: ProductType[] = await response.json();
-      return data;
+      const result = await response.json();
+      return result.items;
+    } 
+    catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getTrendingProducts = createAsyncThunk(
+  "products/getTrendingProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/products?isTrending=true`, 
+        {}
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.items;
+    } 
+    catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getSaleProducts = createAsyncThunk(
+  "products/getSaleProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/products?discountPercent_gte=1`, 
+        {}
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.items;
     } 
     catch (error: any) {
       return rejectWithValue(error.message);
@@ -57,26 +135,20 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(getProducts.pending, () => {
-      console.log("getProducts pending");
-    })
     .addCase(getProducts.fulfilled, (state, action) => {
-      console.log("getProducts success");
       state.products = action.payload;
     })
-    .addCase(getProducts.rejected, () => {
-      console.log("getProducts rejected");
-    })
-
-    .addCase(getProductsByCategory.pending, () => {
-      console.log("getProductsByCategory pending");
+    .addCase(getProductById.fulfilled, (state, action) => {
+      state.productById = action.payload;
     })
     .addCase(getProductsByCategory.fulfilled, (state, action) => {
-      console.log("getProductsByCategory success");
-      state.productsByCategory = action.payload;
+      state.categoryProducts = action.payload;
     })
-    .addCase(getProductsByCategory.rejected, () => {
-      console.log("getProductsByCategory rejected");
+    .addCase(getTrendingProducts.fulfilled, (state, action) => {
+      state.trendingProducts = action.payload;
+    })
+    .addCase(getSaleProducts.fulfilled, (state, action) => {
+      state.saleProducts = action.payload;
     });
   }
 }); 

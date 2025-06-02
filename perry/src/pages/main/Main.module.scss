@@ -1,0 +1,222 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-grow: 1;
+  padding-top: 76px;
+  padding-bottom: 28px;
+
+  @include desktop {
+    gap: 24px;
+    padding: 104px 32px 65px 32px;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1600px;
+
+    @include tablet {
+      padding: 0px 16px;
+    }
+
+    @include desktop {
+      padding: 0px;
+    }
+
+    .divider {
+      margin: 0px 16px;
+  
+      @include desktop {
+        margin: 0px;
+        height: 2.5px;
+      }
+    }
+  }
+
+  .dealsSection {
+    gap: 20px;
+
+    @include desktop {
+      gap: 24px;
+    }
+
+    .dealContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      @include desktop {
+        gap: 16px;
+      }
+
+      .titleContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 16px;
+
+        @include desktop {
+          padding: 0px;
+        }
+
+        .seeAllLink {
+          display: none;
+    
+          @include desktop {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            line-height: 24px;
+          }
+    
+          .arrowRightIcon {
+            height: 16px;
+            width: 16px;
+
+            path {
+              stroke-width: 1.5px;
+              stroke: var(--main-color-secondary);
+            }
+          }
+        }
+      }
+
+      .seeAllButtonContainer {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+
+        @include tablet {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .bannerSection {
+    .authBannerContainer {
+      position: relative;
+      padding: 0px 16px;
+      width: 100%;
+
+      @include tablet {
+        padding: 0px;
+      }
+      
+      .imageContainer {
+        border-radius: 8px;
+        box-shadow: 0px 4px 11px -3px rgba(44, 93, 187, 0.25);
+        overflow: hidden;
+
+        img {
+          display: block;
+          width: 100%;
+          aspect-ratio: 358/441;
+          object-fit: cover;
+          object-position: left;
+
+          @include tablet {
+            height: 308px;
+          }
+        }
+      }
+
+      .contentContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0px 16px;
+        width: 100%;
+        text-align: center;
+
+        @include tablet {
+          gap: 32px;
+          top: 50%;
+          left: 184px;
+          transform: translateY(-50%);
+          width: fit-content;
+        }
+
+        .titleContainer {
+          @include tablet {
+            color: var(--main-color-text);
+          }
+
+          h3 {
+            @include tablet {
+              font-size: 40px;
+              line-height: 48px;
+              letter-spacing: -2%;
+            }
+          }
+
+          p {
+            margin-top: 0px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            letter-spacing: 2%;
+
+            @include tablet {
+              margin-top: 12px;
+              font-size: 24px;
+              line-height: 36px;
+              letter-spacing: 0%;
+            }
+          }
+        }
+
+        .buttonsContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 16px;
+
+          .logInButton {
+            border: 2.5px solid var(--main-color-secondary);
+            color: var(--minor-color-text);
+
+            @include tablet {
+              border: 2.5px solid var(--minor-color-blue);
+              color: var(--main-color-text);
+            }
+          
+            &:not(:disabled):hover {
+              box-shadow: 0px 1px 7px -5px rgba(32, 80, 173, 0.45);
+
+              @include tablet {
+                box-shadow: 0px 1px 7px -5px rgba(204, 221, 255, 0.45);        
+              }
+            }
+          
+            &:not(:disabled):active {
+              background-color: var(--minor-color-blue);
+
+              @include tablet {
+                background-color: var(--main-color-secondary);
+              }
+            }
+          
+            @include tablet {
+              font-size: 16px;
+              line-height: 24px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

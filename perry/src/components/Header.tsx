@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
-import Menu from "../assets/icons/menu.svg?react";
-import Logo from "../assets/icons/logo.svg?react";
-import Search from "../assets/icons/search.svg?react";
-import User from "../assets/icons/user.svg?react";
-import CartEmpty from "../assets/icons/cart-empty.svg?react";
-import MenuHeader from "./menu/MenuHeader";
-import Authentication from "./authentication/Authentication";
-import "./Header.scss";
+import { Link, useNavigate } from "react-router";
+import MenuHeader from "./popups/menu/MenuHeader";
+import Authentication from "./popups/authentication/Authentication";
+import MenuIcon from "../assets/icons/menu.svg?react";
+import LogoIcon from "../assets/icons/logo.svg?react";
+import SearchIcon from "../assets/icons/search.svg?react";
+import UserIcon from "../assets/icons/user.svg?react";
+import CartEmptyIcon from "../assets/icons/cart-empty.svg?react";
+import headerStyles from "./Header.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../state/store";
 
 
 interface HeaderProps {
@@ -17,9 +19,22 @@ interface HeaderProps {
   
 function Header(props: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
   const [authType, setAuthType] = useState<"logIn" | "signUp">("logIn");
   
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => !!state.auth.accessToken);
+
+  const userClick = () => {
+    if (isAuthenticated) {
+      navigate("/account");
+    } 
+    else {
+      setIsAuthOpen(true);
+    }
+  };
+
   const authClick = (type: "logIn" | "signUp") => {
     setIsMenuOpen(false);
 
@@ -46,36 +61,38 @@ function Header(props: HeaderProps) {
 
   return (
     <>
-      <header className="header-container">
-        <div className="header-left-container">
-          <button className="menu-button" onClick={() => setIsMenuOpen(true)}>
-            <Menu className="menu-icon" />
-          </button>
-
-          <div className="logo-container">
-            <Link className="link" to="/">
-              <Logo className="logo-icon" />
-            </Link>
-          </div>
-        </div>
-
-        <div className={`search-bar-container ${!props.searchBar ? "hidden" : ""}`}>
-          <input className="search-bar-input" placeholder="Search..." />
-          <button className="search-bar-button">
-            <Search className="search-icon" />
-          </button>
-        </div>
-
-        <div className="header-right-container" onClick={() => setIsAuthOpen(true)}>
-          <button className="user-button">
-            <User className="user-icon" />
-          </button>
-          
-          {props.cart && (
-            <button className="cart-button">
-              <CartEmpty className="cart-icon" />
+      <header>
+        <div className={headerStyles.headerContainer}>
+          <div className={headerStyles.leftContainer}>
+            <button className={headerStyles.menuButton} onClick={() => setIsMenuOpen(true)}>
+              <MenuIcon className={`${headerStyles.menuIcon} main-color-text-icon`} />
             </button>
-          )}
+
+            <div className={headerStyles.logoContainer}>
+              <Link className="link" to="/">
+                <LogoIcon className={headerStyles.logoIcon} />
+              </Link>
+            </div>
+          </div>
+
+          <div className={`${headerStyles.searchBarContainer} ${!props.searchBar ? "hidden" : ""}`}>
+            <input placeholder="Search..." />
+            <button>
+              <SearchIcon className={headerStyles.searchIcon} />
+            </button>
+          </div>
+
+          <div className={headerStyles.rightContainer}>
+            <button className={headerStyles.userButton} onClick={userClick}>
+              <UserIcon className={`${headerStyles.userIcon} main-color-text-icon`} />
+            </button>
+            
+            {props.cart && (
+              <button className={headerStyles.cartButton}>
+                <CartEmptyIcon className={`${headerStyles.cartEmptyIcon} main-color-text-icon`} />
+              </button>
+            )}
+          </div>
         </div>
       </header>
       

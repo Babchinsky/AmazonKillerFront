@@ -1,33 +1,36 @@
 import { Link } from "react-router";
-import ArrowRight from "../../assets/icons/arrow-right.svg?react";
-import "./CategoryCard.scss";
+import ArrowRightIcon from "../../assets/icons/arrow-right.svg?react";
+import categoryCardStyles from "./CategoryCard.module.scss";
 
 
 interface CategoryCardProps {
-	image: string;
-	title: string;
   link: string;
+	imageUrl: string;
+	name: string;
 }
   
 function CategoryCard(props: CategoryCardProps) {
   return (
-    <Link className="link" to={props.link}>
-      <div className="category-card-container">
-        <div className="category-card-top-container">
-          <img className="category-image" alt="Category" src={props.image} />
-          <p className="category-title">
-            {props.title}
-          </p>
-        </div>
+    <div className={categoryCardStyles.categoryCardLinkContainer}>
+      <div className={categoryCardStyles.categoryBorder}></div>
 
-        <div className="category-card-bottom-container">
-          <div className="see-all-link">
-            <span>See all</span>
-            <ArrowRight className="arrow-right-icon" />
-          </div> 
+      <Link className={`${categoryCardStyles.categoryLink} link`} to={props.link}>
+        <div className={categoryCardStyles.cardContainer}>
+          <div className={categoryCardStyles.topContainer}>
+            <img alt="Category" src={props.imageUrl} />
+            <p>{props.name}</p>
+          </div>
+  
+          <div className={categoryCardStyles.bottomContainer}>
+            <div className={categoryCardStyles.seeAllLink}>
+              <span>See all</span>
+              <ArrowRightIcon className={categoryCardStyles.arrowRightIcon} />
+            </div>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
+   
   );
 }
 

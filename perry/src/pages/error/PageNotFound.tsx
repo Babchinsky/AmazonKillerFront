@@ -1,9 +1,9 @@
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
-import TextButton from "../../components/buttons/TextButton";
+import TextButton from "../../components/buttons/Button";
 import errorPageNotFoundMobile from "../../assets/images/error/error-page-not-found-mobile.png";
 import errorPageNotFoundDesktop from "../../assets/images/error/error-page-not-found-desktop.png";
-import "./PageNotFound.scss";
+import pageNotFoundStyles from "./PageNotFound.module.scss";
 
 
 function PageNotFound() {

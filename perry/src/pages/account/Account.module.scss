@@ -1,0 +1,177 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+main {
+  display: flex;
+  flex-grow: 1;
+  padding-top: 76px;
+  padding-bottom: 40px;
+
+  @include desktop {
+    padding: 104px 32px 40px 32px;
+  }
+
+  .accountSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1600px;
+
+    @include desktop {
+      align-items: center;
+    }
+
+    .accountContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      height: 100%;
+      width: 100%;
+      color: var(--minor-color-text);
+
+      .topContainer, .bottomContainer {
+        .breadcrumb, .backButtonContainer, .contentContainer {
+          padding: 0px 16px;
+          
+          @include desktop {
+            padding: 0px;
+          }
+        }
+      }
+
+      .topContainer {
+        display: block;
+
+        @include desktop {
+          // display: none;
+        }
+
+        .backButtonContainer {
+          button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: 2%;
+
+            .arrowLeftIcon {
+              height: 24px;
+              width: 24px;
+
+              path {
+                stroke-width: 1.5px;
+                stroke: var(--main-color-secondary);
+              }
+            }
+          }
+        }
+      }
+
+      .bottomContainer {
+        .contentContainer {
+          display: flex;
+
+          @include desktop {
+            position: relative;
+            display: flex;
+            height: 888px;
+          }
+
+          .leftContainer, .rightContainer {
+            display: flex;
+            flex-direction: column;
+            min-height: 480px;
+          }
+
+          .leftContainer {
+            gap: 20px;
+            padding: 12px;
+            width: 100%;
+
+            @include desktop {
+              gap: 24px;
+              padding: 24px 16px;
+              max-width: 382px;
+            }
+
+            .mainDataContainer {
+              display: flex;
+              align-items: center;
+              gap: 28px;
+
+              img {
+                height: 60px;
+                width: 60px;
+                border-radius: 100px;
+                box-shadow: 0px 0px 16px 0px rgba(17, 57, 117, 0.25);
+                object-fit: cover;
+                object-position: center;
+              }
+
+              p {
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 24px;
+                letter-spacing: 2%;
+                color: var(--minor-color-text);
+              }
+            }
+
+            .tabsContainer {
+              display: flex;
+              flex-direction: column;
+
+              .selectedTab, .tab {
+                padding: 16px 12px;
+                width: fit-content;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 20px;
+                letter-spacing: 2%;
+                color: inherit;
+
+                @include desktop {
+                  padding: 16px 24px;
+                  width: 100%;
+                  text-align: start;
+                  line-height: 24px;
+                }
+              }
+
+              .selectedTab {
+                background-color: var(--minor-color-blue-light);
+                border-radius: 4px;
+              }
+            }
+          }
+
+          .contentDivider {
+            margin-right: 24px;
+            height: 100%;
+            width: 1.5px;
+          }
+
+          .rightContainer {
+            flex: 1;
+            padding: 0px 0px 36px 0px;
+
+            @include desktop {
+              min-width: 650px;
+              max-width: 1194px;
+              overflow-y: scroll;
+
+              &::-webkit-scrollbar {
+                width: 0px;
+                background: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

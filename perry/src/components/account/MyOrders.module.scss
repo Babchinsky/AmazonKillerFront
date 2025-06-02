@@ -1,0 +1,136 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.order-list-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 33px;
+
+  .order-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 19px 16px;
+    border-radius: 4px;
+
+    &:nth-child(even) {
+      background-color: var(--minor-color-object);
+    }
+
+    .order-left-container, .order-right-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .order-left-container {
+      gap: 5px;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 28px;
+      letter-spacing: 2%;
+      color: var(--minor-color-text);
+
+      .status {
+        margin-left: 16px;
+        font-size: 16px;
+        line-height: 24px;
+        color: rgba(var(--main-color-halftone), 0.5);
+      }
+
+      .received-status, .ready-for-pickup-status {
+        color: var(--main-color-secondary);
+      }
+
+      .shipped-status, .ordered-status {
+        color: rgba(var(--main-color-halftone), 0.5);
+      }
+
+      .cancelled-status {
+        color: var(--minor-color-destructive);
+      }
+
+      .date {
+        font-size: 16px;
+        line-height: 24px;
+        color: rgba(var(--main-color-halftone), 0.5);
+      }
+    }
+
+    .order-right-container {
+      align-items: end;
+      gap: 8px;
+
+      .item-count {
+        text-align: right;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: normal;
+        letter-spacing: 0%;
+        color: rgba(var(--main-color-halftone), 0.5);
+      }
+
+      .price-container {
+        display: inline-flex;
+
+        .price {
+          display: flex;
+          align-items: start;
+          font-weight: 500;
+          font-size: 24px;
+          line-height: 28px;
+          letter-spacing: -1.5%;
+          color: var(--minor-color-text);
+
+          .currency {
+            margin-right: 4px;
+          }
+          
+          .currency-minor {
+            margin-left: 2px;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 22px;
+            vertical-align: super;
+          }
+        }
+      }
+
+      .details-button {
+        margin-left: 24px;
+        padding: 5px 15px;
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+  }
+
+  .order-summary {
+    .item-count {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .details-btn {
+      background: #fff;
+      border: 1px solid #0070e0;
+      color: #0070e0;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #0070e0;
+        color: white;
+      }
+    }
+  }
+}
