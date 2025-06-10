@@ -1,0 +1,55 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  .arrow-left-button, .arrow-right-button, .active-page-button, .page-button, .other-pages-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: var(--minor-color-text);
+    cursor: pointer;
+    padding: 0;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: rgba(184, 234, 72, 0.2);
+    }
+  }
+
+  .arrow-left-button, .arrow-right-button {
+    color: var(--main-color-secondary);
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: none;
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .active-page-button {
+    background-color: var(--main-color-primary);
+    color: var(--minor-color-text);
+    font-weight: 400;
+  }
+
+  .other-pages-container {
+    font-size: 16px;
+    color: var(--minor-color-text);
+  }
+}

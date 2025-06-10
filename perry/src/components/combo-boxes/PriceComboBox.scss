@@ -1,0 +1,108 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.filter-combo-box-container {
+  .price-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .price-top-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      .price-input-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .price-input {
+          padding: 8px 12px;
+          width: 80px;
+          background-color: var(--minor-color-object);
+          border: 2px solid rgba(var(--main-color-halftone), 0.5);
+          border-radius: 4px;
+          text-align: center;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 24px;
+          letter-spacing: 2%;
+          color: var(--minor-color-text);
+        }
+
+        input[type="number"]::-webkit-inner-spin-button {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          height: 100%;
+          width: 5px;
+          opacity: 0;
+        }
+
+        .range-divider {
+          height: 1.5px;
+          width: 16px;
+          background-color: var(--minor-color-text);
+          border: none;
+          border-radius: 5px;
+        }
+      }
+
+      .save-button {
+        padding: 8px 32px;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+        letter-spacing: 2%;
+        color: var(--minor-color-text); 
+      }
+    }
+
+    .price-bottom-container {
+      .price-slider-container {
+        position: relative;
+        margin: 6px 0px;
+        height: 8px;
+        width: 100%;
+        background-color: var(--minor-color-text);
+        border-radius: 24px;
+
+        .price-slider-track {
+          position: absolute;
+          height: 100%;
+          background-color: var(--minor-color-primary-active);
+        }
+        
+        .price-slider-min, .price-slider-max {
+          pointer-events: none;
+          appearance: none;
+          position: absolute;
+          width: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+
+          &::-webkit-slider-thumb {
+            pointer-events: auto;
+            appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 24px;
+            background-color: var(--main-color-primary);
+            cursor: pointer;
+          }
+        }
+      
+        .price-slider-min {
+          z-index: 3;
+        }
+      
+        .price-slider-max {
+          z-index: 2;
+        }
+      }      
+    }
+  }
+}

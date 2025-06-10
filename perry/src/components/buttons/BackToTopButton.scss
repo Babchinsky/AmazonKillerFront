@@ -1,0 +1,41 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.back-to-top-button {
+  position: fixed;
+  right: 0px;
+  bottom: 80px;
+  padding: 9.5px;
+  background-color: var(--main-color-primary);
+  border: 2.5px solid var(--main-color-primary);
+  border-radius: 8px 0px 0px 8px;
+  line-height: 0px;
+  z-index: 50;
+
+  &:not(:disabled):hover {
+    background-color: var(--minor-color-primary-hover);
+    border: 2.5px solid var(--main-color-primary);
+  }
+
+  &:not(:disabled):active {
+    background-color: var(--minor-color-primary-active);
+    border: 2.5px solid var(--minor-color-primary-active);
+  }
+
+  @include desktop {
+    right: 56px;
+    bottom: 32px;
+    border-radius: 4px;
+  }
+
+  .arrow-up-icon {
+    height: 24px;
+    width: 24px;
+
+    path {
+      stroke-width: 1.5px;
+      stroke: var(--minor-color-text);
+    }
+  }
+}

@@ -1,0 +1,232 @@
+@use '../../styles/variables.scss' as *;
+@use '../../styles/media-queries.scss' as *;
+
+.admin-header {
+  width: 100%;
+  height: 64px;
+  background-color: var(--main-color-secondary);
+  position: relative;
+
+  &__content {
+    max-width: 1920px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 12px 160px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__menu-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 6px;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+    z-index: 1001;
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    &:hover {
+      background-color: rgba(242, 244, 248, 0.1);
+    }
+
+    &--active {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    width: 44px;
+
+    img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__menu {
+    position: fixed;
+    top: 0;
+    left: -365px;
+    width: 365px;
+    height: 100vh;
+    background-color: var(--main-color-secondary);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    padding: 24px;
+    box-shadow: 0px 4px 11.5px -5px rgba(32, 80, 173, 0.25);
+
+    &--open {
+      transform: translateX(365px);
+    }
+  }
+
+  &__menu-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  &__profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__profile-image {
+    width: 144px;
+    height: 144px;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__profile-name {
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.33;
+    color: var(--main-color-text);
+    margin: 0;
+  }
+
+  &__profile-role {
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.71;
+    letter-spacing: 0.02em;
+    color: var(--main-color-text);
+    margin: 0;
+  }
+
+  &__divider {
+    width: 100%;
+    height: 1.5px;
+    background-color: var(--minor-color-blue-light);
+    margin: 24px 0;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--main-color-text);
+    font-family: var(--font-family);
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    transition: background-color 0.3s ease;
+
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      background-color: rgba(242, 244, 248, 0.1);
+    }
+
+    &--active {
+      background-color: rgba(242, 244, 248, 0.1);
+    }
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    border: none;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--main-color-text);
+    font-family: var(--font-family);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background-color 0.3s ease;
+
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      background-color: rgba(242, 244, 248, 0.1);
+    }
+  }
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 

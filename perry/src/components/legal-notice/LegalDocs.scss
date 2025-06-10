@@ -1,0 +1,99 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.legal-docs-content-container {
+  display: flex;
+  flex-direction: column;
+
+  .title-container {
+    .last-updated {
+      margin-top: 8px;
+
+      @include desktop {
+        margin-top: 12px;
+      }
+    }
+  }
+
+  .divider {
+    margin-top: 14px;
+    height: 2.5px;
+
+    @include desktop {
+      margin-top: 16px;
+    }
+  }
+
+  .docs-info-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+
+    @include desktop {
+      margin-top: 24px;
+    }
+
+    .docs-info {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      letter-spacing: 2%;
+
+      @include desktop {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+    
+    .docs-info-title {
+      margin-top: 16px;
+      margin-bottom: 12px;
+
+      @include desktop {
+        margin-top: 24px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .docs-info-highlight, .docs-info-link {
+      color: var(--main-color-secondary);
+    }
+
+    .docs-info-link {
+      text-decoration: underline;
+    }
+
+    .docs-info-list, .docs-info-sublist {
+      position: relative;
+      list-style-type: none;
+      padding-left: 22px;
+
+      @include desktop {
+        padding-left: 23px;
+      }
+
+      .docs-info-list-highlight, .docs-info-sublist-highlight {
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 8px;
+        }
+
+        @include desktop {
+          &::before {
+            left: 7px;
+          }
+        }
+      }
+    }
+    
+    .docs-info-list {
+      .docs-info-list-highlight {
+        &::before {
+          color: var(--main-color-secondary);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+$breakpoint-tablet: 768px; 
+$breakpoint-desktop: 1024px;
+
+:root {
+  --breakpoint-tablet: #{$breakpoint-tablet};
+  --breakpoint-desktop: #{$breakpoint-desktop};
+
+  // Colors
+  --main-color-text: #FFFFFF;
+  --minor-color-text: #0E2042;
+  --main-color-secondary: #4A7BD9;
+  --main-color-success: #B8EA48;
+  --main-color-destructive: #EA4848;
+
+  // Typography
+  --font-family: 'Mulish', sans-serif;
+}

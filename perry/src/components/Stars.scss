@@ -1,0 +1,12 @@
+@use "../styles/themes/default.scss" as *;
+@use "../styles/media-queries.scss" as *;
+
+
+.stars-container {
+  display: flex;
+
+  .star-icon {
+    height: 24px;
+    width: 24px;
+  }
+}

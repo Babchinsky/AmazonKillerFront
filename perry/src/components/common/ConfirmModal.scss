@@ -1,0 +1,148 @@
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  &__content {
+    position: relative;
+    width: 464px;
+    background-color: #F4FAFF;
+    border-radius: 8px;
+    box-shadow: 0px 4px 11.5px -5px rgba(32, 80, 173, 0.25);
+    z-index: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 14px;
+
+    &-title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.125;
+      letter-spacing: -1.5%;
+      text-align: center;
+      color: #0E2042;
+    }
+
+    &-divider {
+      width: 100%;
+      height: 1.5px;
+      background-color: #CCDDFF;
+    }
+  }
+
+  &__message {
+    font-family: 'Mulish', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.556;
+    letter-spacing: 2%;
+    text-align: center;
+    color: #0E2042;
+  }
+
+  &__buttons {
+    display: flex;
+    width: 100%;
+    gap: 14px;
+  }
+
+  &__button {
+    flex: 1;
+    height: 47px;
+    border-radius: 4px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.556;
+    letter-spacing: 2%;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+
+    /* Кнопки для модального окна удаления */
+    &--cancel.delete {
+      background-color: #B8EA48; /* Зеленый - Cancel */
+      color: #0E2042;
+
+      &:hover {
+        background-color: darken(#B8EA48, 5%);
+      }
+    }
+
+    &--confirm.delete {
+      background-color: #EA4848; /* Красный - Delete */
+      color: #FFFFFF;
+      border: 2.5px solid #EA4848;
+
+      &:hover {
+        background-color: darken(#EA4848, 5%);
+        border-color: darken(#EA4848, 5%);
+      }
+    }
+
+    /* Кнопки для модального окна смены статуса */
+    &--cancel.status-change {
+      background-color: #EA4848; /* Красный - No */
+      color: #FFFFFF;
+
+      &:hover {
+        background-color: darken(#EA4848, 5%);
+      }
+    }
+
+    &--confirm.status-change {
+      background-color: #B8EA48; /* Зеленый - Yes */
+      color: #0E2042;
+
+      &:hover {
+        background-color: darken(#B8EA48, 5%);
+      }
+    }
+
+    /* Кнопки для других типов модальных окон */
+    &--cancel.redirect {
+      background-color: #EA4848;
+      color: #FFFFFF;
+
+      &:hover {
+        background-color: darken(#EA4848, 5%);
+      }
+    }
+
+    &--confirm.redirect {
+      background-color: #B8EA48;
+      color: #0E2042;
+      border: none;
+
+      &:hover {
+        background-color: darken(#B8EA48, 5%);
+      }
+    }
+  }
+} 

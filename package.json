@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
+  }
+}
