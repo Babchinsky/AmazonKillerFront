@@ -9,6 +9,21 @@
   background-color: var(--main-color-text);
   border-radius: 8px;
   box-shadow: 0px 4px 11.5px -5px rgba(32, 80, 173, 0.25);
+  position: relative;
+  z-index: 9999;
+
+  &__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(14, 32, 66, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9998;
+  }
 
   &__header {
     margin-bottom: 24px;
@@ -250,7 +265,7 @@
     background-color: var(--main-color-text);
     border-radius: 4px;
     box-shadow: 0px 4px 16px rgba(32, 80, 173, 0.15);
-    z-index: 100;
+    z-index: 10000;
     max-height: 300px;
     overflow-y: auto;
   }

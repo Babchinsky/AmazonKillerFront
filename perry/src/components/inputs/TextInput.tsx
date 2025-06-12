@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import './TextInput.scss';
 
 export interface TextInputProps {
-  value: string;
+  value: string | undefined;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: string;
@@ -20,7 +20,7 @@ export interface TextInputProps {
 }
 
 const TextInput: React.FC<TextInputProps> = ({
-  value,
+  value = '',
   onChange,
   placeholder,
   type = 'text',
@@ -36,6 +36,8 @@ const TextInput: React.FC<TextInputProps> = ({
   errorMessage,
   id
 }) => {
+  const inputValue = value ?? '';
+  
   return (
     <div className={`text-input ${className || ''}`}>
       {label && (
@@ -48,7 +50,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <input
           id={id}
           type={type}
-          value={value}
+          value={inputValue}
           onChange={onChange}
           placeholder={placeholder}
           required={required}
@@ -59,7 +61,7 @@ const TextInput: React.FC<TextInputProps> = ({
         />
         {showCharCount && maxLength && (
           <div className="text-input__char-count">
-            {value.length} / {maxLength}
+            {inputValue.length} / {maxLength}
           </div>
         )}
       </div>

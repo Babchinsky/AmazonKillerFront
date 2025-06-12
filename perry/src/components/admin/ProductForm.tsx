@@ -96,6 +96,35 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   categories,
   isOpen
 }) => {
+  const [name, setName] = useState(initialProduct?.name || '');
+  const [code, setCode] = useState(initialProduct?.code || '');
+  const [categoryId, setCategoryId] = useState(initialProduct?.categoryId || '');
+  const [price, setPrice] = useState(initialProduct?.price?.toString() || '');
+  const [discount, setDiscount] = useState(initialProduct?.discount?.toString() || '');
+  const [quantity, setQuantity] = useState(initialProduct?.quantity?.toString() || '');
+  const [images, setImages] = useState<string[]>(initialProduct?.images || []);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [details, setDetails] = useState<ProductDetail[]>(initialProduct?.details || []);
+  const [features, setFeatures] = useState<ProductFeature[]>(initialProduct?.features || []);
+  const [rowVersion, setRowVersion] = useState<string | undefined>(initialProduct?.rowVersion);
+  const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (initialProduct) {
+      setName(initialProduct.name);
+      setCode(initialProduct.code);
+      setCategoryId(initialProduct.categoryId);
+      setPrice(initialProduct.price.toString());
+      setDiscount(initialProduct.discount?.toString() || '');
+      setQuantity(initialProduct.quantity.toString());
+      setImages(initialProduct.images);
+      setDetails(initialProduct.details);
+      setFeatures(initialProduct.features);
+      setRowVersion(initialProduct.rowVersion);
+    }
+  }, [initialProduct]);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -108,28 +137,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
-  const [name, setName] = useState(initialProduct?.name || '');
-  const [code, setCode] = useState(initialProduct?.code || '');
-  const [categoryId, setCategoryId] = useState(initialProduct?.categoryId || '');
-  const [price, setPrice] = useState(initialProduct?.price?.toString() || '');
-  const [discount, setDiscount] = useState(initialProduct?.discount?.toString() || '');
-  const [quantity, setQuantity] = useState(initialProduct?.quantity?.toString() || '');
-  const [images, setImages] = useState<string[]>(initialProduct?.images || []);
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [details, setDetails] = useState<ProductDetail[]>(initialProduct?.details || []);
-  const [features, setFeatures] = useState<ProductFeature[]>(initialProduct?.features || []);
-  const [rowVersion, setRowVersion] = useState<string | undefined>(initialProduct?.rowVersion);
-  const [isLoading, setIsLoading] = useState(initialProduct ? true : false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const fetchProductDetails = async () => {
     if (!initialProduct) return;
 
     try {
-      setIsLoading(true);
-      const response = await fetch(`http://localhost:8080/api/admin/products/${initialProduct.id}`, {
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -166,22 +178,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       );
       setImageFiles(files);
 
-      setDetails(data.attributes.map(attr => ({
-        key: attr.key,
-        value: attr.value
-      })));
-      setFeatures(data.features.map(feature => ({
-        title: feature.name,
-        description: feature.description
-      })));
+      // Обработка атрибутов и характеристик
+      if (data.attributes) {
+        setDetails(data.attributes.map(attr => ({
+          key: attr.key,
+          value: attr.value
+        })));
+      }
+
+      if (data.features) {
+        setFeatures(data.features.map(feature => ({
+          title: feature.name,
+          description: feature.description
+        })));
+      }
       
       // Сохраняем rowVersion сразу после получения данных
       console.log('Received rowVersion:', data.rowVersion);
       setRowVersion(data.rowVersion);
     } catch (error) {
       console.error('Error fetching product details:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -219,13 +235,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     }
   };
 
+  const handleImageDelete = (index: number) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+    
+    // Также удаляем соответствующий файл, если он есть
+    if (index < imageFiles.length) {
+      const newImageFiles = [...imageFiles];
+      newImageFiles.splice(index, 1);
+      setImageFiles(newImageFiles);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Если это редактирование, сначала обновим rowVersion
     if (initialProduct) {
       try {
-        const response = await fetch(`http://localhost:8080/api/admin/products/${initialProduct.id}`, {
+        const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -238,14 +267,24 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
         const data: ProductResponse = await response.json();
         console.log('Updated rowVersion before submit:', data.rowVersion);
-        setRowVersion(data.rowVersion);
+        
+        // Directly use the fetched rowVersion instead of setting state and using it later
+        const currentRowVersion = data.rowVersion;
+
+        // Continue with form submission using the fetched rowVersion
+        submitProductForm(currentRowVersion);
       } catch (error) {
         console.error('Error fetching latest rowVersion:', error);
         alert('Failed to get latest product version. Please try again.');
         return;
       }
+    } else {
+      // For new products, no rowVersion needed
+      submitProductForm();
     }
+  };
 
+  const submitProductForm = async (currentRowVersion?: string) => {
     // Проверяем заполненность обязательных полей
     if (!code.trim()) {
       alert('Код продукта не может быть пустым');
@@ -283,72 +322,96 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       return;
     }
 
-    const formData = new FormData();
+    // Проверка наличия изображений для всех продуктов
+    if (images.length === 0 && imageFiles.length === 0) {
+      alert('Пожалуйста, добавьте хотя бы одно изображение');
+      return;
+    }
 
-    // Добавляем основные поля
-    if (initialProduct) {
-      formData.append('id', initialProduct.id);
-      if (!rowVersion) {
-        console.error('rowVersion is missing!');
-        alert('Unable to save changes: missing version information. Please refresh and try again.');
-        return;
-      }
-      console.log('Sending rowVersion:', rowVersion);
-      formData.append('RowVersion', rowVersion);
-      
-      // Добавляем файлы изображений
-      if (imageFiles.length > 0) {
+    try {
+      const formData = new FormData();
+
+      // Добавляем основные поля для редактирования
+      if (initialProduct) {
+        formData.append('id', initialProduct.id);
+        if (!currentRowVersion) {
+          console.error('rowVersion is missing!');
+          alert('Unable to save changes: missing version information. Please refresh and try again.');
+          return;
+        }
+        console.log('Sending rowVersion:', currentRowVersion);
+        formData.append('RowVersion', currentRowVersion);
+        
+        // Добавляем новые файлы, если они есть
+        if (imageFiles.length > 0) {
+          imageFiles.forEach((file) => {
+            formData.append('Images', file);
+          });
+        }
+        
+        // Указываем бэкенду, что есть существующие изображения 
+        // (на случай если не загружаем новые)
+        if (images.length > 0 && imageFiles.length === 0) {
+          // Добавляем специальный флаг, который подскажет бэкенду что 
+          // не нужно требовать новых изображений, т.к. есть существующие
+          formData.append('KeepExistingImages', 'true');
+          
+          // Для совместимости с разными версиями API также добавляем
+          // существующие URLs как JSON строку
+          formData.append('ExistingImageUrls', JSON.stringify(images));
+        }
+      } else {
+        // Для нового продукта проверяем наличие изображений
+        if (imageFiles.length === 0) {
+          alert('Пожалуйста, добавьте хотя бы одно изображение');
+          return;
+        }
+        
+        // Добавляем файлы изображений при создании
         imageFiles.forEach((file) => {
           formData.append('Images', file);
         });
       }
-    } else {
-      // Добавляем файлы изображений при создании
-      imageFiles.forEach((file) => {
-        formData.append('Images', file);
-      });
-    }
 
-    formData.append('Code', code.trim());
-    formData.append('Name', name.trim());
-    formData.append('CategoryId', categoryId);
-    formData.append('Price', parsedPrice.toString());
-    if (parsedDiscount !== null) {
-      formData.append('DiscountPercent', parsedDiscount.toString());
-    }
-    formData.append('Quantity', parsedQuantity.toString());
+      formData.append('Code', code.trim());
+      formData.append('Name', name.trim());
+      formData.append('CategoryId', categoryId);
+      formData.append('Price', parsedPrice.toString());
+      if (parsedDiscount !== null) {
+        formData.append('DiscountPercent', parsedDiscount.toString());
+      }
+      formData.append('Quantity', parsedQuantity.toString());
 
-    // Добавляем атрибуты как JSON строку
-    const attributesJson = JSON.stringify(
-      details
-        .filter(detail => detail.key.trim() && detail.value.trim())
-        .map(detail => ({
-          key: detail.key.trim(),
-          value: detail.value.trim()
-        }))
-    );
-    formData.append('Attributes', attributesJson);
+      // Добавляем атрибуты как JSON строку
+      const attributesJson = JSON.stringify(
+        details
+          .filter(detail => detail.key.trim() && detail.value.trim())
+          .map(detail => ({
+            key: detail.key.trim(),
+            value: detail.value.trim()
+          }))
+      );
+      formData.append('Attributes', attributesJson);
 
-    // Добавляем характеристики как JSON строку
-    const featuresJson = JSON.stringify(
-      features
-        .filter(feature => feature.title.trim() && feature.description.trim())
-        .map(feature => ({
-          name: feature.title.trim(),
-          description: feature.description.trim()
-        }))
-    );
-    formData.append('Features', featuresJson);
+      // Добавляем характеристики как JSON строку
+      const featuresJson = JSON.stringify(
+        features
+          .filter(feature => feature.title.trim() && feature.description.trim())
+          .map(feature => ({
+            name: feature.title.trim(),
+            description: feature.description.trim()
+          }))
+      );
+      formData.append('Features', featuresJson);
 
-    console.log('Отправляемые данные (FormData):');
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
+      console.log('Отправляемые данные (FormData):');
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
-    try {
-      const url = initialProduct 
-        ? `http://localhost:8080/api/admin/products/${initialProduct.id}`
-        : 'http://localhost:8080/api/admin/products';
+      const url = initialProduct
+        ? `https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`
+        : 'https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products';
 
       const response = await fetch(url, {
         method: initialProduct ? 'PUT' : 'POST',
@@ -422,18 +485,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     setFeatures(newFeatures);
   };
 
-  if (isLoading) {
-    return (
-      <div className="product-form-modal">
-        <div className="product-form-modal__overlay" />
-        <div className="product-form-modal__content">
-          <div className="product-form__loading">
-            Loading product details...
-          </div>
-        </div>
-      </div>
-    );
-  }
+  if (!isOpen) return null;
 
   return (
     <div className="product-form-modal">
@@ -494,7 +546,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                       <button
                         type="button"
                         className="product-form__image-delete"
-                        onClick={() => setImages(images.filter((_, i) => i !== index))}
+                        onClick={() => handleImageDelete(index)}
                       >
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                           <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>

@@ -85,7 +85,7 @@ const statusToNumberMap: Record<OrderStatus, number> = {
 
 const updateOrderStatusOnServer = async (orderId: string, newStatus: OrderStatus): Promise<boolean> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/admin/orders/${orderId}/status`, {
+    const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/orders/${orderId}/status`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -121,7 +121,7 @@ export const OrdersPanel: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/account/orders', {
+        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/orders', {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -139,13 +139,13 @@ export const OrdersPanel: React.FC = () => {
           postCode: item.Info_Delivery_Address_PostCode
         })));
         const ordersFromApi = data.items.map((item: any) => {
-          // Разбиваем адрес на компоненты
-          const addressParts = (item.address || '').split(', ');
-          const [country, state, city, ...restAddress] = addressParts;
+          // Improved address parsing logic
+          const addressParts = (item.address || '').split(', ').filter((part: string) => part.trim());
+          const [country = '', state = '', city = '', ...restAddress] = addressParts;
           const streetAddress = restAddress.join(', ');
 
           // Разбиваем имя получателя
-          const [firstName = 'N/A', lastName = ''] = (item.recipient || '').split(' ');
+          const [firstName = '', lastName = ''] = (item.recipient || '').split(' ');
 
           return {
             id: item.id || 'N/A',
@@ -164,11 +164,11 @@ export const OrdersPanel: React.FC = () => {
               lastName,
               email: item.deliveryEmail || 'N/A',
               address: {
-                country: country || 'N/A',
-                state: state || 'N/A',
-                city: city || 'N/A',
-                street: streetAddress || 'N/A',
-                postCode: item.Info_Delivery_Address_PostCode || 'N/AA'
+                country: country || '',
+                state: state || '',
+                city: city || '',
+                street: streetAddress || '',
+                postCode: item.Info_Delivery_Address_PostCode || ''
               }
             },
             totalPrice: item.totalPrice || 0,
@@ -198,7 +198,7 @@ export const OrdersPanel: React.FC = () => {
 
   const fetchOrderDetails = async (orderId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/account/orders/${orderId}`, {
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/orders/${orderId}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -405,10 +405,13 @@ export const OrdersPanel: React.FC = () => {
                         <div className="orders-panel__address">
                           <p>
                             <strong>Address:</strong><br />
-                            {order.deliveryInfo.address.street}
-                            {order.deliveryInfo.address.apartmentNumber && `, apt. ${order.deliveryInfo.address.apartmentNumber}`}<br />
-                            {order.deliveryInfo.address.city}, {order.deliveryInfo.address.state} {order.deliveryInfo.address.postCode}<br />
-                            {order.deliveryInfo.address.country}
+                            {[
+                              order.deliveryInfo.address.street,
+                              order.deliveryInfo.address.city,
+                              order.deliveryInfo.address.state,
+                              order.deliveryInfo.address.country,
+                              order.deliveryInfo.address.postCode
+                            ].filter(Boolean).join(', ')}
                           </p>
                         </div>
                       </div>

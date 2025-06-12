@@ -39,10 +39,24 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (showForm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showForm]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/admin/categories', {
+        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -314,7 +328,7 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
       });
 
       try {
-        const response = await fetch('http://localhost:8080/api/admin/categories/delete-many', {
+        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/delete-many', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -547,26 +561,33 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
       )}
 
       {showForm && (
-        <div className="category-panel__modal">
-          <div className="category-panel__modal-overlay" onClick={() => {
+        <>
+          <div className="category-form__overlay" onClick={() => {
             setShowForm(false);
             setEditingCategory(undefined);
             setNewCategoryParentId(null);
-          }} />
-          <div className="category-panel__modal-content">
-            <CategoryForm
-              category={editingCategory}
-              onSubmit={handleFormSubmit}
-              onCancel={() => {
-                setShowForm(false);
-                setEditingCategory(undefined);
-                setNewCategoryParentId(null);
-              }}
-              parentCategories={parentCategories}
-              initialParentId={newCategoryParentId}
-            />
+          }}></div>
+          <div className="category-panel__modal" style={{ zIndex: 9999 }}>
+            <div className="category-panel__modal-overlay" onClick={() => {
+              setShowForm(false);
+              setEditingCategory(undefined);
+              setNewCategoryParentId(null);
+            }} />
+            <div className="category-panel__modal-content">
+              <CategoryForm
+                category={editingCategory}
+                onSubmit={handleFormSubmit}
+                onCancel={() => {
+                  setShowForm(false);
+                  setEditingCategory(undefined);
+                  setNewCategoryParentId(null);
+                }}
+                parentCategories={parentCategories}
+                initialParentId={newCategoryParentId}
+              />
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

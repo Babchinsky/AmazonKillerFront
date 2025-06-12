@@ -57,7 +57,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchProductName = async (productId: string): Promise<string> => {
     try {
-      const response = await fetch(`http://localhost:8080/api/products/${productId}`);
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/products/${productId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -71,7 +71,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchUserDetails = async (userId: string): Promise<{ name: string; email: string }> => {
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/users/${userId}`, {
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/users/${userId}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/reviews', {
+      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/reviews', {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -161,7 +161,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const deleteReview = async (reviewId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/reviews/${reviewId}`, {
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/reviews/${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,

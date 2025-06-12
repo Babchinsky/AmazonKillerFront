@@ -27,6 +27,14 @@ interface ProductResponse {
     quantity: number;
     rowVersion: string;
     concurrencyStamp: string;
+    attributes?: Array<{
+      key: string;
+      value: string;
+    }>;
+    features?: Array<{
+      name: string;
+      description: string;
+    }>;
   }>;
   page: number;
   pageSize: number;
@@ -45,13 +53,38 @@ export const ProductsPanel: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
   const itemsPerPage = 10;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
+        headers: {
+          'Authorization': `Bearer ${ADMIN_TOKEN}`,
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const categoriesFromApi = (data.items || data).map((category: any) => ({
+        id: category.id,
+        name: category.name
+      }));
+      setCategories(categoriesFromApi);
+    } catch (error) {
+      console.error('Ошибка при загрузке категорий:', error);
+    }
+  };
+
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/admin/products', {
+      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products', {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -67,7 +100,7 @@ export const ProductsPanel: React.FC = () => {
       
       const transformedProducts = data.items.map(item => {
         console.log('Raw item from server:', item);
-        return {
+        const transformedProduct = {
           id: item.id,
           name: item.name,
           code: item.code,
@@ -78,12 +111,20 @@ export const ProductsPanel: React.FC = () => {
           categoryId: item.categoryId,
           categoryName: item.categoryName,
           rating: item.rating,
-          details: [],
-          features: [],
+          details: item.attributes ? item.attributes.map(attr => ({
+            key: attr.key,
+            value: attr.value
+          })) : [],
+          features: item.features ? item.features.map(feature => ({
+            title: feature.name,
+            description: feature.description
+          })) : [],
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           rowVersion: item.concurrencyStamp || item.rowVersion
         };
+        console.log('Transformed product:', transformedProduct);
+        return transformedProduct;
       });
 
       setProducts(transformedProducts);
@@ -96,6 +137,7 @@ export const ProductsPanel: React.FC = () => {
   };
 
   useEffect(() => {
+    fetchCategories();
     fetchProducts();
   }, []);
 
@@ -111,13 +153,24 @@ export const ProductsPanel: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = products;
+    let filtered = [...products];
 
-    if (searchQuery) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.code.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      console.log('Searching for:', query);
+      
+      filtered = filtered.filter(product => {
+        const nameMatch = (product.name?.toLowerCase() || '').includes(query);
+        
+        console.log('Product:', {
+          name: product.name,
+          nameMatch
+        });
+        
+        return nameMatch;
+      });
+      
+      console.log('Found products:', filtered.length);
     }
 
     if (selectedCategory) {
@@ -129,12 +182,14 @@ export const ProductsPanel: React.FC = () => {
   }, [products, searchQuery, selectedCategory]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
+    const value = e.target.value;
+    console.log('Search value:', value);
+    setSearchQuery(value);
   };
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch('http://localhost:8080/api/admin/products/delete-many', {
+      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/delete-many', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -202,10 +257,7 @@ export const ProductsPanel: React.FC = () => {
     setCurrentPage(page);
   };
 
-  const uniqueCategories = Array.from(new Set(products.map(p => p.categoryId))).map(id => ({
-    id,
-    name: products.find(p => p.categoryId === id)?.categoryName || 'Unknown category'
-  }));
+  const uniqueCategories = categories;
 
   return (
     <div className="products-panel">
@@ -227,7 +279,7 @@ export const ProductsPanel: React.FC = () => {
                 className={`products-panel__categories-dropdown-button ${showCategoryDropdown ? 'active' : ''}`}
                 onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
               >
-                <span>{selectedCategory ? products.find(p => p.categoryId === selectedCategory)?.categoryName || 'Unknown category' : 'All categories'}</span>
+                <span>{selectedCategory ? categories.find(c => c.id === selectedCategory)?.name || 'All categories' : 'All categories'}</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M2 6L8 11L14 6" stroke="currentColor" strokeWidth="1.5"/>
                 </svg>
@@ -316,7 +368,6 @@ export const ProductsPanel: React.FC = () => {
                       </div>
                       <div className="products-panel__table-cell name">
                         <div className="products-panel__product-name">{product.name}</div>
-                        <div className="products-panel__product-code">{product.code}</div>
                       </div>
                       <div className="products-panel__table-cell category">
                         {product.categoryName}

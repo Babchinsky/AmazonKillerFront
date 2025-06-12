@@ -13,43 +13,62 @@ export const LoginPage: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Инициализируем токены при загрузке компонента
+    console.log('LoginPage mounted - initializing tokens');
     initializeTokens();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('Форма отправлена');
+    console.log('Form submitted');
+    console.log('Email:', email);
+    console.log('Password length:', password.length);
+    
     e.preventDefault();
     try {
-      console.log('Отправка запроса на сервер...');
+      console.log('Preparing login request...');
       let deviceId = localStorage.getItem('deviceId');
       
       if (!deviceId) {
+        console.log('No deviceId found, generating new one');
         deviceId = uuidv4();
         localStorage.setItem('deviceId', deviceId);
+      } else {
+        console.log('Using existing deviceId:', deviceId);
       }
 
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const loginUrl = 'https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/auth/login';
+      console.log('Sending login request to:', loginUrl);
+
+      const requestBody = { email, password, deviceId };
+      console.log('Request body (without password):', { ...requestBody, password: '***' });
+
+      const response = await fetch(loginUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, deviceId })
+        body: JSON.stringify(requestBody)
       });
 
+      console.log('Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Ошибка при входе в систему');
+        const errorText = await response.text();
+        console.error('Login failed. Server response:', errorText);
+        throw new Error(`Login failed: ${response.status} ${errorText}`);
       }
 
       const data = await response.json();
-      console.log('Полученные данные:', data);
+      console.log('Login successful, received tokens');
+      console.log('Access token length:', data.accessToken?.length);
+      console.log('Refresh token length:', data.refreshToken?.length);
+      
       updateTokens(data.accessToken, data.refreshToken);
 
-      // Получаем сохраненный путь или используем путь по умолчанию
       const from = location.state?.from?.pathname || '/admin/users';
+      console.log('Navigating to:', from);
       navigate(from, { replace: true });
     } catch (error) {
-      console.error('Ошибка при входе в систему:', error);
+      console.error('Login error:', error);
     }
   };
 

@@ -43,7 +43,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [expandedFeatures, setExpandedFeatures] = useState<Set<number>>(new Set());
   const [product, setProduct] = useState<Product>(initialProduct);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -57,8 +57,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
   const fetchProductDetails = async () => {
     try {
-      setIsLoading(true);
-      const response = await fetch(`http://localhost:8080/api/products/${initialProduct.id}`, {
+      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -89,8 +88,6 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
       });
     } catch (error) {
       console.error('Error fetching product details:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -116,19 +113,6 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
       day: 'numeric'
     });
   };
-
-  if (isLoading) {
-    return (
-      <div className="product-details-modal">
-        <div className="product-details-modal__overlay" />
-        <div className="product-details-modal__content">
-          <div className="product-details-modal__loading">
-            Loading product details...
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="product-details-modal">

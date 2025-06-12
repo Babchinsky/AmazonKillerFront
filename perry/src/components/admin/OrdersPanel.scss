@@ -151,12 +151,12 @@
   &__order-info {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 40px;
     flex: 1;
   }
 
   &__user-info {
-    min-width: 200px;
+    min-width: 220px;
 
     h3 {
       margin: 0;
@@ -174,20 +174,24 @@
   &__order-meta {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 40px;
     flex: 1;
   }
 
   &__order-id {
+    min-width: 120px;
     font-weight: 500;
     color: #000000;
   }
 
   &__date {
+    min-width: 120px;
     color: #000000;
   }
 
   &__status {
+    min-width: 140px;
+    text-align: center;
     padding: 4px 12px;
     border-radius: 16px;
     font-size: 14px;
@@ -461,14 +465,16 @@
   &__delivery-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 32px;
 
     p {
-      margin: 0 0 8px;
+      margin: 0 0 12px;
       line-height: 1.5;
       color: #000000;
 
       strong {
+        display: inline-block;
+        min-width: 120px;
         color: #000000;
       }
     }

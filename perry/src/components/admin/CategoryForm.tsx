@@ -118,6 +118,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      console.log('New image selected:', {
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size
+      });
+      
       // Сохраняем File объект для последующей отправки
       setImageFile(file);
       
@@ -130,6 +136,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         }
       };
       reader.readAsDataURL(file);
+    } else {
+      console.log('No file selected in handleImageChange');
     }
   };
 
@@ -145,10 +153,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     }
     if (!description.trim()) {
       validationErrors.description = 'Description is required';
-    }
-    // Проверяем изображение только для родительских категорий
-    if (!parentId && !imageFile && !category?.imageUrl) {
-      validationErrors.image = 'Image is required for parent category';
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -172,8 +176,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       }
       // For main categories (parentId is null), we don't send ParentId at all
 
-      // Image только для родительских категорий
-      if (!parentId && imageFile) {
+      // Add image for all categories if available
+      if (imageFile) {
         console.log('Adding image file to FormData:', {
           fileName: imageFile.name,
           fileType: imageFile.type,
@@ -190,7 +194,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       }
       if (category && selectedCategoryId) {
         try {
-          const freshResponse = await fetch(`http://localhost:8080/api/categories/${selectedCategoryId}`, {
+          const freshResponse = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${selectedCategoryId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -222,19 +226,46 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           }
           // For main categories (parentId is null), we don't send ParentId at all
       
-          if (!parentId && imageFile) {
+          if (imageFile) {
+            console.log('Adding image file to FormDataUpdate:', {
+              fileName: imageFile.name,
+              fileType: imageFile.type,
+              fileSize: imageFile.size,
+              lastModified: imageFile.lastModified
+            });
             formDataUpdate.append('Image', imageFile);
           }
+          
+          // Log FormData contents before sending update
+          console.log('FormDataUpdate contents:');
+          for (const [key, value] of formDataUpdate.entries()) {
+            console.log(`${key}:`, value);
+          }
       
-          const response = await fetch(`http://localhost:8080/api/admin/categories/${freshId}`, {
+          console.log(`Sending PUT request to: https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${freshId}`);
+          const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${freshId}`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
+              // Do not set Content-Type header, let the browser set it correctly for FormData with files
             },
             body: formDataUpdate
           });
       
           if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server error response for update:', errorText);
+            try {
+              const errorData = JSON.parse(errorText);
+              console.error('Error details for update:', {
+                status: response.status,
+                statusText: response.statusText,
+                errors: errorData.errors,
+                fullError: errorData
+              });
+            } catch (e) {
+              console.error('Failed to parse error response for update');
+            }
             throw new Error(`PUT failed: ${response.status}`);
           }
       
@@ -252,7 +283,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             updatedAt: new Date().toISOString()
           };
       
+          console.log('Successfully updated category:', updatedCategory);
+          // Clear the form before notifying the parent component
+          setImageFile(null);
+          setImage(updatedCategory.imageUrl);
           onSubmit(updatedCategory);
+          onCancel(); // Close the form
         } catch (err) {
           console.error('Error during update with refetch:', err);
           setErrors({ name: 'Failed to update category (check console)' });
@@ -261,7 +297,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         else {
         // Создание новой категории
         console.log('Sending request to create category with FormData');
-        const response = await fetch('http://localhost:8080/api/admin/categories', {
+        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -298,11 +334,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           updatedAt: new Date().toISOString()
         };
         console.log('Created category with image:', createdCategory);
+        // Clear the form before notifying the parent component
+        setImageFile(null);
+        setImage(createdCategory.imageUrl);
         onSubmit(createdCategory);
+        onCancel(); // Close the form
       }
-
-      resetForm();
-      onCancel();
     } catch (error) {
       console.error('Error submitting category:', error);
       setErrors({ name: 'Failed to save category' });
@@ -435,29 +472,27 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           </div>
         </div>
 
-        {(!parentId || category?.role === 'parent') && (
-          <div className="category-form__field">
-            <label htmlFor="image">Category Image</label>
-            <div className={`category-form__image-upload ${errors.image ? 'error' : ''}`}>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="category-form__image-input"
-              />
-              <label htmlFor="image" className="category-form__image-label">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                {image ? 'Image selected' : 'Upload image'}
-              </label>
-            </div>
-            {errors.image && (
-              <div className="category-form__error-message">{errors.image}</div>
-            )}
+        <div className="category-form__field">
+          <label htmlFor="image">Category Image</label>
+          <div className={`category-form__image-upload ${errors.image ? 'error' : ''}`}>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="category-form__image-input"
+            />
+            <label htmlFor="image" className="category-form__image-label">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15M17 8L12 3M12 3L7 8M12 3V15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              {image ? 'Image selected' : 'Upload image'}
+            </label>
           </div>
-        )}
+          {errors.image && (
+            <div className="category-form__error-message">{errors.image}</div>
+          )}
+        </div>
 
         <div className="category-form__buttons">
           <button
