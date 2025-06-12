@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductDetail, ProductFeature } from '../../types/Product';
 import { ADMIN_TOKEN } from '../../utils/authToken';
 import './ProductDetailsModal.scss';
+import {API_BASE_URL} from "../../config/api.ts";
 
 interface ProductDetailsModalProps {
   product: Product;
@@ -57,7 +58,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
   const fetchProductDetails = async () => {
     try {
-      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/products/${initialProduct.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',

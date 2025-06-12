@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import {API_BASE_URL} from "../config/api.ts";
 
 export let ADMIN_TOKEN = '';
 export let REFRESH_TOKEN = '';
@@ -67,7 +68,7 @@ export const refreshAccessToken = async (): Promise<boolean> => {
       }
     });
 
-    const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/auth/refresh-token', {
+    const response = await fetch(`${API_BASE_URL}/api/auth/refresh-token`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

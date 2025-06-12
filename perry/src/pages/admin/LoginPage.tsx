@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.scss';
 import { updateTokens, initializeTokens } from '../../utils/authToken';
+import {API_BASE_URL} from "../../config/api.ts";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ export const LoginPage: React.FC = () => {
         console.log('Using existing deviceId:', deviceId);
       }
 
-      const loginUrl = 'https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/auth/login';
+      const loginUrl = `${API_BASE_URL}/api/auth/login`;
       console.log('Sending login request to:', loginUrl);
 
       const requestBody = { email, password, deviceId };

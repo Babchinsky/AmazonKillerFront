@@ -3,6 +3,7 @@ import TextInput from '../inputs/TextInput';
 import './CategoryForm.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
 import { Category, CategoryFormData } from '../../types/category';
+import { API_BASE_URL } from '../../config/api';
 
 interface CategoryFormProps {
   category?: Category;
@@ -194,7 +195,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       }
       if (category && selectedCategoryId) {
         try {
-          const freshResponse = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${selectedCategoryId}`, {
+          const freshResponse = await fetch(`${API_BASE_URL}/api/admin/categories/${selectedCategoryId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -242,8 +243,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             console.log(`${key}:`, value);
           }
       
-          console.log(`Sending PUT request to: https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${freshId}`);
-          const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/${freshId}`, {
+          console.log(`Sending PUT request to: ${API_BASE_URL}/api/admin/categories/${freshId}`);
+          const response = await fetch(`${API_BASE_URL}/api/admin/categories/${freshId}`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -297,7 +298,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         else {
         // Создание новой категории
         console.log('Sending request to create category with FormData');
-        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
+        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,

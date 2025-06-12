@@ -3,6 +3,7 @@ import TextInput from '../inputs/TextInput';
 import { Product, ProductDetail, ProductFeature } from '../../types/Product';
 import { ADMIN_TOKEN } from '../../utils/authToken';
 import './ProductForm.scss';
+import {API_BASE_URL} from "../../config/api.ts";
 
 interface ProductFormProps {
   product?: Product;
@@ -141,7 +142,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     if (!initialProduct) return;
 
     try {
-      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -254,7 +255,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     // Если это редактирование, сначала обновим rowVersion
     if (initialProduct) {
       try {
-        const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/admin/products/${initialProduct.id}`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -410,8 +411,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       }
 
       const url = initialProduct
-        ? `https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/${initialProduct.id}`
-        : 'https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products';
+        ? `${API_BASE_URL}/api/admin/products/${initialProduct.id}`
+        : `${API_BASE_URL}/api/admin/products`;
 
       const response = await fetch(url, {
         method: initialProduct ? 'PUT' : 'POST',

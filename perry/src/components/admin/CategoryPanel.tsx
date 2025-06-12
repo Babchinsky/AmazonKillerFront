@@ -5,6 +5,7 @@ import { CategoryForm } from './CategoryForm';
 import './CategoryPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
 import { Category } from '../../types/category';
+import {API_BASE_URL} from "../../config/api.ts";
 
 interface CategoryPanelProps {
   // Добавим пропсы позже при необходимости
@@ -56,7 +57,7 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
+        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -328,7 +329,7 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
       });
 
       try {
-        const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories/delete-many', {
+        const response = await fetch(`${API_BASE_URL}/api/admin/categories/delete-many`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,

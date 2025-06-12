@@ -6,6 +6,7 @@ import { ProductDetailsModal } from './ProductDetailsModal';
 import { Product } from '../../types/Product';
 import './ProductsPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
+import { API_BASE_URL } from '../../config/api';
 
 interface Category {
   id: string;
@@ -60,7 +61,7 @@ export const ProductsPanel: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/categories', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ export const ProductsPanel: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/products`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -189,7 +190,7 @@ export const ProductsPanel: React.FC = () => {
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/products/delete-many', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/products/delete-many`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,

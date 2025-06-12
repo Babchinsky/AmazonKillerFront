@@ -4,6 +4,7 @@ import { ConfirmModal } from '../common/ConfirmModal';
 import { ImageViewer } from '../common/ImageViewer';
 import './ReviewsPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
+import {API_BASE_URL} from "../../config/api.ts";
 
 interface ReviewContent {
   id: string;
@@ -57,7 +58,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchProductName = async (productId: string): Promise<string> => {
     try {
-      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/products/${productId}`);
+      const response = await fetch(`${API_BASE_URL}/api/products/${productId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -71,7 +72,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchUserDetails = async (userId: string): Promise<{ name: string; email: string }> => {
     try {
-      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/users/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/users/${userId}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const fetchReviews = async () => {
     try {
-      const response = await fetch('https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/reviews', {
+      const response = await fetch(`${API_BASE_URL}/api/reviews`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -161,7 +162,7 @@ export const ReviewsPanel: React.FC = () => {
 
   const deleteReview = async (reviewId: string) => {
     try {
-      const response = await fetch(`https://amazonkiller-api.greenriver-0a1c5aba.westeurope.azurecontainerapps.io/api/admin/reviews/${reviewId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/reviews/${reviewId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
