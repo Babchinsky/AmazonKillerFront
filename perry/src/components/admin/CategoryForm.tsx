@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, useMemo, useEffect } from 'react';
 import TextInput from '../inputs/TextInput';
 import './CategoryForm.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
-import { Category, CategoryFormData } from '../../types/category';
+import { Category, CategoryFormData, CategoryPropertyKeys } from '../../types/category';
 import { API_BASE_URL } from '../../config/api';
 
 interface CategoryFormProps {
@@ -38,6 +38,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [propertyKeys, setPropertyKeys] = useState<CategoryPropertyKeys>({
+    propertyKeys: [],
+    activePropertyKeys: []
+  });
 
   // Функция для получения всех ID подкатегорий
   const getChildrenIds = (categoryId: string, categories: Category[]): string[] => {
@@ -73,6 +77,33 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       cat.status !== 'inactive' // категория активна
     );
   }, [category, parentCategories]);
+
+  // Fetch property keys when editing a category
+  useEffect(() => {
+    const fetchPropertyKeys = async () => {
+      if (category) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/admin/categories/${category.id}/property-keys`, {
+            headers: {
+              'Authorization': `Bearer ${ADMIN_TOKEN}`,
+              'Content-Type': 'application/json',
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data: CategoryPropertyKeys = await response.json();
+          setPropertyKeys(data);
+        } catch (error) {
+          console.error('Error fetching property keys:', error);
+        }
+      }
+    };
+
+    fetchPropertyKeys();
+  }, [category]);
 
   const resetForm = () => {
     setName('');
@@ -140,6 +171,18 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     } else {
       console.log('No file selected in handleImageChange');
     }
+  };
+
+  const handlePropertyKeyToggle = (key: string) => {
+    setPropertyKeys(prev => {
+      const isActive = prev.activePropertyKeys.includes(key);
+      return {
+        ...prev,
+        activePropertyKeys: isActive
+          ? prev.activePropertyKeys.filter(k => k !== key)
+          : [...prev.activePropertyKeys, key]
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -225,7 +268,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           if (parentId) {
             formDataUpdate.append('ParentId', parentId);
           }
-          // For main categories (parentId is null), we don't send ParentId at all
+
+          // Add ActivePropertyKeys with indices
+          propertyKeys.activePropertyKeys.forEach((key, index) => {
+            formDataUpdate.append(`ActivePropertyKeys[${index}]`, key);
+          });
       
           if (imageFile) {
             console.log('Adding image file to FormDataUpdate:', {
@@ -285,6 +332,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
           };
       
           console.log('Successfully updated category:', updatedCategory);
+
           // Clear the form before notifying the parent component
           setImageFile(null);
           setImage(updatedCategory.imageUrl);
@@ -494,6 +542,26 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             <div className="category-form__error-message">{errors.image}</div>
           )}
         </div>
+
+        {category && propertyKeys.propertyKeys.length > 0 && (
+          <div className="category-form__field">
+            <label>Property Keys</label>
+            <div className="category-form__property-keys">
+              {propertyKeys.propertyKeys.map(key => (
+                <div key={key} className="category-form__property-key-item">
+                  <label className="category-form__property-key-label">
+                    <input
+                      type="checkbox"
+                      checked={propertyKeys.activePropertyKeys.includes(key)}
+                      onChange={() => handlePropertyKeyToggle(key)}
+                    />
+                    <span>{key}</span>
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="category-form__buttons">
           <button
