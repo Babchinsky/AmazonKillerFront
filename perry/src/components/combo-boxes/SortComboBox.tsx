@@ -1,9 +1,8 @@
 import { useState } from "react";
 import ComboBoxOptionType from "../../types/combo-box-option-type";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import Check from "../../assets/icons/check.svg?react";
-import "./ComboBox.scss";
-import "./SortComboBox.scss";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import CheckIcon from "../../assets/icons/check.svg?react";
+import comboBoxStyles from "./ComboBox.module.scss";
 
 
 interface SortComboBoxProps {
@@ -24,33 +23,32 @@ function SortComboBox(props: SortComboBoxProps) {
   };
 
   return (
-    <div className="small-combo-box-container">
-      <div className="small-combo-box-top-container">
-        <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
+    <div className={comboBoxStyles.smallComboBoxContainer}>
+      <div className={comboBoxStyles.smallComboBoxTopContainer}>
+        <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
           <p>{selectedOption.label}</p>
 
-          <button 
-            className="combo-box-button" 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               setIsFilterOpen(prev => !prev);
             }}
           >
-            <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+            <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
           </button>
         </div>
       </div>
 
       {isFilterOpen && (
-        <div className="small-combo-box-bottom-container">
-          <div className="options-container">
+        <div className={comboBoxStyles.smallComboBoxBottomContainer}>
+          <div className={comboBoxStyles.optionsContainer}>
             {props.options.map(option => (
               <div
                 key={option.id} 
-                className={`${selectedOption.id === option.id ? "selected-option" : "option"}`}
+                className={`${selectedOption.id === option.id ? comboBoxStyles["selectedOption"] : comboBoxStyles["option"]}`}
                 onClick={() => selectOption(option)}
               >
-                <Check className="check-icon" />
+                <CheckIcon className={comboBoxStyles.checkIcon} />
                 {option.label}
               </div>
             ))}

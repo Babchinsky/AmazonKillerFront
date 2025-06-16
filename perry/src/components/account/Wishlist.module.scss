@@ -2,12 +2,12 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-.title-container {
+.titleСontainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  .search-bar-container {
+  .searchBarContainer {
     display: flex;
     gap: 8px;
     padding: 8px 12px;
@@ -15,7 +15,7 @@
     border: 2px solid rgba(var(--main-color-halftone), 0.5);
     border-radius: 4px;
 
-    .search-bar-input {
+    input {
       padding-left: 4px;
       width: 100%;
       font-family: inherit;
@@ -31,8 +31,8 @@
       }
     }
 
-    .search-bar-button {
-      .search-icon {
+    button {
+      .searchIcon {
         height: 24px;
         width: 24px;
 
@@ -45,15 +45,31 @@
   }
 }
 
-.wishlist-container {
+.wishlistContainer {
   display: flex;
-  margin-top: 24px;
+  flex-direction: column;
 
-  .product-card-list {
+  .wishlistList {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     row-gap: 16px;
     column-gap: 5.25px;
     padding: 0px 24px;
+  }
+
+  .wishlistListMessage {
+    margin-top: 9px;
+    padding: 0px 16px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 2%;
+    color: var(--minor-color-text);
+
+    @include desktop {
+      font-size: 18px;
+      line-height: 28px;
+    }
   }
 }

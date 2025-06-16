@@ -2,9 +2,9 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-main {
+.accountMain {
   display: flex;
-  flex-grow: 1;
+  flex: 1;
   padding-top: 76px;
   padding-bottom: 40px;
 
@@ -157,12 +157,11 @@ main {
 
           .rightContainer {
             flex: 1;
-            padding: 0px 0px 36px 0px;
+            padding: 0px 0px 24px 0px;
 
             @include desktop {
               min-width: 650px;
               max-width: 1194px;
-              overflow-y: scroll;
 
               &::-webkit-scrollbar {
                 width: 0px;

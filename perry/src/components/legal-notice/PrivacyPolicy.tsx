@@ -10,7 +10,7 @@ function PrivacyPolicy() {
         <h3>Last updated: May 7, 2024</h3>
       </div>
 
-      <hr className={`${legalDocsStyles.docsDivider} divider`} />
+      <hr className="divider" />
 
       <div className={legalDocsStyles.infoContainer}>
         <div className={legalDocsStyles.info}>

@@ -1,0 +1,167 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.formComboBoxContainer {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background-color: inherit;
+  font-weight: 400;
+  letter-spacing: 2%;
+  color: var(--minor-color-text);
+  user-select: none;
+
+  .contentContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 54px;
+    width: 100%;
+    background-color: inherit;
+
+    @include desktop {
+      height: 61px;
+    }
+
+    .label, .labelError {
+      position: absolute;
+      top: 0px;
+      left: 20px;
+      padding: 0px 4px;
+      background-color: inherit;
+      font-size: 14px;
+      line-height: 18px;
+      pointer-events: none;
+      z-index: 10;
+
+      @include desktop {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .labelError {
+      color: var(--minor-color-destructive);
+    }
+
+    .comboBox {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      bottom: 0px;
+      left: 0px;
+      padding: 12px 20px;
+      width: 100%;
+      background-color: inherit;
+      border: 1.5px solid rgba(var(--main-color-halftone), 0.5);
+      border-radius: 4px;
+      cursor: pointer;
+
+      .default {
+        color: rgba(var(--main-color-halftone), 0.25);
+      }
+
+      button {
+        line-height: 0px;
+
+        .arrowDownIcon {
+          height: 20px;
+          width: 20px;
+          transition: transform 0.2s;
+
+          @include desktop {
+            height: 24px;
+            width: 24px;
+          }
+
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
+          }
+
+          &.arrowDownIconOpen {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+
+    .optionsContainer {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      margin-top: 8px;
+      width: 100%;
+      max-height: 312px;
+      padding: 14.5px 10.5px;
+      background-color: var(--minor-color-object);
+      border: 1.5px solid rgba(var(--main-color-halftone), 0.5);
+      border-radius: 4px;
+      box-shadow: 0px 4px 16px 0px rgba(8, 8, 8, 0.25);
+      overflow-x: auto;
+      z-index: 11;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .hiddenOption {
+        display: none;
+      }
+
+      .option, .selectedOption {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        cursor: pointer;
+
+        .checkIcon {
+          height: 16px;
+          width: 16px;
+
+          @include desktop {
+            height: 24px;
+            width: 24px;
+          }
+
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
+          }
+        }
+      }
+
+      .selectedOption {
+        background-color: var(--minor-color-blue-light);
+        border-radius: 4px;
+        cursor: default;
+
+        .checkIcon {
+          opacity: 1;
+        }
+      }
+
+      .option .checkIcon {
+        opacity: 0;
+      }
+    }
+  }
+
+  .errorMessage {
+    margin-top: 8px;
+    padding: 0px 20px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--minor-color-destructive);
+
+    @include desktop {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+}

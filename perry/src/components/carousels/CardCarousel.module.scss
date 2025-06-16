@@ -4,67 +4,37 @@
 
 .cardCarouselContainer {
   position: relative;
-  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
 
   .cardsWrapContainer, .cardsContainer {
     display: flex;
-    justify-content: center;
-    width: 100%;
   }
 
   .cardsWrapContainer {
+    justify-content: center;
     flex-wrap: wrap;
     gap: 16px;
   }
 
   .cardsContainer {
-    overflow: hidden;
+    overflow-y: hidden;
 
-    @include tablet {
-      overflow: clip;
-      overflow-clip-margin: 12px;
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-    .carouselContainer {
-      width: 100%;
+    .cardContainer {
+      padding: 11px;
 
-      @include tablet {
-        overflow: clip;
-        overflow-clip-margin: 12px;
+      &.categoryCardContainer:not(:last-child), &.productCardContainer:not(:last-child) {
+        margin-right: -6px;
       }
 
-      .carousel {
-        position: relative;
-        display: flex;
-        width: 100%;
-
-        .currentCardsContainer, .nextCardsContainer, .prevCardsContainer {
-          display: flex;
-          width: 100%;
-          height: 100%;
-        }
-
-        .nextCardsContainer, .prevCardsContainer {
-          position: absolute;
-          top: 0px;
-        }
-
-        .prevCardsContainer {
-          left: 0px;
-        }
-
-        .nextCardsContainer {
-          right: 0px;
-        }
-      }
-
-      .productCardsGap, .categoryCardsGap {
-        gap: 16px;
-      }
-
-      .categoryCardsGap {
+      &.categoryCardContainer:not(:last-child) {
         @include tablet {
-          gap: 24px;
+          margin-right: 2px;
         }
       }
     }
@@ -106,9 +76,5 @@
         }
       }
     }
-  }
-
-  .seeAllButton {
-    margin-top: 11px;
   }
 }

@@ -1,7 +1,6 @@
 import { useState } from "react";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import "./ComboBox.scss";
-import "./AppliedFiltersComboBox.scss";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import comboBoxStyles from "./ComboBox.module.scss";
 
 
 interface AppliedFiltersComboBoxProps {
@@ -12,19 +11,18 @@ function AppliedFiltersComboBox(props: AppliedFiltersComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
 
   return (
-    <div className="small-combo-box-container">
-      <div className="small-combo-box-top-container">
-        <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
+    <div className={comboBoxStyles.smallComboBoxContainer}>
+      <div className={comboBoxStyles.smallComboBoxTopContainer}>
+        <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
           <p></p>
 
-          <button 
-            className="combo-box-button" 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               setIsFilterOpen(prev => !prev);
             }}
           >
-            <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+            <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
           </button>
         </div>
       </div>

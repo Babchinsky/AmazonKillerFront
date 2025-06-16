@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../state/store";
+import { setAuthModalOpen, setAuthType } from "../state/auth/auth-slice";
 import MenuHeader from "./popups/menu/MenuHeader";
-import Authentication from "./popups/authentication/Authentication";
+import ShoppingCart from "./popups/commerce/ShoppingCart";
 import MenuIcon from "../assets/icons/menu.svg?react";
 import LogoIcon from "../assets/icons/logo.svg?react";
 import SearchIcon from "../assets/icons/search.svg?react";
 import UserIcon from "../assets/icons/user.svg?react";
 import CartEmptyIcon from "../assets/icons/cart-empty.svg?react";
 import headerStyles from "./Header.module.scss";
-import { useSelector } from "react-redux";
-import { RootState } from "../state/store";
 
 
 interface HeaderProps {
@@ -18,32 +19,40 @@ interface HeaderProps {
 }
   
 function Header(props: HeaderProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
-  const [authType, setAuthType] = useState<"logIn" | "signUp">("logIn");
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isShoppingCartOpen, setIsShoppingCartOpen] = useState<boolean>(false);
   
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state: RootState) => !!state.auth.accessToken);
+  const accessToken = localStorage.getItem("accessToken");
+
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+  const getFormattedCartCount = (count: number) => {
+    return count > 9 ? "9+" : count.toString();
+  }
 
   const userClick = () => {
-    if (isAuthenticated) {
-      navigate("/account");
+    if (accessToken) {
+      navigate("/account?tab=0");
     } 
     else {
-      setIsAuthOpen(true);
+      dispatch(setAuthType("logIn"));
+      dispatch(setAuthModalOpen(true));
     }
   };
 
   const authClick = (type: "logIn" | "signUp") => {
     setIsMenuOpen(false);
 
-    setAuthType(type);
-    setIsAuthOpen(true);
+    dispatch(setAuthType(type));
+    dispatch(setAuthModalOpen(true));
   };
 
   useEffect(() => {
-    const action = isMenuOpen || isAuthOpen ? "add" : "remove";
+    const action = isMenuOpen || isShoppingCartOpen ? "add" : "remove";
     document.body.classList[action]("body-no-scroll");
     document.documentElement.classList[action]("html-no-scroll");
 
@@ -51,13 +60,7 @@ function Header(props: HeaderProps) {
       document.body.classList.remove("body-no-scroll");
       document.documentElement.classList.remove("html-no-scroll");
     };
-  }, [isMenuOpen, isAuthOpen]);
-
-  useEffect(() => {
-    if (!isAuthOpen) {
-      setAuthType("logIn");
-    }
-  }, [isAuthOpen]);
+  }, [isMenuOpen, isShoppingCartOpen]);
 
   return (
     <>
@@ -88,8 +91,13 @@ function Header(props: HeaderProps) {
             </button>
             
             {props.cart && (
-              <button className={headerStyles.cartButton}>
-                <CartEmptyIcon className={`${headerStyles.cartEmptyIcon} main-color-text-icon`} />
+              <button className={headerStyles.cartButton} onClick={() => setIsShoppingCartOpen(true)}>
+                <CartEmptyIcon className={`${headerStyles.cartIcon} main-color-text-icon`} />
+                {cartItemCount > 0 && (
+                  <div className={headerStyles.cartBadge}>
+                    {getFormattedCartCount(cartItemCount)}
+                  </div>
+                )}
               </button>
             )}
           </div>
@@ -103,7 +111,12 @@ function Header(props: HeaderProps) {
           onSignUp={() => authClick("signUp")}
         />
       )}
-      {isAuthOpen && <Authentication type={authType} onClose={() => setIsAuthOpen(false)} />}
+
+      {isShoppingCartOpen && (
+        <ShoppingCart 
+          onClose={() => setIsShoppingCartOpen(false)}
+        />
+      )}
     </>
   );
 }

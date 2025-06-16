@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../state/store";
+import { setAuthModalOpen, setAuthType } from "../../state/auth/auth-slice";
+import { getCategoryById } from "../../state/categories/categories-slice";
+import { getProductById, getProductsByCategory } from "../../state/products/products-slice";
+import { addProductToCart, getCart } from "../../state/cart/cart-slice";
+import { getWishlist, toggleWishlist } from "../../state/wishlist/wishlist-slice";
+import { getReviews } from "../../state/reviews/reviews-slice";
 import CrumbType from "../../types/crumb-type";
-import CategoryType from "../../types/categories/category-type";
-import ProductType from "../../types/products/product-type";
 import ComboBoxOptionType from "../../types/combo-box-option-type";
+import ReviewType from "../../types/account/reviews/review-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
-import Breadcrumb from "../../components/Breadcrumb";
-import Stars from "../../components/Stars";
-import TextButton from "../../components/buttons/Button";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumb";
+import Stars from "../../components/stars/Stars";
+import Button from "../../components/buttons/Button";
 import AboutProductComboBox from "../../components/combo-boxes/AboutProductComboBox";
 import SortComboBox from "../../components/combo-boxes/SortComboBox";
 import CardCarousel from "../../components/carousels/CardCarousel";
@@ -16,21 +23,63 @@ import ProductCard from "../../components/cards/ProductCard";
 import Footer from "../../components/Footer";
 import DefaultImage from "../../assets/images/default.jpg";
 import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../state/store";
 import ArrowRightIcon from "../../assets/icons/arrow-right.svg?react";
 import StarFullIcon from "../../assets/icons/star-full.svg?react";
 import MinusIcon from "../../assets/icons/minus.svg?react";
 import PlusIcon from "../../assets/icons/plus.svg?react";
 import VerifiedIcon from "../../assets/icons/verified.svg?react";
 import productStyles from "./Product.module.scss";
-import { getProductById, getProductsByCategory } from "../../state/products/products-slice";
-import ProductCardType from "../../types/products/product-card-type";
 
 
 function Product() {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
+
+  const isAuthenticated = useSelector((state: RootState) => !!state.auth.accessToken);
+
+  const [quantity, setQuantity] = useState<number>(1);
+
+  const decreaseQuantity = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
+  };
+
+  const increaseQuantity = () => {
+    if (product?.quantity) {
+      setQuantity((prev) => Math.min(product.quantity, prev + 1));
+    }
+  };
+
+  const addToCart = async () => {
+    if (isAuthenticated && product?.id) {
+      await dispatch(addProductToCart({productId: product.id, quantity}));
+      dispatch(getCart());
+    } 
+    else {
+      dispatch(setAuthType("logIn"));
+      dispatch(setAuthModalOpen(true));
+    }
+  };
+
+  const addToWishList = async () => {
+    if (isAuthenticated && product?.id) {
+      await dispatch(toggleWishlist(product.id));
+      dispatch(getWishlist());
+    } 
+    else {
+      dispatch(setAuthType("logIn"));
+      dispatch(setAuthModalOpen(true));
+    }
+  };
+
+  const createReview = () => {
+    if (isAuthenticated) {
+      //
+    } 
+    else {
+      dispatch(setAuthType("logIn"));
+      dispatch(setAuthModalOpen(true));
+    }
+  };
 
   const product = useSelector((state: RootState) => state.products.productById);
   useEffect(() => {
@@ -39,12 +88,8 @@ function Product() {
     }
   }, [dispatch, id]);
 
+  const currentCategory = useSelector((state: RootState) => state.categories.currentCategory);
   const categoryProducts = useSelector((state: RootState) => state.products.categoryProducts);
-  useEffect(() => {
-    if (product?.categoryId) {
-      dispatch(getProductsByCategory(product.categoryId));
-    }
-  }, [dispatch, product?.categoryId]);
 
   const [crumbs, setCrumbs] = useState<CrumbType[]>([]);
 
@@ -53,13 +98,29 @@ function Product() {
   const productImages = product?.imageUrls?.length ? product.imageUrls : [DefaultImage];
   const [mainImageIndex, setMainImageIndex] = useState(0);
 
-  const ratingDistribution = [
-    { stars: 5, percent: 65 },
-    { stars: 4, percent: 16 },
-    { stars: 3, percent: 10 },
-    { stars: 2, percent: 4 },
-    { stars: 1, percent: 5 },
-  ];
+  const productReviews = useSelector((state: RootState) => state.reviews.reviews);
+
+  useEffect(() => {
+    if (product?.id) {
+      dispatch(getReviews({ filters: { productId: product.id } }));
+    }
+  }, [dispatch, product?.id]);
+
+  const getRatingDistribution = (reviews: ReviewType[]) => {
+    const total = reviews.length;
+    const distribution = [1, 2, 3, 4, 5].map((stars) => {
+      const count = reviews.filter((review) => review.rating === stars).length;
+      const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+      return { stars, percent };
+    });
+
+    return distribution.reverse();
+  };
+
+  const ratingDistribution = getRatingDistribution(productReviews);
+
+  const [selectedCommentsFilter, setSelectedCommentsFilter] = useState<number | "all">("all");
+  const filteredReviews = selectedCommentsFilter === "all" ? productReviews : productReviews.filter((r) => r.rating === selectedCommentsFilter);
 
   const sortOptions = [
     { id: "1", label: "Top reviews" },
@@ -69,29 +130,7 @@ function Product() {
 
   const [sortOption, setSortOption] = useState<ComboBoxOptionType>(sortOptions[0]);
 
-  const fillProducts = (products: any) => {
-    if (!products.length) {
-      return [];
-    }
-    
-    const result = [...products];
-    while (result.length < 12) {
-      result.push(...products);
-    }
-    
-    return result.slice(0, 12);
-  };
-  
-  const filteredProducts =
-  categoryProducts.length > 1
-    ? categoryProducts.filter((p) => p.id !== product?.id)
-    : product
-    ? [product]
-    : [];
-
-  const filledProducts = fillProducts(filteredProducts);
-
-  const sameCategoryProductCards = filledProducts.map((product) => (
+  const sameCategoryProductCards = categoryProducts.filter((p) => p.id !== product?.id).map((product) => (
     <ProductCard
       key={product.id}
       link={`/product/${product.id}`}
@@ -99,54 +138,31 @@ function Product() {
       name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
+      quantity={product.quantity}
       price={product.price}
       discountPercent={product.discountPercent ?? 0}
     />
   ));
 
-  // const saleProductCards = saleProducts.map((product) => (
-  //   <ProductCard
-  //     key={product.id}
-  //     title={product.name}
-  //     image={product.productPics[0]}
-  //     link={`/product/${product.id}`}
-  //     rating={product.rating}
-  //     reviewsCount={product.reviewsCount}
-  //     price={product.price}
-  //     discount={product.discount}
-  //     quantity={product.quantity}
-  //   />
-  // ));
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/products?isTrending=true`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const shuffled = [...data].sort(() => Math.random() - 0.5);
-  //       setSameCategoryProducts(shuffled.slice(0, 12));
-  //     })
-  //     .catch((error) => console.error("Error fetching trending products:", error));
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch(`${apiUrl}/products?discount_gte=1`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const shuffled = [...data].sort(() => Math.random() - 0.5);
-  //       setSaleProducts(shuffled.slice(0, 12));
-  //     })
-  //     .catch((error) => console.error("Error fetching sale products:", error));
-  // }, []);
+  useEffect(() => {
+    if (product?.categoryId) {
+      dispatch(getCategoryById(product.categoryId));
+      dispatch(getProductsByCategory({
+        categoryId: product.categoryId,
+        filters: {},
+      }));
+    }
+  }, [dispatch, product?.categoryId]);
 
   return (
     <div className="page appear-transition">
       <Header searchBar={true} cart={true}></Header>
       
-      <main>
+      <main className={productStyles.productMain}>
         <BackToTopButton />
 
         <section className={productStyles.productSection}>
@@ -205,8 +221,8 @@ function Product() {
                 <div className={productStyles.ratingCodeContainer}>
                   <div className={productStyles.ratingContainer}>
                     <div className={productStyles.ratingStars}>
-                      <Stars count={product?.rating || 0} />
-                      <p>{product?.rating}</p>
+                      <Stars count={Math.floor(product?.rating || 0)} />
+                      <p>{Math.floor(product?.rating || 0)}</p>
                     </div>
 
                     <p className={productStyles.ratingReviews}>{product?.reviewsCount} reviews</p>
@@ -221,12 +237,18 @@ function Product() {
                 <div className={productStyles.aboutProductContainer}>
                   <h3>About product</h3>
                   
-                  <div className={productStyles.comboBoxesContainer}>
-                    <AboutProductComboBox title="Soft fabric" isOpen={true} />
-                    <AboutProductComboBox title="Unique design" isOpen={true} />
-                    <AboutProductComboBox title="Fashion matching" isOpen={true} />
-                    <AboutProductComboBox title="Various occasions" isOpen={true} />
-                  </div>
+                  {product && product.features?.length > 0 && (
+                    <div className={productStyles.comboBoxesContainer}>
+                      {product?.features.map((feature, index) => (
+                        <AboutProductComboBox 
+                          key={index} 
+                          title={feature.name} 
+                          description={feature.description} 
+                          isOpen={true} 
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -259,20 +281,20 @@ function Product() {
                 <div className={productStyles.quantityContainer}>
                   <p>Quantity</p>
                   <div className={productStyles.quantity}>
-                    <button className={productStyles.minusQuantityButton}>
+                    <button className={productStyles.minusQuantityButton} onClick={decreaseQuantity}>
                       <MinusIcon className={productStyles.minusIcon} />
                     </button>
-                    <p>1</p>
-                    <button className={productStyles.plusQuantityButton}>
+                    <p>{quantity}</p>
+                    <button className={productStyles.plusQuantityButton} onClick={increaseQuantity}>
                       <PlusIcon className={productStyles.plusIcon} />
                     </button>
                   </div>
                 </div>
 
                 <div className={productStyles.buttonsContainer}>
-                  <TextButton type="primary" content="Buy now" />
-                  <TextButton type="secondary" content="Add to cart" />
-                  <button>Add to wish list</button>
+                  <Button type="primary" content="Buy now" />
+                  <Button type="secondary" content="Add to cart" onClick={addToCart} />
+                  <Button type="tertiary" content="Add to wish list" onClick={addToWishList} />
                 </div>
               </div>
             </div>
@@ -281,9 +303,16 @@ function Product() {
               <hr className={`${productStyles.productDivider} divider`} />
 
               <h3>Product details</h3>
-              <div className={productStyles.detailsContainer}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dictum dignissim tellus quis porta. Curabitur pulvinar mollis enim, et aliquet magna ullamcorper vel. Etiam ante tortor, condimentum nec suscipit posuere, interdum sit amet libero.
-              </div>
+              {product && product.attributes?.length > 0 && (
+                <div className={productStyles.detailsContainer}>
+                  {product?.attributes.map((attribute, index) => (
+                    <div key={index} className={productStyles.detailContainer}>
+                      <p className={productStyles.title}>{attribute.key}</p>
+                      <p>{attribute.value}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <hr className={`${productStyles.productDivider} divider`} />
 
@@ -293,9 +322,9 @@ function Product() {
                   <div className={productStyles.ratingReviewsContainer}>
                     <div className={productStyles.ratingReviewsLeftContainer}>
                       <p className={productStyles.rating}>
-                        <span>4</span>/5
+                        <span>{Math.floor(product?.rating || 0)}</span>/5
                       </p>
-                      <Stars count={4} />
+                      <Stars count={Math.floor(product?.rating || 0)} />
                       <p>0 reviews</p>
                     </div>
 
@@ -303,11 +332,9 @@ function Product() {
                       {ratingDistribution.map((rating) => (
                         <div key={rating.stars} className={productStyles.statisticsBarContainer}>
                           <p>{rating.stars}</p>
-
                           <div className={productStyles.statisticsBar}>
-                            <div style={{width: `${rating.percent}%`}}></div>
+                            <div style={{ width: `${rating.percent}%` }}></div>
                           </div>
-
                           <p className={productStyles.statisticsPercent}>{rating.percent}%</p>
                         </div>
                       ))}
@@ -326,27 +353,44 @@ function Product() {
                     </Link>
                   </div>
 
-                  <hr className={`${productStyles.customerReviewsDivider} divider`} />
+                  {/* <hr className={`${productStyles.customerReviewsDivider} divider`} />
 
                   <div className={productStyles.frequentTagsContainer}>
                     <p>Frequent tags</p>
                     <div className={productStyles.tagsContainer}>
                       <button>Tag</button>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className={productStyles.customerReviewsRightContainer}>
                   <div className={productStyles.filterSortReviewContainer}>
                     <div className={productStyles.filtersContainer}>
-                      <button className={productStyles.selectedfilterButton}>
+                      <button
+                        className={
+                          selectedCommentsFilter === "all"
+                            ? productStyles.selectedfilterButton
+                            : productStyles.filterButton
+                        }
+                        onClick={() => setSelectedCommentsFilter("all")}
+                      >
                         <span>All</span>
                       </button>
 
-                      <button className={productStyles.filterButton}>
-                        <span>5</span>
-                        <StarFullIcon className={productStyles.starFullIcon} />
-                      </button>
+                      {ratingDistribution.filter((r) => r.percent > 0).map(({ stars }) => (
+                        <button
+                          key={stars}
+                          className={
+                            selectedCommentsFilter === stars
+                              ? productStyles.selectedfilterButton
+                              : productStyles.filterButton
+                          }
+                          onClick={() => setSelectedCommentsFilter(stars)}
+                        >
+                          <span>{stars}</span>
+                          <StarFullIcon className={productStyles.starFullIcon} />
+                        </button>
+                      ))}
                     </div>
 
                     <SortComboBox 
@@ -358,7 +402,7 @@ function Product() {
 
                   <hr className={`${productStyles.customerReviewsDivider} divider`} />
 
-                  <button className={productStyles.createReviewButton}>
+                  <button className={productStyles.createReviewButton} onClick={createReview}>
                     <PlusIcon className={productStyles.plusIcon} />
                     <span>Create review</span>
                   </button>
@@ -373,8 +417,8 @@ function Product() {
 
               <div className={productStyles.sameCategoryContainer}>
                 <div className={productStyles.titleContainer}>
-                  <h2>More casual women's dresses</h2>
-                  <Link className={`${productStyles.seeAllLink} link`} to="/">
+                  <h2>More {currentCategory?.name.toLowerCase() ?? "products"}</h2>
+                  <Link className={`${productStyles.seeAllLink} link`} to={`/products/${currentCategory?.name.toLowerCase().replace(/\s+/g, "-")}?id=${currentCategory?.id}`}>
                     <span>See all</span>
                     <ArrowRightIcon className={productStyles.arrowRightIcon} />
                   </Link>

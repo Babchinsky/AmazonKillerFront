@@ -3,14 +3,33 @@
 
 
 .accountDataContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 
-  .accountDataDivider {
-    margin-top: 14px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
-    @include desktop {
-      margin-top: 16px;
+  .accountDataTopContainer {
+    position: sticky;
+    top: 0px;
+    background-color: var(--main-color-text);
+    z-index: 40;
+
+    .accountDataDivider {
+      margin-top: 14px;
+
+      @include desktop {
+        margin-top: 16px;
+        margin-bottom: 24px;
+      }
     }
+  }
+
+  .accountDataBottomContainer {
+    height: 100%;
+    width: 100%;
   }
 }

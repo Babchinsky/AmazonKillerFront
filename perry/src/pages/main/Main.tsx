@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
 import { getCategories } from "../../state/categories/categories-slice";
-import { getProducts, getSaleProducts, getTrendingProducts } from "../../state/products/products-slice";
+import { getProducts } from "../../state/products/products-slice";
+import { setAuthModalOpen, setAuthType } from "../../state/auth/auth-slice";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
 import CategoryType from "../../types/categories/category-type";
-import ProductType from "../../types/products/product-type";
 import ProductCardType from "../../types/products/product-card-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
@@ -35,52 +35,17 @@ function Main() {
   const bannerAuth = isTablet ? BannerAuthDesktopImage : BannerAuthMobileImage;
 
   const categories = useSelector((state: RootState) => state.categories.categories);
-  
-  const fillCategories = (categories: CategoryType[]) => {
-    if (!categories.length) {
-      return [];
-    }
-    
-    const result = [...categories];
-    while (result.length < 12) {
-      result.push(...categories);
-    }
-    
-    return result.slice(0, 12);
-  };
-  
-  const categoriesFilled = fillCategories([...categories].sort(() => Math.random() - 0.5));
-
-  const categoryCards = categoriesFilled.map((category, index) => (
+  const categoryCards = [...categories].map((category) => (
     <CategoryCard
       key={category.id}
-      link={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}
-      name={`${category.name} #${index}`}
-      imageUrl={DefaultImage}
+      link={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?CategoryId=${category.id}`}
+      name={category.name}
+      imageUrl={category.imageUrl ? (category.imageUrl.trim().length !== 0 ? category.imageUrl : DefaultImage) : DefaultImage}
     />
   ));
 
   const products = useSelector((state: RootState) => state.products.products);
-  // const trendingProducts = useSelector((state: RootState) => state.products.trendingProducts);
-  // const saleProducts = useSelector((state: RootState) => state.products.saleProducts);
-
-  const fillProducts = (products: ProductCardType[]) => {
-    if (!products.length) {
-      return [];
-    }
-    
-    const result = [...products];
-    while (result.length < 12) {
-      result.push(...products);
-    }
-    
-    return result.slice(0, 12);
-  };
-
-  const trendingProductsFilled = fillProducts([...products].sort(() => Math.random() - 0.5));
-  const saleProductsFilled = fillProducts([...products].sort(() => Math.random() - 0.5));
-
-  const trendingProductCards = trendingProductsFilled.map((product) => (
+  const trendingProductCards = [...products].map((product) => (
     <ProductCard
       key={product.id}
       link={`/product/${product.id}`}
@@ -88,12 +53,12 @@ function Main() {
       name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
+      quantity={product.quantity}
       price={product.price}
       discountPercent={product.discountPercent ?? 0}
     />
   ));
-
-  const saleProductCards = saleProductsFilled.map((product) => (
+  const saleProductCards = [...products].map((product) => (
     <ProductCard
       key={product.id}
       link={`/product/${product.id}`}
@@ -101,10 +66,34 @@ function Main() {
       name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
+      quantity={product.quantity}
       price={product.price}
       discountPercent={product.discountPercent ?? 0}
     />
   ));
+
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state: RootState) => !!state.auth.accessToken);
+
+  const clickSignUp = () => {
+    if (isAuthenticated) {
+      navigate("/account?tab=0");
+    } 
+    else {
+      dispatch(setAuthType("signUp"));
+      dispatch(setAuthModalOpen(true));
+    }
+  }
+
+  const clickLogIn = () => {
+    if (isAuthenticated) {
+      navigate("/account?tab=0");
+    } 
+    else {
+      dispatch(setAuthType("logIn"));
+      dispatch(setAuthModalOpen(true));
+    }
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,8 +102,6 @@ function Main() {
   useEffect(() => {
     dispatch(getCategories());
     dispatch(getProducts());
-    // dispatch(getTrendingProducts());
-    // dispatch(getSaleProducts());
   }, [dispatch]);
 
   return (
@@ -169,6 +156,14 @@ function Main() {
             </div>
 
             <CardCarousel cards={saleProductCards} isWrapped={true} />
+
+            <div className={mainStyles.seeAllButtonContainer}>
+              <Button
+                type="secondary"
+                content="See all"
+                linkTo="/"
+              />
+            </div>
           </div>
 
           <hr className="divider"></hr>
@@ -187,8 +182,8 @@ function Main() {
               </div>
               
               <div className={mainStyles.buttonsContainer}>
-                <Button type="primary" content="Sign up" />
-                <Button className={mainStyles.logInButton} type="secondary" content="Log in" />
+                <Button type="primary" content="Sign up" onClick={clickSignUp} />
+                <Button className={mainStyles.logInButton} type="secondary" content="Log in" onClick={clickLogIn} />
               </div>
             </div>
           </div>

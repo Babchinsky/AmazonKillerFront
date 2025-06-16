@@ -3,12 +3,16 @@ import { useForm } from "react-hook-form";
 import { AppDispatch } from "../../../state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpNameFormType, signUpNameFormSchema } from "../../../schemes/sign-up-schema";
-import TextInput from "../../inputs/TextInput";
-import TextButton from "../../buttons/Button";
-import "./Authentication.scss";
+import { registerComplete } from "../../../state/auth/auth-slice";
+import FormInput from "../../inputs/FormInput";
+import Button from "../../buttons/Button";
+import authenticationStyles from "./Authentication.module.scss";
 
 
 interface NameFormProps {
+  email: string;
+  code: string;
+  deviceId: string;
   onContinue: () => void;
 }
 
@@ -25,26 +29,33 @@ function NameForm(props: NameFormProps) {
   });
 
   const submitForm = async (data: SignUpNameFormType) => {
-    // try {
-    //   await dispatch(
-    //     registerFinish({ email, firstName: data.firstName, lastName: data.lastName })
-    //   ).unwrap();
-    //   props.onContinue();
-    // } 
-    // catch (error: any) {
-    //   alert(`Error: ${error.message ?? JSON.stringify(error)}`);
-    // }
+    try {
+      await dispatch(
+        registerComplete({
+          email: props.email,
+          code: props.code,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          deviceId: props.deviceId
+        })
+      ).unwrap();
+
+      props.onContinue();
+    } 
+    catch (error: any) {
+      alert(`Error: ${error.message ?? JSON.stringify(error)}`);
+    }
   };
 
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit(submitForm)} noValidate>
-      <div className="auth-form-top-container">
-        <h3 className="title">Finishing touches</h3>
-        <p className="subtitle">Enter your first and last name</p>
+    <form className={authenticationStyles.authFormContainer} onSubmit={handleSubmit(submitForm)} noValidate>
+      <div className={authenticationStyles.authFormTopContainer}>
+        <h3>Finishing touches</h3>
+        <p className={authenticationStyles.subtitle}>Enter your first and last name</p>
       </div>
 
-      <div className="auth-form-middle-container">
-        <TextInput
+      <div className={authenticationStyles.authFormMiddleContainer}>
+        <FormInput
           type="text"
           title="First name"
           placeholder="Enter your first name"
@@ -53,7 +64,7 @@ function NameForm(props: NameFormProps) {
           errorMessage={errors.firstName?.message}
         />
 
-        <TextInput
+        <FormInput
           type="text"
           title="Last name"
           placeholder="Enter your last name"
@@ -63,8 +74,8 @@ function NameForm(props: NameFormProps) {
         />
       </div>
     
-      <div className="auth-form-bottom-container">
-        <TextButton className="auth-button" type={"primary"} content="Create account" />
+      <div className={authenticationStyles.authFormBottomContainer}>
+        <Button className={authenticationStyles.authButton} type="primary" content="Create account" />
       </div>
     </form>
   );

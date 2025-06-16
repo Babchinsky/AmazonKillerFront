@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import TextButton from "../buttons/Button";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import "./ComboBox.scss";
-import "./PriceComboBox.scss";
+import { useEffect, useRef, useState } from "react";
+import Button from "../buttons/Button";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import comboBoxStyles from "./ComboBox.module.scss";
+import priceComboBoxStyles from "./PriceComboBox.module.scss";
 
 
 interface PriceComboBoxProps {
@@ -18,6 +18,8 @@ function PriceComboBox(props: PriceComboBoxProps) {
   const [minPrice, setMinPrice] = useState<number>(props.minPrice);
   const [maxPrice, setMaxPrice] = useState<number>(props.maxPrice);
   const minGap = 1;
+
+  const trackRef = useRef<HTMLSpanElement>(null);
   
   const changePriceInput = (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
     const value = Number(e.target.value);
@@ -73,53 +75,53 @@ function PriceComboBox(props: PriceComboBoxProps) {
   };
 
   useEffect(() => {
-    const priceSliderTrack = document.querySelector<HTMLElement>(".price-slider-track");
-  
-    if (priceSliderTrack) {
-      priceSliderTrack.style.left = String(((minPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100) + "%";
-      priceSliderTrack.style.right = String(100 - ((maxPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100) + "%";
+    if (trackRef.current) {
+      trackRef.current.style.left =
+        ((minPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100 + "%";
+
+      trackRef.current.style.right =
+        100 - ((maxPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100 + "%";
     }
   }, [minPrice, maxPrice]);
 
   return (
-    <div className="filter-combo-box-container">
-      <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
+    <div className={comboBoxStyles.comboBoxContainer}>
+      <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
         <p>{props.title}</p>
 
-        <button 
-          className="filter-combo-box-button" 
+        <button
           onClick={(e) => {
             e.stopPropagation();
             setIsFilterOpen(prev => !prev);
           }}
         >
-          <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+          <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
         </button>
       </div>
 
       {isFilterOpen && (
-        <div className="price-container">
-          <div className="price-top-container">
-            <div className="price-input-container">
+        <div className={priceComboBoxStyles.priceContainer}>
+          <div className={priceComboBoxStyles.priceTopContainer}>
+            <div className={priceComboBoxStyles.priceInputContainer}>
               <input
+                className={priceComboBoxStyles.priceInput}
                 type="number"
                 value={minPrice}
-                className="price-input"
                 onChange={(e) => changePriceInput(e, "min")}
               />
 
-              <hr className="range-divider" />
+              <hr />
 
               <input
+                className={priceComboBoxStyles.priceInput}
                 type="number"
                 value={maxPrice}
-                className="price-input"
                 onChange={(e) => changePriceInput(e, "max")}
               />
             </div>
 
-            <TextButton
-              className="save-button"
+            <Button
+              className={priceComboBoxStyles.saveButton}
               type="primary"
               content="Save"
               onClick={() => {
@@ -128,24 +130,24 @@ function PriceComboBox(props: PriceComboBoxProps) {
             />
           </div>
 
-          <div className="price-bottom-container">
-            <div className="price-slider-container">
-              <span className="price-slider-track"></span>
+          <div className={priceComboBoxStyles.priceBottomContainer}>
+            <div className={priceComboBoxStyles.priceSliderContainer}>
+              <span ref={trackRef} className={priceComboBoxStyles.sliderTrack}></span>
               <input
+                className={priceComboBoxStyles.sliderMin}
                 type="range"
                 min={props.minPrice}
                 max={props.maxPrice}
                 value={minPrice}
                 onChange={(e) => changePriceSlider(e, "min")}
-                className="price-slider-min"
               />
               <input
+                className={priceComboBoxStyles.sliderMax}
                 type="range"
                 min={props.minPrice}
                 max={props.maxPrice}
                 value={maxPrice}
                 onChange={(e) => changePriceSlider(e, "max")}
-                className="price-slider-max"
               />
             </div>
           </div>

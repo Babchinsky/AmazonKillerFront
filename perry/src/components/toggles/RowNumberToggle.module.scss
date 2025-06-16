@@ -1,0 +1,40 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.toggleContainer {
+  display: flex;
+
+  .toggleLeftButton, .toggleRightButton {
+    padding: 12px 18px;
+    height: fit-content;
+    width: fit-content;
+    background-color: var(--minor-color-object);
+    transition: 0.2s;
+    cursor: pointer;
+
+    .productQuantityIcon {
+      height: 24px;
+      width: 24px;
+    }
+  }
+
+  .toggleLeftButton {
+    border-top: 2px solid var(--minor-color-text);
+    border-left: 2px solid var(--minor-color-text);
+    border-bottom: 2px solid var(--minor-color-text);
+    border-radius: 4px 0px 0px 4px;
+  }
+
+  .toggleRightButton {
+    border-top: 2px solid var(--minor-color-text);
+    border-right: 2px solid var(--minor-color-text);
+    border-bottom: 2px solid var(--minor-color-text);
+    border-radius: 0px 4px 4px 0px;
+  }
+
+  .toggleActiveButton {
+    background-color: var(--main-color-primary);
+    border-color: var(--main-color-primary);
+  }
+}

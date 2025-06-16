@@ -1,8 +1,17 @@
-import TextButton from "../../buttons/Button";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../state/store";
+import { getCart, removeProductFromCart, updateProductQuantity } from "../../../state/cart/cart-slice";
+import Button from "../../buttons/Button";
+import DefaultImage from "../../../assets/images/default.jpg";
 import CartEmpty from "../../../assets/icons/cart-empty.svg?react";
-import Close from "../../../assets/icons/close.svg?react";
-import "./Commerce.scss";
-import "./ShoppingCart.scss";
+import CloseIcon from "../../../assets/icons/close.svg?react";
+import TrashcanIcon from "../../../assets/icons/trashcan.svg?react";
+import MinusIcon from "../../../assets/icons/minus.svg?react";
+import PlusIcon from "../../../assets/icons/plus.svg?react";
+import commerceStyles from "./Commerce.module.scss";
+import shoppingCartStyles from "./ShoppingCart.module.scss";
 
 
 interface ShoppingCartProps {
@@ -10,49 +19,176 @@ interface ShoppingCartProps {
 }
 
 function ShoppingCart(props: ShoppingCartProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  
+  const accessToken = localStorage.getItem("accessToken");
+
+  const cartItems = useSelector((state: RootState) => state.cart.items ?? []);
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
+  const [totalCurrencyMajor, totalCurrencyMinor] = totalPrice.split(".");
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getCart());
+    }
+  }, [dispatch, accessToken]);
+
+  const removeItem = (productId: string) => {
+    dispatch(removeProductFromCart(productId));
+  };
+
+  const decreaseQuantity = (productId: string, currentQuantity: number) => {
+    if (currentQuantity > 1) {
+      dispatch(updateProductQuantity({ productId, quantity: currentQuantity - 1 })).then(() => {
+        dispatch(getCart());
+      });
+    }
+  };
+  
+  const increaseQuantity = (productId: string, currentQuantity: number) => {
+    dispatch(updateProductQuantity({ productId, quantity: currentQuantity + 1 })).then(() => {
+      dispatch(getCart());
+    });
+  };
+
+  const checkout = () => {
+    navigate("/checkout");
+  };
+
   return (
     <>
-      <div className="commerce-overlay" onClick={() => props.onClose()}></div>
+      <div className={commerceStyles.overlay} onClick={props.onClose}></div>
 
-      <div className="commerce-container">
-        <div className="commerce-content-container">
-          <div className="commerce-content-top-container">
-            <div className="title-container">
-              <CartEmpty className="cart-empty-icon" />
-              <h3 className="title">Shopping Cart</h3>
+      <div className={commerceStyles.commerceContainer}>
+        <div className={commerceStyles.commerce}>
+          <div className={commerceStyles.contentContainer}>
+            <div className={commerceStyles.contentTopContainer}>
+              <div className={commerceStyles.titleBarContainer}>
+                <div className={commerceStyles.titleContainer}>
+                  <CartEmpty className={commerceStyles.cartIcon} />
+                  <h3>Shopping Cart</h3>
+                </div>
+    
+                <button onClick={props.onClose}>
+                  <CloseIcon className={commerceStyles.closeIcon} />
+                </button>
+              </div>
 
-              <button className="close-button">
-                <Close className="close-icon" />
-              </button>
+              <hr className={`${commerceStyles.contentDivider} divider`} />
             </div>
+  
+            <div className={commerceStyles.contentScrollableContainer}>
+              <div className={commerceStyles.contentMiddleContainer}>    
+                {cartItems.length > 0 ? (
+                  <div className={commerceStyles.itemListContainer}>
+                    {cartItems.map((item, index) => (
+                      <div key={index} className={commerceStyles.itemContainer}>
+                        <div>
+                          <img alt={item.name} src={item.imageUrl || DefaultImage} />
+                        </div>
+                        
+                        <div className={commerceStyles.itemDataContainer}>
+                          <div className={commerceStyles.itemDataTopContainer}>
+                            <p>{item.name}</p>
+                            <button onClick={() => removeItem(item.productId)}>
+                              <TrashcanIcon className={commerceStyles.trashcanIcon} />
+                            </button>
+                          </div>
+  
+                          <div className={commerceStyles.itemDataBottomContainer}>
+                            <div className={shoppingCartStyles.quantity}>
+                              <button className={shoppingCartStyles.minusQuantityButton} onClick={() => decreaseQuantity(item.productId, item.quantity)}>
+                                <MinusIcon className={shoppingCartStyles.minusIcon} />
+                              </button>
+                              <p>{item.quantity}</p>
+                              <button className={shoppingCartStyles.plusQuantityButton} onClick={() => increaseQuantity(item.productId, item.quantity)}>
+                                <PlusIcon className={shoppingCartStyles.plusIcon} />
+                              </button>
+                            </div>
+  
+                            <div className={commerceStyles.itemPriceContainer}>
+                              {(() => {
+                                const totalItemPrice = (item.price * item.quantity).toFixed(2);
+                                const [currencyMajor, currencyMinor] = item.price.toFixed(2).split(".");
+                                const [totalItemCurrencyMajor, totalItemCurrencyMinor] = totalItemPrice.split(".");
+  
+                                return (
+                                  <>
+                                    <div className={commerceStyles.totalItemPriceContainer}>
+                                      <p className={commerceStyles.price}>
+                                        <span className={commerceStyles.currency}>$</span>
+                                        <span>{totalItemCurrencyMajor}</span>
+                                        <span className={commerceStyles.currencyMinor}>{totalItemCurrencyMinor}</span>
+                                      </p>
+                                    </div>
+  
+                                    <div className={commerceStyles.itemQuantityPriceContainer}>
+                                      <p className={commerceStyles.price}>
+                                        <span className={commerceStyles.quantity}>{item.quantity}</span>
+                                        <span className={commerceStyles.x}>x</span>
+                                        <span className={commerceStyles.currency}>$</span>
+                                        <span>{currencyMajor}</span>
+                                        <span className={commerceStyles.currencyMinor}>{currencyMinor}</span>
+                                      </p>
+                                    </div>
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={commerceStyles.itemListMessageContainer}>
+                    <h3>{accessToken ? "No items added" : "Not logged in"}</h3>
+                    <p>{accessToken ? "Browse to find your perfect product :)" : "Log in to enjoy the best experience on PERRY"}</p>
+                  </div>
+                )}
+              </div>
+    
+              <div className={commerceStyles.contentBottomContainer}>
+                {cartItems.length > 0 && (
+                  <div>
+                    <hr className="divider" />
+    
+                    <div className={commerceStyles.contentDataContainer}>
+                      <Button type="secondary" content="Continue shopping" onClick={props.onClose} />
+    
+                      <div className={commerceStyles.totalContainer}>
+                        <div className={commerceStyles.totalDataContainer}>
+                          <p>Total:</p>
+                          <div className={commerceStyles.totalPriceContainer}>
+                            <p className={commerceStyles.price}>
+                              <span className={commerceStyles.currency}>$</span>
+                              <span>{totalCurrencyMajor}</span>
+                              <span className={commerceStyles.currencyMinor}>{totalCurrencyMinor}</span>
+                            </p>
+                          </div>
+                        </div>
 
-            <hr className="divider" />
-
-            {/* <div>
-              <h3>No items added</h3>
-              <p>Browse to find your perfect product :)</p>
-            </div> */}
-            {/* <div>
-              <h3>Not logged in</h3>
-              <p>Log in to enjoy the best experience on PERRY</p>
-            </div> */}
-          </div>
-
-          <div className="commerce-content-bottom-container">
-            <h3 className="title">Suggestions</h3>
-
-            <div>
-
+                        <Button
+                          className={shoppingCartStyles.shoppingCartButton}
+                          type="primary"
+                          content="Checkout"
+                          onClick={checkout}
+                        />
+                      </div>                 
+                    </div>
+                    
+                    <hr className="divider" />
+                  </div>
+                )}
+                
+                <h3>{cartItems.length > 0 ? "You might also like" : "Suggestions"}</h3>
+    
+                <div>
+    
+                </div>
+              </div>
             </div>
-          </div>
-
-
-
-          <p className="center-description">You will log out of your account on this device.</p>
-
-          <div className="change-settings-buttons-container">
-            <TextButton className="change-settings-button" type="secondary" content="Cancel" onClick={() => props.onClose()} />
-            <TextButton className="change-settings-button" type="primary" content="Log out" />
           </div>
         </div>
       </div>

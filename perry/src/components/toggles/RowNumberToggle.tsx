@@ -1,36 +1,40 @@
-import { useState } from "react";
-import ProductQuantity3 from "../../assets/icons/product-quantity-3.svg?react";
-import ProductQuantity5 from "../../assets/icons/product-quantity-5.svg?react";
-import "./RowNumberToggle.scss";
+import ProductQuantity3Icon from "../../assets/icons/product-quantity-3.svg?react";
+import ProductQuantity5Icon from "../../assets/icons/product-quantity-5.svg?react";
+import rowNumberToggleStyles from "./RowNumberToggle.module.scss";
 
 
 interface RowNumberToggleProps {
   className?: string;
+  side: "left" | "right";
   onToggleChange?: (side: "left" | "right") => void;
 }
 
 function RowNumberToggle(props: RowNumberToggleProps) {
-  const rowNumberToggleClass = `row-number-toggle-container ${props.className}`.trim();
-  const [active, setActive] = useState<string>("left");
-
+  const rowNumberToggleClass = `${rowNumberToggleStyles.toggleContainer} ${props.className}`.trim();
+  
   const handleToggle = (side: "left" | "right") => {
-    setActive(side);
-    props.onToggleChange?.(side);
+    if (props.side !== side) {
+      props.onToggleChange?.(side);
+    }
   };
 
   return (
     <div className={rowNumberToggleClass}>
       <button
-        className={`row-number-toggle-left-button ${active === "left" ? "row-number-toggle-active-button" : ""}`}
+        className={`${rowNumberToggleStyles.toggleLeftButton} ${
+          props.side === "left" ? rowNumberToggleStyles.toggleActiveButton : ""
+        }`}
         onClick={() => handleToggle("left")}
       >
-        <ProductQuantity3 className="product-quantity-icon" />
+        <ProductQuantity3Icon className={rowNumberToggleStyles.productQuantityIcon} />
       </button>
       <button
-        className={`row-number-toggle-right-button ${active === "right" ? "row-number-toggle-active-button" : ""}`}
+        className={`${rowNumberToggleStyles.toggleRightButton} ${
+          props.side === "right" ? rowNumberToggleStyles.toggleActiveButton : ""
+        }`}
         onClick={() => handleToggle("right")}
       >
-        <ProductQuantity5 className="product-quantity-icon" />
+        <ProductQuantity5Icon className={rowNumberToggleStyles.productQuantityIcon} />
       </button>
     </div>
   );

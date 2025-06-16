@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
-import CrumbType from "../../types/crumb-type";
 import Header from "../../components/Header";
-import Breadcrumb from "../../components/Breadcrumb";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumb";
 import TermsAndConditions from "../../components/legal-notice/TermsAndConditions";
 import LicenseAgreement from "../../components/legal-notice/LicenseAgreement";
 import PrivacyPolicy from "../../components/legal-notice/PrivacyPolicy";
@@ -24,17 +23,17 @@ function LegalNotice() {
 
   const content = useRef<HTMLDivElement>(null);
 
-  const [crumbs, setCrumbs] = useState<CrumbType[]>([
+  const crumbs = [
     { name: "Home", path: "/" },
     { name: "Legal notice", path: "/legal-notice" }
-  ]);
+  ];
 
   const selectTab = (index: number) => {
     setCurrentTab(index);
     setSearchParams({ tab: index.toString() });
   };
 
-  const clickBack = () => {
+  const goBack = () => {
     setCurrentTab(-1);
     setSearchParams();
   };
@@ -76,15 +75,15 @@ function LegalNotice() {
     <div className="page appear-transition">
       <Header searchBar={true} cart={true}></Header>
 
-      <main>
+      <main className={legalNoticeStyles.legalNoticeMain}>
         <section className={legalNoticeStyles.legalNoticeSection}>
           <div className={legalNoticeStyles.legalNoticeContainer}>
-            <div className={legalNoticeStyles.topContainer}>
+            <div className={legalNoticeStyles.legalNoticeTopContainer}>
               {currentTab === -1 ? (
                 <Breadcrumb className={legalNoticeStyles.breadcrumb} crumbs={crumbs} />
               ) : (
                 <div className={legalNoticeStyles.backButtonContainer}>
-                  <button onClick={clickBack}>
+                  <button onClick={goBack}>
                     <ArrowLeftIcon className={legalNoticeStyles.arrowLeftIcon} />
                     <span>Back</span>
                   </button>
@@ -92,10 +91,10 @@ function LegalNotice() {
               )}
             </div>
 
-            <div className={legalNoticeStyles.bottomContainer}>
+            <div className={legalNoticeStyles.legalNoticeBottomContainer}>
               <div className={legalNoticeStyles.contentContainer}>
                 {(isDesktop || currentTab === -1) && (
-                  <div className={legalNoticeStyles.leftContainer}>
+                  <div className={legalNoticeStyles.contentLeftContainer}>
                     <h3>Legal notice</h3>
                     <div className={legalNoticeStyles.tabsContainer}>
                       <button className={`${currentTab === 0 ? legalNoticeStyles.selectedTab : legalNoticeStyles.tab}`} onClick={() => selectTab(0)}>Terms and conditions</button>
@@ -110,7 +109,7 @@ function LegalNotice() {
                 )}
 
                 {currentTab !== -1 && (
-                  <div className={legalNoticeStyles.rightContainer} ref={content}>
+                  <div className={legalNoticeStyles.contentRightContainer} ref={content}>
                     {currentTab === 0 && <TermsAndConditions />}
                     {currentTab === 1 && <LicenseAgreement />}
                     {currentTab === 2 && <PrivacyPolicy />}

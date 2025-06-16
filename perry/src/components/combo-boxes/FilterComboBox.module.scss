@@ -1,0 +1,56 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.searchBarContainer {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  width: 100%;
+  background-color: var(--minor-color-object);
+  border: 2px solid rgba(var(--main-color-halftone), 0.5);
+  border-radius: 4px;
+
+  button {
+    .searchIcon {
+      height: 24px;
+      width: 24px;
+
+      path {
+        stroke-width: 1.5px;
+        stroke: var(--minor-color-text);
+      }
+    }
+  }
+
+  input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 2%;
+    color: var(--minor-color-text);
+
+    @include desktop {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+}
+
+.optionsContainer {
+  .optionsGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 56px);
+    gap: 8px;
+    width: 100%;
+
+    .option {
+      height: 100%;
+      width: 100%;
+      aspect-ratio: 1/1;
+      border: 1.5px solid rgba(var(--main-color-halftone), 0.5);
+      border-radius: 4px;
+    }
+  }
+}

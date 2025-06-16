@@ -2,9 +2,7 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-main {
-  display: flex;
-  flex-grow: 1;
+.legalNoticeMain {
   padding-top: 76px;
   padding-bottom: 40px;
 
@@ -28,14 +26,13 @@ main {
       gap: 12px;
       height: 100%;
       width: 100%;
-      // color: var(--minor-color-text);
 
       @include desktop {
         flex-direction: row;
         justify-content: center;
       }
 
-      .topContainer, .bottomContainer {
+      .legalNoticeTopContainer, .legalNoticeBottomContainer {
         .breadcrumb, .backButtonContainer, .contentContainer {
           padding: 0px 16px;
           
@@ -45,7 +42,7 @@ main {
         }
       }
 
-      .topContainer {
+      .legalNoticeTopContainer {
         display: block;
 
         @include desktop {
@@ -58,7 +55,6 @@ main {
             align-items: center;
             gap: 8px;
             text-align: center;
-            font-weight: 400;
             font-size: 16px;
             line-height: 24px;
             letter-spacing: 2%;
@@ -76,7 +72,7 @@ main {
         }
       }
 
-      .bottomContainer {
+      .legalNoticeBottomContainer {
         .contentContainer {
           @include desktop {
             position: relative;
@@ -84,13 +80,13 @@ main {
             height: 940px;
           }
 
-          .leftContainer, .rightContainer {
+          .contentLeftContainer, .contentRightContainer {
             display: flex;
             flex-direction: column;
             min-height: 480px;
           }
 
-          .leftContainer {
+          .contentLeftContainer {
             gap: 20px;
             padding: 12px;
             width: 100%;
@@ -108,7 +104,6 @@ main {
               .selectedTab, .tab {
                 padding: 16px 12px;
                 width: fit-content;
-                font-weight: 400;
                 font-size: 16px;
                 line-height: 20px;
                 letter-spacing: 2%;
@@ -135,9 +130,9 @@ main {
             width: 1.5px;
           }
 
-          .rightContainer {
+          .contentRightContainer {
             flex: 1;
-            padding: 0px 0px 36px 0px;
+            padding-bottom: 36px;
 
             @include desktop {
               min-width: 650px;

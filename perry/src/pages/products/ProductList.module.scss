@@ -2,11 +2,11 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-main {
+.productListMain {
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-grow: 1;
+  flex: 1;
   padding-top: 76px;
   padding-bottom: 40px;
 

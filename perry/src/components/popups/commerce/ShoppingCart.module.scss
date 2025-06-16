@@ -1,0 +1,29 @@
+.shoppingCartButton {
+  padding: 9.5px 29.5px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px;
+  font-size: 16px;
+
+  .minusQuantityButton, .plusQuantityButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+
+    .minusIcon, .plusIcon {
+      height: 24px;
+      width: 24px;
+
+      path {
+        stroke-width: 1.5px;
+        stroke: var(--minor-color-text);
+      }
+    }
+  }
+}

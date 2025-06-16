@@ -6,6 +6,7 @@ import buttonStyles from "./Button.module.scss";
 interface ButtonProps {
   className?: string;
   type: "primary" | "secondary" | "tertiary" | "destructive";
+  disabled?: boolean;
 	content?: string;
   leftIcon?: React.ReactElement<React.SVGProps<SVGSVGElement>>;
   rightIcon?: React.ReactElement<React.SVGProps<SVGSVGElement>>;
@@ -33,11 +34,14 @@ function Button(props: ButtonProps) {
 
   return (
     props.linkTo ? (
-      <Link className={buttonClass} to={props.linkTo}>
+      <Link 
+        to={props.disabled ? "#" : props.linkTo || "#"}
+        className={buttonClass}
+      >
         {buttonContent}
       </Link>
     ) : (
-      <button className={buttonClass} onClick={props.onClick}>
+      <button disabled={props.disabled} className={buttonClass} onClick={props.onClick}>
         {buttonContent}
       </button>
     )

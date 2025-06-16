@@ -1,0 +1,59 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.comboBoxContainer {
+  gap: 16px;
+  
+  .titleContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 2%;
+
+    @include desktop {
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    button {
+      line-height: 0px;
+
+      .arrowDownIcon {
+        height: 16px;
+        width: 16px;
+        transition: transform 0.2s;
+
+        @include desktop {
+          height: 24px;
+          width: 24px;
+        }
+    
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--minor-color-text);
+        }
+    
+        &.arrowDownIconOpen {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  .optionsContainer {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 2%;
+    color: #4F4F4F;
+
+    @include desktop {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}

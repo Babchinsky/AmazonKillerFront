@@ -10,6 +10,7 @@ type CategoryType = {
   iconName?: string | null;
   status: CategoryStatusType;
   rowVersion: string;
+  filters?: Record<string, string[]>;
 };
 
 export default CategoryType;

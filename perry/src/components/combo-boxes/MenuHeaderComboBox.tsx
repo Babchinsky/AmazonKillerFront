@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { getCategoryIcon } from "../../utils/icons/categoryIconsMap";
 import CategoryType from "../../types/categories/category-type";
-import TextButton from "../buttons/Button";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import Category from "../../assets/icons/category.svg?react";
-import Hanger from "../../assets/icons/hanger.svg?react";
-import "./ComboBox.scss";
-import "./MenuHeaderComboBox.scss";
+import Button from "../buttons/Button";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import CategoryIcon from "../../assets/icons/category.svg?react";
+import menuHeaderComboBoxStyles from "./MenuHeaderComboBox.module.scss";
 
 
 interface MenuHeaderComboBoxProps {
@@ -17,46 +16,55 @@ interface MenuHeaderComboBoxProps {
 function MenuHeaderComboBox(props: MenuHeaderComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
 
+  const getFormattedCategoryName = (str: string) => {
+    return str
+      .split(/[-_\s]/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('');
+  };
+
   return (
-    <div className="menu-header-combo-box-container">
-      <div className="menu-header-combo-box-top-container">
-        <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
-          <div className="product-catalog-container">
-            <Category className="category-icon" />
+    <div className={menuHeaderComboBoxStyles.comboBoxContainer}>
+      <div className={menuHeaderComboBoxStyles.comboBoxTopContainer}>
+        <div className={menuHeaderComboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
+          <div className={menuHeaderComboBoxStyles.productCatalogContainer}>
+            <CategoryIcon className={menuHeaderComboBoxStyles.categoryIcon} />
             <p>Product catalog</p>
           </div>
 
-          <button 
-            className="menu-header-combo-box-button" 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               setIsFilterOpen(prev => !prev);
             }}
           >
-            <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+            <ArrowDownIcon className={`${menuHeaderComboBoxStyles.arrowDownIcon} ${isFilterOpen ? menuHeaderComboBoxStyles["arrowDownIconOpen"] : ""}`} />
           </button>
         </div>
       </div>
 
       {isFilterOpen && (
-        <div className="menu-header-combo-box-bottom-container">
+        <div className={menuHeaderComboBoxStyles.comboBoxBottomContainer}>
           {props.categories.length > 0 && (
-            <div className="categories-container">
-              {props.categories.slice(0, 5).map(category => (
-                <Link key={category.id} className="category-link link minor-color-text-icon-link" to={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?id=${category.id}`}>
-                  <Hanger className="category-icon" />
-                  <p>{category.name}</p>
-                </Link>
-              ))}
+            <div className={menuHeaderComboBoxStyles.categoriesContainer}>
+              {props.categories.slice(0, 5).map(category => {
+                const Icon = getCategoryIcon(getFormattedCategoryName(category.iconName ?? ""));
+
+                return (
+                  <Link
+                    key={category.id}
+                    className={`${menuHeaderComboBoxStyles.categoryLink} link minor-color-text-icon-link`}
+                    to={`/products/${category.name.toLowerCase().replace(/\s+/g, "-")}?CategoryId=${category.id}`}
+                  >
+                    <Icon className={menuHeaderComboBoxStyles.categoryIcon} />
+                    <p>{category.name}</p>
+                  </Link>
+                );
+              })}
             </div>
           )}
 
-          <TextButton
-            className="see-all-button"
-            type="secondary"
-            content="See all"
-            onClick={() => {}}
-          />
+          <Button type="secondary" content="See all" onClick={() => {}} />
         </div>
       )}
     </div>

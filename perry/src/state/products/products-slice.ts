@@ -9,6 +9,8 @@ type ProductsStateType = {
   categoryProducts: ProductCardType[];
   trendingProducts: ProductCardType[];
   saleProducts: ProductCardType[];
+  productExists: boolean | null;
+  categoryProductsLoading: boolean;
 };
 
 const initialState: ProductsStateType = {
@@ -16,7 +18,9 @@ const initialState: ProductsStateType = {
   productById: null,
   categoryProducts: [],
   trendingProducts: [],
-  saleProducts: []
+  saleProducts: [],
+  productExists: null,
+  categoryProductsLoading: false
 };
 
 export const getProducts = createAsyncThunk(
@@ -29,7 +33,8 @@ export const getProducts = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result = await response.json();
@@ -51,7 +56,8 @@ export const getProductById = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result: ProductType = await response.json();
@@ -65,15 +71,27 @@ export const getProductById = createAsyncThunk(
 
 export const getProductsByCategory = createAsyncThunk(
   "products/getProductsByCategory",
-  async (categoryId: string, { rejectWithValue }) => {
+  async (
+    params: { categoryId: string; filters?: { [key: string]: string[] } },
+    { rejectWithValue }
+  ) => {
     try {
+      const urlParams = new URLSearchParams();
+      urlParams.append("categoryId", params.categoryId);
+
+      if (params.filters) {
+        for (const [key, values] of Object.entries(params.filters)) {
+          values.forEach((val) => urlParams.append(key, val));
+        }
+      }
+
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/products?categoryId=${categoryId}`,
-        {}
+        `${import.meta.env.VITE_API_URL}/products?${urlParams.toString()}`
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result = await response.json();
@@ -95,7 +113,8 @@ export const getTrendingProducts = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result = await response.json();
@@ -117,11 +136,35 @@ export const getSaleProducts = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result = await response.json();
       return result.items;
+    } 
+    catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const checkProductExists = createAsyncThunk(
+  "products/checkProductExists",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/products/${id}/exists`,
+        {}
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
+      }
+
+      const exists = await response.json();
+      return exists;
     } 
     catch (error: any) {
       return rejectWithValue(error.message);
@@ -141,16 +184,26 @@ const productsSlice = createSlice({
     .addCase(getProductById.fulfilled, (state, action) => {
       state.productById = action.payload;
     })
+    .addCase(getProductsByCategory.pending, (state) => {
+      state.categoryProductsLoading = true;
+    })
     .addCase(getProductsByCategory.fulfilled, (state, action) => {
       state.categoryProducts = action.payload;
+      state.categoryProductsLoading = false;
+    })
+    .addCase(getProductsByCategory.rejected, (state) => {
+      state.categoryProductsLoading = false;
     })
     .addCase(getTrendingProducts.fulfilled, (state, action) => {
       state.trendingProducts = action.payload;
     })
     .addCase(getSaleProducts.fulfilled, (state, action) => {
       state.saleProducts = action.payload;
+    })
+    .addCase(checkProductExists.fulfilled, (state, action) => {
+      state.productExists = action.payload;
     });
   }
-}); 
+});
 
 export default productsSlice.reducer;

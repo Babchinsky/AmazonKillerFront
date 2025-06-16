@@ -1,0 +1,21 @@
+.newEmailFormContainer {
+  margin-top: -20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+
+  .titleLeftContainer {
+    margin-top: 28px;
+  }
+
+  .descriptionLeft {
+    margin-top: 8px;
+  }
+
+  .sendCodeContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+}

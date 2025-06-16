@@ -9,6 +9,8 @@ type AuthStateType = {
   userLastName: string | null;
   loading: boolean;
   error: string | null;
+  isAuthModalOpen: boolean;
+  authType: "logIn" | "signUp";
 };
 
 const initialState: AuthStateType = {
@@ -19,6 +21,8 @@ const initialState: AuthStateType = {
   userLastName: null,
   loading: false,
   error: null,
+  isAuthModalOpen: false,
+  authType: "logIn"
 };
 
 export const login = createAsyncThunk(
@@ -37,7 +41,8 @@ export const login = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       const result = await response.json();
@@ -51,21 +56,24 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk(
   "auth/logout",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
+      const token = localStorage.getItem("accessToken");
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/account/profile/logout`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
           }
         }
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       return true;
@@ -92,7 +100,8 @@ export const registerStart = createAsyncThunk(
       );
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       return true;
@@ -105,7 +114,7 @@ export const registerStart = createAsyncThunk(
 
 export const registerConfirm = createAsyncThunk(
   "auth/registerConfirm",
-  async (data: { email: string; code: string; deviceId: string }, { rejectWithValue }) => {
+  async (data: { email: string; code: string }, { rejectWithValue }) => {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/auth/register/confirm`, 
@@ -119,7 +128,8 @@ export const registerConfirm = createAsyncThunk(
       );
       
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
       }
 
       return true;
@@ -130,10 +140,46 @@ export const registerConfirm = createAsyncThunk(
   }
 );
 
+export const registerComplete = createAsyncThunk(
+  "auth/registerComplete",
+  async (data: { email: string; code: string; firstName: string; lastName: string; deviceId: string }, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/auth/register/complete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue(errorData);
+      }
+
+      const result = await response.json();
+      return result;
+    } 
+    catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthModalOpen: (state, action) => {
+      state.isAuthModalOpen = action.payload;
+    },
+    setAuthType: (state, action: { payload: "logIn" | "signUp" }) => {
+      state.authType = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
     .addCase(login.pending, (state) => {
@@ -193,8 +239,25 @@ const authSlice = createSlice({
     .addCase(registerConfirm.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
-    });
+    })
+     .addCase(registerComplete.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(registerComplete.fulfilled, (state, action: any) => {
+      state.loading = false;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+
+      localStorage.setItem("accessToken", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
+    })
+    .addCase(registerComplete.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });;
   },
 });
 
+export const { setAuthModalOpen, setAuthType } = authSlice.actions;
 export default authSlice.reducer;

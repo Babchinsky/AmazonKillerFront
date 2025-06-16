@@ -1,0 +1,123 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.comboBoxContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 2%;
+  color: var(--minor-color-text);
+  user-select: none;
+
+  @include tablet {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .comboBoxTopContainer {
+    cursor: pointer;
+    
+    .titleContainer {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .productCatalogContainer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .categoryIcon {
+          height: 24px;
+          width: 24px;
+
+          @include tablet {
+            height: 32px;
+            width: 32px;
+          }
+
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
+          }
+        }
+      }
+
+      button {
+        line-height: 0px;
+  
+        .arrowDownIcon {
+          width: 16px;
+          height: 16px;
+          transition: transform 0.2s;
+      
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
+          }
+      
+          &.arrowDownIconOpen {
+            transform: rotate(180deg);
+          }
+        }
+      }
+    }
+  }
+
+  .comboBoxBottomContainer {
+    display: flex;
+    flex-direction: column;
+
+    .categoriesContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 14px 0px 0px 0px;
+      height: fit-content;
+
+      @include tablet {
+        gap: 16px;
+        padding: 16px 0px 0px 0px;
+      }
+
+      .categoryLink {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+          
+        .categoryIcon {
+          height: 24px;
+          width: 24px;
+          
+          @include tablet {
+            height: 32px;
+            width: 32px;
+          }
+  
+          path {
+            stroke-width: 1.5px;
+            stroke: var(--minor-color-text);
+          }
+        }
+      }
+    }
+
+    button {
+      margin-top: 14px;
+      padding: 7.5px 9.5px;
+      border-radius: 8px;
+
+      @include tablet {
+        margin-top: 16px;
+        padding: 9.5px;
+        border-radius: 4px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+  }
+}

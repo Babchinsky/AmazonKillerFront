@@ -1,6 +1,6 @@
-import ArrowLeft from "../../assets/icons/arrow-left.svg?react";
-import ArrowRight from "../../assets/icons/arrow-right.svg?react";
-import "./Pagination.scss";
+import ArrowLeftIcon from "../../assets/icons/arrow-left.svg?react";
+import ArrowRightIcon from "../../assets/icons/arrow-right.svg?react";
+import paginationStyles from "./Pagination.module.scss";
 
 
 interface PaginationProps {
@@ -11,7 +11,7 @@ interface PaginationProps {
 }
 
 function Pagination(props: PaginationProps) {
-  const paginationClass = `pagination-container ${props.className || ""}`.trim();
+  const paginationClass = `${paginationStyles.paginationContainer} ${props.className || ""}`.trim();
 
   const getPageNumbers = () => {
     const pages = [];
@@ -47,11 +47,11 @@ function Pagination(props: PaginationProps) {
   return (
     <div className={paginationClass}>
       <button
-        className="arrow-left-button"
+        className={paginationStyles.arrowLeftButton}
         onClick={() => props.onPageChange(props.currentPage - 1)}
         disabled={props.currentPage === 1}
       >
-        <ArrowLeft className="arrow-left-icon" />
+        <ArrowLeftIcon className={paginationStyles.arrowLeftIcon} />
       </button>
 
       {getPageNumbers().map((page, index) =>
@@ -59,23 +59,23 @@ function Pagination(props: PaginationProps) {
           <button
             key={index}
             onClick={() => props.onPageChange(page)}
-            className={page === props.currentPage ? "active-page-button" : "page-button"}
+            className={page === props.currentPage ? paginationStyles["activePageButton"] : paginationStyles["pageButton"]}
           >
             {page}
           </button>
         ) : (
-          <div key={index} className="other-pages-container">
+          <div key={index} className={paginationStyles.otherPagesContainer}>
             {page}
           </div>
         )
       )}
 
       <button
-        className="arrow-right-button"
+        className={paginationStyles.arrowRightButton}
         onClick={() => props.onPageChange(props.currentPage + 1)}
         disabled={props.currentPage === props.totalPages}
       >
-        <ArrowRight className="arrow-right-icon" />
+        <ArrowRightIcon className={paginationStyles.arrowRightIcon} />
       </button>
     </div>
   );

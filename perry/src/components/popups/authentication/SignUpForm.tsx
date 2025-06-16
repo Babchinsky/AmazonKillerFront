@@ -1,17 +1,16 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { AppDispatch } from "../../../state/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpFormType, signUpFormSchema } from "../../../schemes/sign-up-schema";
-import TextInput from "../../inputs/TextInput";
-import TextButton from "../../buttons/Button";
-import "./Authentication.scss";
-
-import { AppDispatch } from "../../../state/store";
-import { useDispatch } from "react-redux";
-import { registerStart } from "../../../state/auth/auth-slice";
+import FormInput from "../../inputs/FormInput";
+import Button from "../../buttons/Button";
+import authenticationStyles from "./Authentication.module.scss";
 
 
 interface SignUpFormProps {
-  onContinue: (email: string) => void;
+  onContinue: (email: string, password: string) => void;
   onSwitchAuthType: () => void;
 }
 
@@ -27,34 +26,21 @@ function SignUpForm(props: SignUpFormProps) {
     mode: "onBlur"
   });
 
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+
   const submitForm = async (data: SignUpFormType) => {
-    try {
-      const result = await dispatch(registerStart(data));
-      // const result = await dispatch(registerStart({ email: data.email, password: data.password })).unwrap();
-      // console.log(data.email);
-
-      // console.log(result.payload);
-
-      if (registerStart.fulfilled.match(result)) {
-        // console.log(result.payload);
-
-        props.onContinue(data.email);
-      }
-    } 
-    catch (error: any) {
-      alert(`Error: ${error.message ?? JSON.stringify(error)}`);
-    }
+    props.onContinue(data.email, data.password);
   };
   
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit(submitForm)} noValidate>
-      <div className="auth-form-top-container">
-        <h3 className="title">Create account</h3>
-        <p className="subtitle">Shop in the marketplace while traveling</p>
+    <form className={authenticationStyles.authFormContainer} onSubmit={handleSubmit(submitForm)} noValidate>
+      <div className={authenticationStyles.authFormTopContainer}>
+        <h3>Create account</h3>
+        <p className={authenticationStyles.subtitle}>Shop in the marketplace while traveling</p>
       </div>
 
-      <div className="auth-form-middle-container">
-        <TextInput
+      <div className={authenticationStyles.authFormMiddleContainer}>
+        <FormInput
           type="email"
           title="Email"
           placeholder="Enter your email"
@@ -63,7 +49,7 @@ function SignUpForm(props: SignUpFormProps) {
           errorMessage={errors.email?.message}
         />
 
-        <TextInput
+        <FormInput
           type="password"
           title="Password"
           placeholder="Create a password"
@@ -72,7 +58,7 @@ function SignUpForm(props: SignUpFormProps) {
           errorMessage={errors.password?.message}
         />
 
-        <TextInput
+        <FormInput
           type="password"
           title="Confirm password"
           placeholder="Repeat your password"
@@ -82,15 +68,19 @@ function SignUpForm(props: SignUpFormProps) {
         />
       </div> 
     
-      <div className="auth-form-bottom-container">
-        <TextButton className="auth-button" type={"primary"} content="Continue" />
-        <div className="account-info-container">
+      <div className={authenticationStyles.authFormBottomContainer}>
+        {signUpError && (
+          <p className={authenticationStyles.errorMessage}>{signUpError}</p>
+        )}
+
+        <Button className={authenticationStyles.authButton} type="primary" content="Continue" />
+        <div className={authenticationStyles.accountInfoContainer}>
           <p>Have an account?</p>
-          <button className="account-button" type="button" onClick={props.onSwitchAuthType}>Log in</button>
+          <button type="button" onClick={props.onSwitchAuthType}>Log in</button>
         </div>
       </div>
 
-      <p className="auth-legal-notice">By clicking “Continue”, you agree with <span className="highlight">PERRY Terms and Conditions</span></p>
+      <p className={authenticationStyles.authLegalNotice}>By clicking “Continue”, you agree with <span className={authenticationStyles.highlight}>PERRY Terms and Conditions</span></p>
     </form>
   );
 }

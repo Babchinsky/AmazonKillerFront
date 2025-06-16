@@ -2,9 +2,9 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-main {
+.productMain {
   display: flex;
-  flex-grow: 1;
+  flex: 1;
   padding-top: 72px;
   padding-bottom: 182px;
 
@@ -25,7 +25,6 @@ main {
       padding: 0px 16px;
       height: 100%;
       width: 100%;
-      // color: var(--minor-color-text);
 
       @include desktop {
         padding: 0px;
@@ -41,6 +40,7 @@ main {
           flex-direction: column;
           gap: 16px;
           flex: 1;
+          max-width: 653px;
 
           .mainPicContainer {
             position: relative;
@@ -50,6 +50,7 @@ main {
             img {
               height: 100%;
               width: 100%;
+              aspect-ratio: 1/1;
               background-color: var(--minor-color-object);
               border-radius: 8px;
               object-fit: cover;
@@ -321,7 +322,35 @@ main {
         }
 
         .detailsContainer {
-          
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(382px, 1fr));
+          gap: 42px;
+          max-width: 1466px;
+
+          .detailContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 382px;
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 2%;
+            color: #4F4F4F;
+
+            @include desktop {
+              line-height: 24px;
+            }
+
+            .title {
+              color: var(--minor-color-text);
+
+              @include desktop {
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 28px;
+              }
+            }
+          }
         }
 
         .customerReviewsContainer {

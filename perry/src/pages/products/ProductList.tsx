@@ -1,18 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-import { getCategories } from "../../state/categories/categories-slice";
+import { getCategories, getCategoryById } from "../../state/categories/categories-slice";
 import { getProductsByCategory } from "../../state/products/products-slice";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
 import CategoryType from "../../types/categories/category-type";
 import CrumbType from "../../types/crumb-type";
-import ProductType from "../../types/products/product-type";
 import ComboBoxOptionType from "../../types/combo-box-option-type";
+import ProductCardType from "../../types/products/product-card-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
-import Breadcrumb from "../../components/Breadcrumb";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumb";
 import FilterComboBox from "../../components/combo-boxes/FilterComboBox";
 import PriceComboBox from "../../components/combo-boxes/PriceComboBox";
 import RatingComboBox from "../../components/combo-boxes/RatingComboBox";
@@ -25,33 +25,53 @@ import Footer from "../../components/Footer";
 import DefaultImage from "../../assets/images/default.jpg";
 import FilterEmptyIcon from "../../assets/icons/filter-empty.svg?react";
 import productListStyles from "./ProductList.module.scss";
-import ProductCardType from "../../types/products/product-card-type";
 
 
 function ProductList() {
   const dispatch = useDispatch<AppDispatch>();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const currentCategoryId = searchParams.get("id");
-  const currentPageNumber = parseInt(searchParams.get("page") || "1", 10);
 
-  const hasInitialized = useRef<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentCategoryId = searchParams.get("CategoryId");
+  const currentPageNumber = parseInt(searchParams.get("page") || "1", 10);
 
   const breakpointDesktop = parseInt(getCssVariable("--breakpoint-desktop"), 10);
   const isDesktop = useBreakpoint(breakpointDesktop);
 
-  const categories = useSelector((state: RootState) => state.categories.categories);
-  const products = useSelector((state: RootState) => state.products.categoryProducts);
+  const [hasInitializedCategory, setHasInitializedCategory] = useState(false);
+  const [hasInitializedProducts, setHasInitializedProducts] = useState(false);
 
-  const [currentCategory, setCurrentCategory] = useState<CategoryType>();
   const [crumbs, setCrumbs] = useState<CrumbType[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedFabricTypes, setSelectedFabricTypes] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+
+  const categories = useSelector((state: RootState) => state.categories.categories);
+  const categoryProducts = useSelector((state: RootState) => state.products.categoryProducts);
+  const currentCategory = useSelector((state: RootState) => state.categories.currentCategory);
+
+  const [selectedFilters, setSelectedFilters] = useState<{ [filterName: string]: string[] }>({});
+
+  const selectFilter = (filterName: string, selectedValues: string[]) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [filterName]: selectedValues,
+    }));
+  };
+
+  const filterComboBoxes = currentCategory?.filters
+  ? Object.entries(currentCategory.filters).map(([filterName, filterValues]) => (
+    <FilterComboBox
+      key={filterName}
+      type="list"
+      title={filterName}
+      isOpen={true}
+      onSelect={(selected: string[]) => selectFilter(filterName, selected)}
+      options={filterValues.map((val: any) => ({ id: val, label: val }))}
+    />
+  ))
+  : null;
+
   const [minAvailablePrice, setMinAvailablePrice] = useState<number>(0);
-  const [maxAvailablePrice, setMaxAvailablePrice] = useState<number>(100);
-  const [minSelectedPrice, setMinSelectedPrice] = useState<number>(0);
-  const [maxSelectedPrice, setMaxSelectedPrice] = useState<number>(100);
+  const [maxAvailablePrice, setMaxAvailablePrice] = useState<number>(1000);
+  const [minSelectedPrice, setMinSelectedPrice] = useState<number | null>(null);
+  const [maxSelectedPrice, setMaxSelectedPrice] = useState<number | null>(null);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
 
   const sortOptions = [
@@ -60,31 +80,31 @@ function ProductList() {
     { id: "3", label: "Cheap to expensive" },
     { id: "4", label: "Expensive to cheap" }
   ];
-
   const [sortOption, setSortOption] = useState<ComboBoxOptionType>(sortOptions[0]);
 
-  const sortedFilteredProducts = [...products]
-  .filter((product: ProductCardType) => {
-    const priceRange = product.price >= minSelectedPrice && product.price <= maxSelectedPrice;
-    const rating = selectedRatings.length === 0 || selectedRatings.includes(Math.floor(product.rating));
-    return priceRange && rating;
-  })
-  .sort((product1: ProductCardType, product2: ProductCardType) => {
+  const sortedFilteredProducts = [...categoryProducts]
+  .sort((a, b) => {
     switch (sortOption.label) {
       case "By rating":
-        return product2.rating - product1.rating;
+        return b.rating - a.rating;
       // case "Novelty":
-      //   return new Date(product2.createdAt).getTime() - new Date(product1.createdAt).getTime();
+      //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       case "Cheap to expensive":
-        return product1.price - product2.price;
+        return a.price - b.price;
       case "Expensive to cheap":
-        return product2.price - product1.price;
+        return b.price - a.price;
       default:
         return 0;
     }
   });
 
-  const [isBigProductCard, setIsBigProductCard] = useState<boolean>(true);
+  const productViewModeKey = "isBigProductCard";
+
+  const [isBigProductCard, setIsBigProductCard] = useState<boolean>(() => {
+    const saved = localStorage.getItem(productViewModeKey);
+    return saved !== null ? saved === "true" : true;
+  });
+
   const productsPerPage = isBigProductCard ? 12 : 30;
   const [currentPage, setCurrentPage] = useState<number>(currentPageNumber);
   const totalPages = Math.ceil(sortedFilteredProducts.length / productsPerPage);
@@ -103,62 +123,27 @@ function ProductList() {
       name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
+      quantity={product.quantity}
       price={product.price}
       discountPercent={product.discountPercent ?? 0}
     />
   ));
-
-  type FilterType = "Brand" | "Fabric type" | "Size" | "Color";
-  const selectOptions = (selectedOptions: string[], filterType: FilterType) => {
-    switch (filterType) {
-      case "Brand":
-        setSelectedBrands(selectedOptions);
-        break;
-      case "Fabric type":
-        setSelectedFabricTypes(selectedOptions);
-        break;
-      case "Size":
-        setSelectedSizes(selectedOptions);
-        break;
-      case "Color":
-        setSelectedColors(selectedOptions);
-        break;
-    }
-  };
-
-  const selectPriceRange = (min: number, max: number) => {
-    setMinSelectedPrice(min);
-    setMaxSelectedPrice(max);
-  };
-
-  const selectRatingOptions = (selectedOptions: number[]) => {
-    setSelectedRatings(selectedOptions);
-  };
 
   const changeSort = (option: ComboBoxOptionType) => {
     setSortOption(option);
   };
   
   const changeRowToggle = (side: "left" | "right") => {
-    setIsBigProductCard(side === "left");
+    const isBig = side === "left";
+    setIsBigProductCard(isBig);
+    localStorage.setItem(productViewModeKey, String(isBig));
   };
-  
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
 
     dispatch(getCategories());
   }, []);
-
-  useEffect(() => {
-    if (categories.length > 0) {
-      const currentCategory = categories.find((category: CategoryType) => category.id === currentCategoryId);
-      
-      if (currentCategory) {
-        setCurrentCategory(currentCategory);
-        dispatch(getProductsByCategory(currentCategory.id));
-      }
-    }
-  }, [categories, dispatch, currentCategoryId]);
 
   useEffect(() => {
     if (categories.length === 0 || !currentCategoryId) {
@@ -182,7 +167,7 @@ function ProductList() {
       if (parentCategory) {
         crumbsArray.splice(1, 0, {
           name: parentCategory.name,
-          path: `/products/${parentCategory.name.toLowerCase().replace(/\s+/g, "-")}?id=${parentCategory.id}`,
+          path: `/products/${parentCategory.name.toLowerCase().replace(/\s+/g, "-")}?CategoryId=${parentCategory.id}`,
         });
         parentId = parentCategory.parentId;
       } 
@@ -195,40 +180,10 @@ function ProductList() {
   }, [categories, currentCategoryId]);
 
   useEffect(() => {
-    if (products.length === 0) {
-      return;
+    if (currentCategory) {
+      setHasInitializedCategory(true);
     }
-  
-    const prices = products.map((product: ProductCardType) => product.price);
-    const minPrice = Math.floor(Math.min(...prices));
-    const maxPrice = Math.ceil(Math.max(...prices));
-
-    setMinAvailablePrice(minPrice);
-    setMaxAvailablePrice(maxPrice);
-
-    if (!hasInitialized.current) {
-      setMinSelectedPrice(minPrice);
-      setMaxSelectedPrice(maxPrice);
-      hasInitialized.current = true;
-    }
-  }, [products]);
-
-  useEffect(() => {
-    if (isDesktop) {
-      setIsBigProductCard(true);
-    } 
-    else {
-      setIsBigProductCard(false);
-    }
-  }, [isDesktop]);
-
-  useEffect(() => {
-    const total = Math.ceil(products.length / productsPerPage);
-    
-    if (total > 0 && currentPage > total) {
-      setCurrentPage(total);
-    }
-  }, [productsPerPage, products.length, currentPage]);
+  }, [currentCategory]);
 
   useEffect(() => {
     const newParams = new URLSearchParams(searchParams);
@@ -237,12 +192,158 @@ function ProductList() {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage]);
-  
+
+  useEffect(() => {
+    const filterState: { [key: string]: string[] } = {};
+
+    if (currentCategory?.filters) {
+      Object.keys(currentCategory.filters).forEach((filterName) => {
+        const values = searchParams.getAll(filterName);
+        if (values.length > 0) {
+          filterState[filterName] = values;
+        }
+      });
+    }
+
+    const min = searchParams.get("productMinPrice");
+    const max = searchParams.get("productMaxPrice");
+
+    if (min) {
+      setMinSelectedPrice(Number(min));
+    }
+    if (max) {
+      setMaxSelectedPrice(Number(max));
+    }
+
+    const ratings = searchParams.getAll("rating").map(r => parseInt(r, 10));
+    
+    if (ratings.length > 0) {
+      setSelectedRatings(ratings);
+    }
+
+    setSelectedFilters(filterState);
+  }, [searchParams, currentCategory]);
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
+
+    Object.keys(selectedFilters).forEach((key) => {
+      newParams.delete(key);
+    });
+    newParams.delete("productMinPrice");
+    newParams.delete("productMaxPrice");
+    newParams.delete("rating");
+
+    Object.entries(selectedFilters).forEach(([key, values]) => {
+      values.forEach((val) => newParams.append(key, val));
+    });
+
+    if (minSelectedPrice !== null) {
+      newParams.set("productMinPrice", String(minSelectedPrice));
+    }
+    if (maxSelectedPrice !== null) {
+      newParams.set("productMaxPrice", String(maxSelectedPrice));
+    }
+
+    if (selectedRatings.length > 0) {
+      selectedRatings.forEach(r => newParams.append("rating", String(r)));
+    }
+
+    newParams.set("page", "1");
+
+    setSearchParams(newParams, { replace: true });
+  }, [selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings]);
+
+  useEffect(() => {
+    if (!isDesktop) {
+      setIsBigProductCard(false);
+    } 
+    else {
+      const saved = localStorage.getItem(productViewModeKey);
+
+      if (saved !== null) {
+        setIsBigProductCard(saved === "true");
+      } 
+      else {
+        setIsBigProductCard(true);
+        localStorage.setItem(productViewModeKey, "true");
+      }
+    }
+  }, [isDesktop]);
+
+  useEffect(() => {
+    if (currentCategoryId && (!currentCategory || currentCategory.id !== currentCategoryId)) {
+      dispatch(getCategoryById(currentCategoryId));
+    }
+  }, [dispatch, currentCategoryId, currentCategory?.id]); 
+
+  useEffect(() => {
+    setSelectedFilters({});
+    setMinSelectedPrice(null);
+    setMaxSelectedPrice(null);
+    setSelectedRatings([]);
+  }, [currentCategoryId]);
+
+  useEffect(() => {
+    if (currentCategoryId) {
+      const extendedFilters: { [key: string]: string[] } = { ...selectedFilters };
+
+      if (minSelectedPrice !== null && maxSelectedPrice !== null) {
+        extendedFilters["productMinPrice"] = [String(minSelectedPrice)];
+        extendedFilters["productMaxPrice"] = [String(maxSelectedPrice)];
+      }
+
+      if (selectedRatings.length > 0) {
+        extendedFilters["rating"] = selectedRatings.map(r => String(r));
+      }
+
+      dispatch(getProductsByCategory({
+        categoryId: currentCategoryId,
+        filters: extendedFilters,
+      }));
+    }
+  }, [dispatch, currentCategoryId, selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings]);
+
+  useEffect(() => {
+    if (
+      categoryProducts.length > 0 &&
+      Object.keys(selectedFilters).length === 0 &&
+      minSelectedPrice === null &&
+      maxSelectedPrice === null &&
+      selectedRatings.length === 0
+    ) {
+      const discountedPrices = categoryProducts.map((p) => {
+        const discount = p.discountPercent ?? 0;
+        return p.price * (1 - discount / 100);
+      });
+
+      const minPrice = Math.floor(Math.min(...discountedPrices));
+      const maxPrice = Math.ceil(Math.max(...discountedPrices));
+
+      setMinAvailablePrice(minPrice);
+      setMaxAvailablePrice(maxPrice);
+
+      if (!hasInitializedProducts) {
+        setMinSelectedPrice(minPrice);
+        setMaxSelectedPrice(maxPrice);
+        setHasInitializedProducts(true);
+      }
+    }
+  }, [categoryProducts, selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings, hasInitializedProducts]);
+
+  useEffect(() => {
+    const total = Math.ceil(categoryProducts.length / productsPerPage);
+    
+    if (total > 0 && currentPage > total) {
+      setCurrentPage(total);
+    }
+  }, [productsPerPage, categoryProducts.length, currentPage]);
+
   return (
     <div className="page appear-transition">
       <Header searchBar={true} cart={true}></Header>
       
-      <main>
+      <main className={productListStyles.productListMain}>
         <BackToTopButton />
 
         <section className={productListStyles.productListSection}>
@@ -251,114 +352,34 @@ function ProductList() {
 
             <h1>{currentCategory?.name}</h1>
 
-            {hasInitialized.current && (
+            {hasInitializedCategory && (
               <div className={productListStyles.listContainer}>
-                <div className={productListStyles.listLeftContainer}>
-                  <FilterComboBox
-                    type="list"
-                    title="Brand"
-                    isOpen={true}
-                    onSelect={(options) => selectOptions(options, "Brand")}
-                    options={[
-                      { id: "1", label: "Option 1" },
-                      { id: "2", label: "Option 2" },
-                      { id: "3", label: "Option 3" },
-                      { id: "4", label: "Option 4" },
-                      { id: "5", label: "Option 5" },
-                      { id: "6", label: "Option 6" },
-                      { id: "7", label: "Option 7" },
-                      { id: "8", label: "Option 8" },
-                      { id: "9", label: "Option 9" },
-                      { id: "10", label: "Option 10" }
-                    ]}
-                  />
+                {hasInitializedProducts && (
+                  <div className={productListStyles.listLeftContainer}>
+                    {currentCategory && (
+                      <>
+                        {filterComboBoxes}
 
-                  <FilterComboBox
-                    type="list"
-                    title="Fabric type"
-                    isOpen={true}
-                    onSelect={(options) => selectOptions(options, "Fabric type")}
-                    options={[
-                      { id: "1", label: "Option 1" },
-                      { id: "2", label: "Option 2" },
-                      { id: "3", label: "Option 3" },
-                      { id: "4", label: "Option 4" },
-                      { id: "5", label: "Option 5" },
-                      { id: "6", label: "Option 6" },
-                      { id: "7", label: "Option 7" },
-                      { id: "8", label: "Option 8" },
-                      { id: "9", label: "Option 9" },
-                      { id: "10", label: "Option 10" }
-                    ]}
-                  />
+                        <PriceComboBox
+                          title="Price"
+                          isOpen={true}
+                          minPrice={minAvailablePrice}
+                          maxPrice={maxAvailablePrice}
+                          onPriceChange={(min, max) => {
+                            setMinSelectedPrice(min);
+                            setMaxSelectedPrice(max);
+                          }}
+                        />
 
-                  <FilterComboBox
-                    type="grid"
-                    title="Size"
-                    isOpen={true}
-                    onSelect={(options) => selectOptions(options, "Size")}
-                    options={[
-                      { id: "1", label: "1" },
-                      { id: "2", label: "2" },
-                      { id: "3", label: "3" },
-                      { id: "4", label: "4" },
-                      { id: "5", label: "5" },
-                      { id: "6", label: "6" },
-                      { id: "7", label: "7" },
-                      { id: "8", label: "8" },
-                      { id: "9", label: "9" },
-                      { id: "10", label: "10" },
-                      { id: "11", label: "11" },
-                      { id: "12", label: "12" },
-                      { id: "13", label: "13" },
-                      { id: "14", label: "14" },
-                      { id: "15", label: "15" },
-                      { id: "16", label: "16" },
-                      { id: "17", label: "17" },
-                      { id: "18", label: "18" },
-                      { id: "19", label: "19" },
-                      { id: "20", label: "20" },
-                      { id: "21", label: "21" },
-                      { id: "22", label: "22" },
-                      { id: "23", label: "23" },
-                      { id: "24", label: "24" },
-                      { id: "25", label: "25" }
-                    ]}
-                  />
-
-                  <FilterComboBox
-                    type="list"
-                    title="Color"
-                    isOpen={true}
-                    onSelect={(options) => selectOptions(options, "Color")}
-                    options={[
-                      { id: "1", label: "Option 1" },
-                      { id: "2", label: "Option 2" },
-                      { id: "3", label: "Option 3" },
-                      { id: "4", label: "Option 4" },
-                      { id: "5", label: "Option 5" },
-                      { id: "6", label: "Option 6" },
-                      { id: "7", label: "Option 7" },
-                      { id: "8", label: "Option 8" },
-                      { id: "9", label: "Option 9" },
-                      { id: "10", label: "Option 10" }
-                    ]}
-                  />
-
-                  <PriceComboBox
-                    title="Price"
-                    isOpen={true}
-                    minPrice={minAvailablePrice}
-                    maxPrice={maxAvailablePrice}
-                    onPriceChange={selectPriceRange}
-                  />
-
-                  <RatingComboBox
-                    title="Customer reviews"
-                    isOpen={true}
-                    onSelect={selectRatingOptions}
-                  />
-                </div>
+                        <RatingComboBox
+                          title="Customer reviews"
+                          isOpen={true}
+                          onSelect={(ratings: number[]) => setSelectedRatings(ratings)}
+                        />
+                      </>
+                    )}
+                  </div>
+                )}
 
                 <div className={productListStyles.listRightContainer}>
                   <div className={productListStyles.comboBoxesContainer}>
@@ -378,12 +399,16 @@ function ProductList() {
                       selectedOption={sortOption}
                       onSortChange={changeSort} 
                     />
-                    <RowNumberToggle className={productListStyles.rowNumberToggle} onToggleChange={changeRowToggle} />
+                    <RowNumberToggle 
+                      className={productListStyles.rowNumberToggle} 
+                      side={isBigProductCard ? "left" : "right"}
+                      onToggleChange={changeRowToggle} 
+                    />
                   </div>
 
                   <hr className={`${productListStyles.listDivider} divider`} />
 
-                  {sortedFilteredProducts.length > 0 ? (
+                  {categoryProducts.length > 0 ? (
                     <>
                       <div className={`${isBigProductCard ? productListStyles.bigProductCardList : productListStyles.productCardList}`}>
                         {productCards}

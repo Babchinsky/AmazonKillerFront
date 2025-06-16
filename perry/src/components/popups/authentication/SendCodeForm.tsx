@@ -1,17 +1,18 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../state/store";
-import { registerConfirm } from "../../../state/auth/auth-slice";
+import { registerConfirm, registerStart } from "../../../state/auth/auth-slice";
 import { useForm } from "react-hook-form";
-import SendCodeInput, { SendCodeInputHandle } from "../../inputs/SendCodeInput";
-import TextButton from "../../buttons/Button";
-import "./Authentication.scss";
+import { FormSendCodeInputHandle } from "../../inputs/FormSendCodeInput";
+import FormSendCodeInput from "../../inputs/FormSendCodeInput";
+import Button from "../../buttons/Button";
+import authenticationStyles from "./Authentication.module.scss";
 
 
 interface SendCodeFormProps {
   email: string;
-  deviceId: string;
-  onContinue: () => void;
+  password: string;
+  onContinue: (code: string) => void;
 }
 
 function SendCodeForm(props: SendCodeFormProps) {
@@ -25,8 +26,17 @@ function SendCodeForm(props: SendCodeFormProps) {
     mode: "onBlur"
   });
 
-  const sendCodeInputRef = useRef<SendCodeInputHandle>(null);
+  const sendCodeInputRef = useRef<FormSendCodeInputHandle>(null);
   const [codeError, setCodeError] = useState(false);
+
+  const sendCode = async () => {
+    try {
+      await dispatch(registerStart({ email: props.email, password: props.password }));
+    } 
+    catch (err) {
+      console.error("Failed to resend code", err);
+    }
+  };
 
   const submitCode = async () => {
     const code = sendCodeInputRef.current?.getCode() || "";
@@ -37,11 +47,11 @@ function SendCodeForm(props: SendCodeFormProps) {
     }
 
     try {
-      const result = await dispatch(registerConfirm({ email: props.email, code, deviceId: props.deviceId }));
+      const result = await dispatch(registerConfirm({ email: props.email, code }));
 
       if (registerConfirm.fulfilled.match(result)) {
-        props.onContinue();
-      } 
+        props.onContinue(code);
+      }
       else {
         setCodeError(true);
       }
@@ -52,18 +62,18 @@ function SendCodeForm(props: SendCodeFormProps) {
   };
 
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit(submitCode)} noValidate>
-      <div className="auth-form-top-container">
-        <h3 className="title">Send code</h3>
-        <p className="subtitle">Enter the code to confirm your email</p>
+    <form className={authenticationStyles.finishAuthFormContainer} onSubmit={handleSubmit(submitCode)} noValidate>
+      <div className={authenticationStyles.authFormTopContainer}>
+        <h3>Send code</h3>
+        <p className={authenticationStyles.subtitle}>Enter the code to confirm your email</p>
       </div>
 
-      <div className="auth-form-middle-container">
-        <SendCodeInput ref={sendCodeInputRef} isError={codeError} />
+      <div className={authenticationStyles.authFormMiddleContainer}>
+        <FormSendCodeInput ref={sendCodeInputRef} isError={codeError} onSend={sendCode} />
       </div> 
     
-      <div className="auth-form-bottom-container">
-        <TextButton className="auth-button" type={"primary"} content="Continue" />
+      <div className={authenticationStyles.authFormBottomContainer}>
+        <Button className={authenticationStyles.authButton} type="primary" content="Continue" />
       </div>
     </form>
   );

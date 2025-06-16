@@ -1,76 +1,157 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import OrderType from "../../types/account/orders/order-type";
-import TextButton from "../buttons/Button";
+import { AppDispatch, RootState } from "../../state/store";
+import { getOrderDetails, getOrders } from "../../state/orders/orders-slice";
+import Button from "../buttons/Button";
+import Order from "../popups/commerce/Order";
 import accountDataStyles from "./AccountData.module.scss";
 import myOrdersStyles from "./MyOrders.module.scss";
-import { AppDispatch, RootState } from "../../state/store";
-import { useEffect } from "react";
-import { getOrders } from "../../state/orders/order-slice";
 
 
 function MyOrders() {
   const dispatch = useDispatch<AppDispatch>();
-  const { orders, isLoading, error } = useSelector((state: RootState) => state.orders);
+  const { orders, error } = useSelector((state: RootState) => state.orders);
+
+  const [itemsCountMap, setItemsCountMap] = useState<Record<string, number>>({});
+  
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [selectedOrderNumber, setSelectedOrderNumber] = useState<string | null>(null);
+  
+  const [isOrderOpen, setIsOrderOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch(getOrders() as any);
+    dispatch(getOrders({}));
   }, [dispatch]);
 
-  // const orders: OrderType[] = [
-  //   { id: "000001", date: "12.05.2024", status: "Received", total: "$999.99", items: 1 },
-  //   { id: "000002", date: "12.05.2024", status: "Ready for pickup", total: "$999.99", items: 1 },
-  //   { id: "000003", date: "12.05.2024", status: "Shipped", total: "$999.99", items: 1 },
-  //   { id: "000004", date: "12.05.2024", status: "Ordered", total: "$999.99", items: 1 },
-  //   { id: "000005", date: "12.05.2024", status: "Cancelled", total: "$999.99", items: 1 },
-  // ];
+  useEffect(() => {
+    if (!orders.length) {
+      return;
+    }
+
+    orders.forEach((order) => {
+      if (itemsCountMap[order.id] != null) {
+        return;
+      }
+
+      dispatch(getOrderDetails(order.id))
+        .unwrap()
+        .then((details) => {
+          setItemsCountMap((prev) => ({
+            ...prev,
+            [order.id]: details.items.length,
+          }));
+        })
+        .catch(() => {
+          setItemsCountMap((prev) => ({ ...prev, [order.id]: 0 }));
+        });
+    });
+  }, [orders, dispatch, itemsCountMap]);
+
+  useEffect(() => {
+    const action = isOrderOpen ? "add" : "remove";
+    document.body.classList[action]("body-no-scroll");
+    document.documentElement.classList[action]("html-no-scroll");
+
+    return () => {
+      document.body.classList.remove("body-no-scroll");
+      document.documentElement.classList.remove("html-no-scroll");
+    };
+  }, [isOrderOpen]);
 
   return (
-    <div className="account-data-content-container">
-      <div className="title-container">
-        <h1>My orders</h1>
-      </div>
-
-      <hr className="divider" />
-
-      <div className="order-list-container">
-        {orders.map((order, index) => (
-          <div
-            className={`order-container ${index % 2 !== 0 ? "highlight" : ""}`}
-            key={order.id}
-          >
-            <div className="order-left-container">
-              <div>
-                <p>
-                  Order #{order.orderNumber}{" "}
-                  <span className={`status ${order.status.replace(/\s/g, "-").toLowerCase()}-status`}>
-                    {order.status}
-                  </span>
-                </p>
-              </div>
-              <div className="date">
-                Ordered on {new Date(order.orderedAt).toLocaleDateString()}
-              </div>
-            </div>
-
-            <div className="order-right-container">
-              <p className="item-count">Shipping to: {order.recipient}</p>
-              <div>
-                <div className="price-container">
-                  <p className="price">
-                    <span className="currency">$</span>
-                    <span>{Math.floor(order.totalPrice)}</span>
-                    <span className="currency-minor">
-                      {String(order.totalPrice % 1).slice(2).padEnd(2, "0")}
-                    </span>
-                  </p>
-                </div>
-                <TextButton className="details-button" type="secondary" content="Details" />
-              </div>
-            </div>
+    <>
+      <div className={accountDataStyles.accountDataContainer}>
+        <div className={accountDataStyles.accountDataTopContainer}>
+          <h1>My orders</h1>
+          <hr className={`${accountDataStyles.accountDataDivider} divider`} />
+        </div>
+        
+        <div className={accountDataStyles.accountDataBottomContainer}>
+          <div className={myOrdersStyles.orderListContainer}>
+            {orders.length > 0 ? (
+              <>
+                {orders.map((order, index) => {
+                  const count = itemsCountMap[order.id];
+  
+                  return (
+                    <div
+                      className={`${myOrdersStyles.orderContainer} ${index % 2 !== 0 ? "highlight" : ""}`}
+                      key={order.id}
+                    >
+                      <div className={myOrdersStyles.orderLeftContainer}>
+                        <div>
+                          <p>
+                            Order {order.orderNumber}
+                            <span className={
+                              `${myOrdersStyles.status} ${myOrdersStyles[order.status
+                              .toLowerCase()
+                              .replace(/(?:^\w|\s\w)/g, m => m.trim().toUpperCase())
+                              .replace(/\s/g, "")
+                              .replace(/^./, c => c.toLowerCase()) + "Status"]}`
+                            }>
+                              {order.status}
+                            </span>
+                          </p>
+                        </div>
+                        <div className={myOrdersStyles.date}>
+                          Ordered on{" "}
+                          {(() => {
+                            const date = new Date(order.orderedAt);
+                            const day = String(date.getDate()).padStart(2, "0");
+                            const month = String(date.getMonth() + 1).padStart(2, "0");
+                            const year = date.getFullYear();
+                            return `${day}.${month}.${year}`;
+                          })()}
+                        </div>
+                      </div>
+  
+                      <div className={myOrdersStyles.orderRightContainer}>
+                        <p className={myOrdersStyles.itemCount}>
+                          {count != null
+                          ? `Ordered ${count} item${count !== 1 ? "s" : ""}`
+                          : "Loading…"}
+                        </p>
+                        <div>
+                          <div className={myOrdersStyles.itemPriceContainer}>
+                            {(() => {
+                              const [totalItemCurrencyMajor, totalItemCurrencyMinor] = order.totalPrice.toFixed(2).split(".");
+      
+                              return (
+                                <p className={myOrdersStyles.price}>
+                                  <span className={myOrdersStyles.currency}>$</span>
+                                  <span>{totalItemCurrencyMajor}</span>
+                                  <span className={myOrdersStyles.currencyMinor}>{totalItemCurrencyMinor}</span>
+                                </p>
+                              );
+                            })()}
+                          </div>
+  
+                          <Button 
+                            type="secondary" 
+                            content="Details"
+                            onClick={() => {
+                              setSelectedOrderId(order.id);
+                              setSelectedOrderNumber(order.orderNumber);
+                              setIsOrderOpen(true);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            ) : (
+              <p className={myOrdersStyles.orderListMessage}>No orders found.</p>
+            )}
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+
+      {isOrderOpen && selectedOrderId && selectedOrderNumber && (
+        <Order orderId={selectedOrderId} orderNumber={selectedOrderNumber} onClose={() => setIsOrderOpen(false)} />
+      )}
+    </>
   );
 }
 

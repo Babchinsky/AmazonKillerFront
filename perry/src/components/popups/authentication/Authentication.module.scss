@@ -1,0 +1,318 @@
+@use "../../../styles/themes/default.scss" as *;
+@use "../../../styles/media-queries.scss" as *;
+
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  z-index: 100;
+}
+
+.authContainer {
+  position: fixed;
+  display: flex;
+  gap: 24px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 28px 58px 28px;
+  height: 100%;
+  width: 100%;
+  max-height: 618px;
+  background: var(--minor-color-object);
+  border-radius: 8px;
+  z-index: 110;
+
+  @include desktop {
+    padding: 24px;
+    height: 680px;
+    max-height: none;
+    max-width: 678px;
+
+    @media (min-width: 1344px) {
+      max-width: 1280px;
+    }
+  }
+
+  .contentContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0px;
+
+    @include desktop {
+      flex-direction: row;
+      padding: 56px 32px;
+    }
+
+    .authCloseButton {
+      position: absolute;
+      display: block;
+      top: 0px;
+      right: 0px;
+      transform: translateX(+50%);
+
+      @include desktop {
+        display: none;
+      }
+
+      .closeIcon {
+        height: 24px;
+        width: 24px;
+
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--minor-color-text);
+        }
+      }
+    }
+
+    .authBackButton {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      top: 0px;
+      left: -12px;
+      text-align: center;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 2%;
+      color: var(--minor-color-text);
+
+      @include desktop {
+        left: 0px;
+      }
+
+      .arrowLeftIcon {
+        height: 24px;
+        width: 24px;
+
+        @include desktop {
+          height: 40px;
+          width: 40px;
+        }
+
+        path {
+          stroke-width: 1.5px;
+          stroke: var(--main-color-secondary);
+        }
+      }
+    }
+
+    .authFormContainer, .finishAuthFormContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      max-height: 460px;
+
+      @include desktop {
+        max-height: none;
+        max-width: 440px;
+      }
+
+      .authFormTopContainer, .authFormMiddleContainer, .authFormBottomContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .authFormTopContainer {
+        text-align: center;
+        color: var(--minor-color-text);
+        gap: 4px;
+
+        @include desktop {
+          gap: 6px;
+        }
+
+        h3 {
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 24px;
+          letter-spacing: -1.5%;
+
+          @include desktop {
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 48px;
+            letter-spacing: -2%;
+          }
+        }
+
+        .subtitle {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 20px;
+          letter-spacing: 2%;
+
+          @include desktop {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 28px;
+            letter-spacing: -1.5%;
+          }
+        }
+      }
+
+      .authFormMiddleContainer {
+        gap: 0px;
+        padding: 0px 12px;
+        background-color: var(--minor-color-object);
+
+        @include desktop {
+          gap: 4px;
+        }
+
+        .authOptionsContainer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 4px;
+
+          .staySignedInLabelCheckbox {
+            margin-left: -2px;
+            font-size: 12px;
+
+            @include desktop {
+              margin-left: 0px;
+              font-size: 14px;
+            }
+          }
+
+          button {
+            font-size: 12px;
+            line-height: 24px;
+            letter-spacing: 2%;
+            text-align: right;
+            color: var(--minor-color-text);
+
+            @include desktop {
+              font-size: 14px;
+              line-height: 24px;
+            }
+          }
+        }
+      }
+
+      .authFormBottomContainer {
+        gap: 8px;
+        padding: 0px 12px;
+        text-align: center;
+
+        @include desktop {
+          gap: 16px;
+        }
+
+        .errorMessage {
+          margin-top: 8px;
+          padding: 0px 20px;
+          font-size: 12px;
+          line-height: 16px;
+          color: var(--minor-color-destructive);
+
+          @include desktop {
+            font-size: 14px;
+            line-height: 24px;
+          }
+        }
+
+        .authButton, .authFinishButton {
+          padding: 8px 24px;
+          width: 100%;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 2%;
+
+          @include desktop {
+            padding: 11.5px 9.5px;
+          }
+        }
+
+        .authFinishButton {
+          margin-top: 120px;
+        }
+
+        .accountInfoContainer {
+          display: flex;
+          justify-content: center;
+          align-items: end;
+          gap: 6px;
+          font-size: 12px;
+          line-height: 16px;
+          letter-spacing: 2%;
+          color: var(--minor-color-text);
+
+          @include desktop {
+            font-size: 16px;
+            line-height: 24px;
+          }
+
+          button {
+            font-weight: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            color: var(--main-color-secondary);
+          }
+        }
+      }
+
+      .authLegalNotice {
+        position: absolute;
+        bottom: 0px;
+        text-align: center;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 2%;
+        color: rgba(var(--main-color-halftone), 0.5);
+
+        @include desktop {
+          font-size: 16px;
+          line-height: 24px;
+        }
+
+        .highlight {
+          color: var(--main-color-secondary);
+        }
+      }
+    }
+
+    .authFormContainer {
+      justify-content: space-between;
+    }
+
+    .finishAuthFormContainer {
+      justify-content: center;
+      gap: 80px;
+
+      @include desktop {
+        gap: 120px;
+      }
+    }
+  }
+
+  img {
+    display: none;
+    
+    @media (min-width: 1344px) {
+      display: block;
+      height: 100%;
+      width: 100%;
+      max-width: 530px;
+      object-fit: contain;
+    }
+  }
+}

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
-import Search from "../../assets/icons/search.svg?react";
-import ProductType from "../../types/products/product-type";
-import ProductCard from "../cards/ProductCard";
 import { getProducts } from "../../state/products/products-slice";
+import { getWishlist, removeFromWishlist } from "../../state/wishlist/wishlist-slice";
+import ProductCard from "../cards/ProductCard";
+import RemoveWishlistItem from "../popups/account/RemoveWishlistItem";
+import DefaultImage from "../../assets/images/default.jpg";
+import Search from "../../assets/icons/search.svg?react";
 import accountDataStyles from "./AccountData.module.scss";
 import wishlistStyles from "./Wishlist.module.scss";
 
@@ -18,23 +19,50 @@ function Wishlist() {
     setSearchQuery(e.target.value);
   };
 
-  const products = useSelector((state: RootState) => state.products.products);
-  const randomProducts = [...products]
-  .sort(() => Math.random() - 0.5)
-  .slice(0, 10);
+  const [isRemoveWishlistItemOpen, setIsRemoveWishlistItemOpen] = useState<boolean>(false);
+  const [removingItemId, setRemovingItemId] = useState<string | null>(null);
 
-  const productCards = randomProducts.map((product: ProductType) => (
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+  
+  const removeWishlistItem = async () => {
+    if (removingItemId) {
+      await dispatch(removeFromWishlist(removingItemId));
+      await dispatch(getWishlist());
+      setIsRemoveWishlistItemOpen(false);
+      setRemovingItemId(null);
+    }
+  };
+
+  useEffect(() => {
+    const action = isRemoveWishlistItemOpen ? "add" : "remove";
+    document.body.classList[action]("body-no-scroll");
+    document.documentElement.classList[action]("html-no-scroll");
+
+    return () => {
+      document.body.classList.remove("body-no-scroll");
+      document.documentElement.classList.remove("html-no-scroll");
+    };
+  }, [isRemoveWishlistItemOpen]);
+
+  const productCards = wishlistItems
+  .filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+  .map((product) => (
     <ProductCard
       key={product.id}
-      isBig={false}
-      title={product.name}
-      image={product.productPics[0]}
       link={`/product/${product.id}`}
+      imageUrl={product.imageUrl.trim().length !== 0 ? product.imageUrl : DefaultImage}
+      name={product.name}
       rating={product.rating}
       reviewsCount={product.reviewsCount}
-      price={product.price}
-      discount={product.discount}
       quantity={product.quantity}
+      price={product.price}
+      discountPercent={product.discountPercent ?? 0}
+      onRemove={() => {
+        setRemovingItemId(product.id);
+        setIsRemoveWishlistItemOpen(true);
+      }}
     />
   ));
 
@@ -43,31 +71,56 @@ function Wishlist() {
   }, []);
 
   return (
-    <div className="account-data-content-container">
-      <div className="title-container">
-        <h1>Wishlist</h1>
-
-        <div className="search-bar-container">
-          <input
-            className="search-bar-input"
-            placeholder="Search..."
-            value={searchQuery}
-            onChange={changeSearch}
-          />
-          <button className="search-bar-button">
-            <Search className="search-icon" />
-          </button>
+    <>
+      <div className={accountDataStyles.accountDataContainer}>
+        <div className={accountDataStyles.accountDataTopContainer}>
+          <div className={wishlistStyles.titleСontainer}>
+            <h1>Wishlist</h1>
+    
+            <div className={wishlistStyles.searchBarContainer}>
+              <input
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={changeSearch}
+              />
+              <button>
+                <Search className={wishlistStyles.searchIcon} />
+              </button>
+            </div>
+          </div>
+    
+          <hr className={`${accountDataStyles.accountDataDivider} divider`} />
+        </div>
+  
+        <div className={accountDataStyles.accountDataBottomContainer}>
+          <div className={wishlistStyles.wishlistContainer}>
+            {wishlistItems.length === 0 ? (
+              <p className={wishlistStyles.wishlistListMessage}>
+                Looks like you haven’t added any products yet.
+              </p>
+            ) : productCards.length === 0 ? (
+              <p className={wishlistStyles.wishlistListMessage}>
+                No products match your search.
+              </p>
+            ) : (
+              <div className={wishlistStyles.wishlistList}>
+                {productCards}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      <hr className="divider" />
-
-      <div className="wishlist-container">
-        <div className="product-card-list">
-          {productCards}
-        </div>
-      </div>
-    </div>
+      {isRemoveWishlistItemOpen && (
+        <RemoveWishlistItem
+          onRemove={removeWishlistItem}
+          onClose={() => {
+            setIsRemoveWishlistItemOpen(false);
+            setRemovingItemId(null);
+          }}
+        />
+      )}
+    </>
   );
 }
 

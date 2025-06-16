@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { getFormattedValue } from "../../utils/getFormattedValue";
-import TextButton from "../buttons/Button";
+import Button from "../buttons/Button";
 import StarFullIcon from "../../assets/icons/star-full.svg?react";
 import CommentsIcon from "../../assets/icons/comments.svg?react";
 import DiscountIcon from "../../assets/icons/discount.svg?react";
@@ -14,8 +14,10 @@ interface ProductCardProps {
   name: string;
   rating: number;
   reviewsCount: number;
+  quantity: number;
   price: number;
   discountPercent?: number | null;
+  onRemove?: () => void;
 }
 
 function ProductCard(props: ProductCardProps) {
@@ -25,16 +27,21 @@ function ProductCard(props: ProductCardProps) {
 
   return (
     <div className={props.isBig ? productCardStyles.bigProductCardLinkContainer : productCardStyles.productCardLinkContainer}>
-      {/* {props.quantity === 0 && (
+      {props.quantity === 0 && (
         <div className={productCardStyles.overlayContainer}>
           <div className={productCardStyles.overlay}></div>
 
           <div className={productCardStyles.titleContainer}>
             <p>Out of stock</p>
-            <TextButton className={productCardStyles.stockAlertButton} type="primary" content="Stock alert" />
+            <Button className={productCardStyles.stockAlertButton} type="primary" content="Stock alert" />
           </div>
         </div>
-      )} */}
+      )}
+      {props.onRemove && (
+        <div className={productCardStyles.removeButtonContainer}>
+          <Button className={productCardStyles.removeButton} type="secondary" content="Remove" onClick={props.onRemove} />
+        </div>
+      )}
 
       <div className={productCardStyles.productBorder}></div>
 
@@ -62,7 +69,7 @@ function ProductCard(props: ProductCardProps) {
               <div className={productCardStyles.ratingReviewsContainer}>
                 <div className={productCardStyles.ratingContainer}>
                   <StarFullIcon className={productCardStyles.starIcon} />
-                  <p>{props.rating}</p>
+                  <p>{Math.floor(props.rating)}</p>
                 </div>
 
                 <div className={productCardStyles.reviewsContainer}>

@@ -1,6 +1,5 @@
-import TextInput from "../../inputs/TextInput";
-import TextButton from "../../buttons/Button";
-import "./Authentication.scss";
+import Button from "../../buttons/Button";
+import authenticationStyles from "./Authentication.module.scss";
 
 
 interface FinishSignUpFormProps {
@@ -9,14 +8,14 @@ interface FinishSignUpFormProps {
 
 function FinishSignUpForm(props: FinishSignUpFormProps) {
   return (
-    <div className="finish-auth-form-container">
-      <div className="auth-form-top-container">
-        <h3 className="title">Congratulations!</h3>
-        <p className="subtitle">The registration was completed</p>
+    <div className={authenticationStyles.finishAuthFormContainer}>
+      <div className={authenticationStyles.authFormTopContainer}>
+        <h3>Congratulations!</h3>
+        <p className={authenticationStyles.subtitle}>The registration was completed</p>
       </div>
     
-      <div className="auth-form-bottom-container">
-        <TextButton className="auth-button" type={"primary"} content="Let’s start shopping" onClick={props.onContinue} />
+      <div className={authenticationStyles.authFormBottomContainer}>
+        <Button className={authenticationStyles.authButton} type="primary" content="Let’s start shopping" onClick={props.onContinue} />
       </div>
     </div>
   );

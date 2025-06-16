@@ -1,0 +1,71 @@
+@use "../../styles/themes/default.scss" as *;
+@use "../../styles/media-queries.scss" as *;
+
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  color: var(--minor-color-text);
+
+  @include desktop {
+    gap: 12px;
+  }
+
+  .arrowLeftButton, .arrowRightButton, .activePageButton, .pageButton, .otherPagesContainer {
+    padding: 8px 12px;
+    height: 38px;
+    width: 38px;
+    border-radius: 4px;
+
+    @include desktop {
+      height: 48px;
+      width: 48px;
+    }
+  }
+
+  .arrowLeftButton, .arrowRightButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:disabled {
+      opacity: 1;
+    }
+
+    .arrowLeftIcon, .arrowRightIcon {
+      height: 24px;
+      width: 24px;
+
+      path {
+        stroke-width: 1.5px;
+        stroke: var(--main-color-secondary);
+      }
+    }
+  }
+
+  .activePageButton, .pageButton, .otherPagesContainer {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 2%;
+  }
+
+  .activePageButton {
+    background-color: var(--main-color-primary);
+
+    @include desktop {
+      font-weight: 700;
+    }
+  }
+
+  .otherPagesContainer {
+    @include desktop {
+      font-size: 18px;
+      line-height: normal;
+      letter-spacing: 16%;
+    }
+  }
+}

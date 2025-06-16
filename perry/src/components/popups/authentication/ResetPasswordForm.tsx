@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResetPasswordFormType, resetPasswordFormSchema } from "../../../schemes/password-schema";
-import TextInput from "../../inputs/TextInput";
-import TextButton from "../../buttons/Button";
-import "./Authentication.scss";
+import FormInput from "../../inputs/FormInput";
+import Button from "../../buttons/Button";
+import authenticationStyles from "./Authentication.module.scss";
 
 
 interface ResetPasswordFormProps {
@@ -25,14 +25,14 @@ function ResetPasswordForm(props: ResetPasswordFormProps) {
   };
 
   return (
-    <form className="auth-form-container" onSubmit={handleSubmit(submitForm)} noValidate>
-      <div className="auth-form-top-container">
-        <h3 className="title">Reset password</h3>
-        <p className="subtitle">Set a new password for your account</p>
+    <form className={authenticationStyles.authFormContainer} onSubmit={handleSubmit(submitForm)} noValidate>
+      <div className={authenticationStyles.authFormTopContainer}>
+        <h3>Reset password</h3>
+        <p className={authenticationStyles.subtitle}>Set a new password for your account</p>
       </div>
 
-      <div className="auth-form-middle-container">
-        <TextInput
+      <div className={authenticationStyles.authFormMiddleContainer}>
+        <FormInput
           type="password"
           title="New password"
           placeholder="Enter new password"
@@ -41,7 +41,7 @@ function ResetPasswordForm(props: ResetPasswordFormProps) {
           errorMessage={errors.newPassword?.message}
         />
 
-        <TextInput
+        <FormInput
           type="password"
           title="Repeat password"
           placeholder="Repeat new password"
@@ -51,8 +51,8 @@ function ResetPasswordForm(props: ResetPasswordFormProps) {
         />
       </div>
     
-      <div className="auth-form-bottom-container">
-        <TextButton className="auth-button" type={"primary"} content="Continue" />
+      <div className={authenticationStyles.authFormBottomContainer}>
+        <Button className={authenticationStyles.authButton} type="primary" content="Continue" />
       </div>
     </form>
   );

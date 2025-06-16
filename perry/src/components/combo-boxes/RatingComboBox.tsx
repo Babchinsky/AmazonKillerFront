@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import Checkbox from "../Checkbox";
-import Stars from "../Stars";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import "./ComboBox.scss";
-import "./RatingComboBox.scss";
+import Checkbox from "../checkboxes/Checkbox";
+import Stars from "../stars/Stars";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import comboBoxStyles from "./ComboBox.module.scss";
 
 
 interface RatingComboBoxProps {
@@ -29,24 +28,23 @@ function RatingComboBox(props: RatingComboBoxProps) {
   }, [selectedOptions, props.onSelect]);
 
   return (
-    <div className="filter-combo-box-container">
-      <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
+    <div className={comboBoxStyles.comboBoxContainer}>
+      <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
         <p>{props.title}</p>
 
-        <button 
-          className="filter-combo-box-button" 
+        <button
           onClick={(e) => {
             e.stopPropagation();
             setIsFilterOpen(prev => !prev);
           }}
         >
-          <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+          <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
         </button>
       </div>
 
       {isFilterOpen && (
-        <div className="options-container">
-          <ul className="options-rating">
+        <div className={comboBoxStyles.optionsContainer}>
+          <ul className={comboBoxStyles.optionsRating}>
             {[5, 4, 3, 2, 1].map((count) => (
               <li key={count}>
                 <Checkbox

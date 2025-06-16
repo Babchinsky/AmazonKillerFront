@@ -1,2 +1,306 @@
 @use "../../styles/themes/default.scss" as *;
 @use "../../styles/media-queries.scss" as *;
+
+
+.checkoutMain {
+  display: flex;
+  flex: 1;
+
+  @include desktop {
+    padding: 0px 32px 40px 32px;
+  }
+
+  .checkoutSection {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: 1600px;
+
+    @include desktop {
+      align-items: center;
+    }
+
+    .checkoutFormContainer {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      width: 100%;
+
+      .checkoutFormTopContainer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 38px;
+        width: 100%;
+        max-width: 923px;
+
+        .titleContainer {
+          position: relative;
+          display: flex;
+          align-items: center;
+          margin-bottom: 19px;
+          height: 43px;
+
+          .logoContainer {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 11px;
+          
+            .logoIcon {
+              width: 97px;
+
+              path {
+                fill: var(--main-color-secondary);
+              }
+            }
+          }
+
+          h2 {
+            text-align: center;
+            width: 100%;
+          }
+        }
+      }
+
+      .checkoutFormBottomContainer {
+        display: flex;
+        gap: 24px;
+
+        .formContainer, .summaryContainer {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .formContainer {
+          gap: 24px;
+          padding: 24px 0px 0px 0px;
+          width: 100%;
+          max-width: 923px;
+          background-color: var(--main-color-text);
+
+          .recipientInformationContainer, .deliveryAddressContainer, .paymentMethodContainer, .cardDetailsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: inherit;
+
+            .inputsContainer {
+              .emailInput {
+                grid-column: span 2;
+              }
+            }
+          }
+
+          .inputsContainer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+            background-color: inherit;
+          }
+
+          .cardDetailsContainer {
+            .inputsContainer {
+              grid-template-columns: 1fr 1fr 1fr;
+            }
+          }
+        }
+
+        .summaryContainer {
+          flex: 1;
+          padding: 24px;
+          height: fit-content;
+          background-color: var(--minor-color-object);
+          border-radius: 8px;
+          box-shadow: 0px 4px 11px -3px rgba(44, 93, 187, 0.25);
+
+          .summaryTopContainer {
+            padding-bottom: 17px;
+            background-color: var(--minor-color-object);
+            z-index: 10;
+
+            h3 {
+              margin-bottom: 24px;
+              
+              @include desktop {
+                font-weight: 600;
+                font-size: 32px;
+                line-height: 36px;
+                letter-spacing: -1.5%;
+              }
+            }
+          }
+
+          .summaryScrollableContainer {
+            margin-top: -17px;
+            height: 100%;
+            width: 100%;
+            max-height: 420px;
+            overflow-x: auto;
+
+            &::-webkit-scrollbar {
+              display: none;
+            }
+
+            .checkoutItemListContainer {
+              display: flex;
+              flex-direction: column;
+
+              .checkoutItemContainer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 16px;
+                height: 84px;
+
+                p {
+                  height: 100%;
+                  width: 100%;
+                  max-width: 342px;
+                  font-size: 16px;
+                  line-height: 24px;
+                  letter-spacing: 2%;
+                }
+
+                .itemPriceContainer {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: end;
+
+                  .itemQuantityPriceContainer {
+                    display: flex;
+                    align-items: end;
+                    
+                    .price {
+                      display: flex;
+                      align-items: start;
+                      font-size: 14px;
+                      line-height: 24px;
+                      letter-spacing: 2%;
+                      color: rgba(var(--main-color-halftone), 0.5);
+
+                      .quantity, .x {
+                        margin-right: 4px;
+                      }
+
+                      .currency {
+                        margin-right: 2px;
+                      }
+                      
+                      .currencyMinor {
+                        font-weight: 700;
+                        font-size: 8px;
+                        line-height: 20px;
+                        vertical-align: super;
+                      }
+                    }
+                  }
+
+                  .totalItemPriceContainer {
+                    .price {
+                      display: flex;
+                      align-items: start;
+                      font-size: 18px;
+                      line-height: 28px;
+                      letter-spacing: 2%;
+
+                      .currency {
+                        margin-right: 4px;
+                      }
+                      
+                      .currencyMinor {
+                        margin-left: 2px;
+                        font-weight: 600;
+                        font-size: 10px;
+                        line-height: 22px;
+                        vertical-align: super;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .summaryBottomContainer {
+            display: flex;
+            flex-direction: column;
+            margin-top: -17px;
+            padding-top: 17px;
+            background-color: var(--minor-color-object);
+
+            .totalContainer {
+              display: flex;
+              justify-content: end;
+              align-items: center;
+              gap: 32px;
+              flex: 1;
+              margin-top: 24px;
+              font-weight: 500;
+              font-size: 24px;
+              line-height: 28px;
+              letter-spacing: -1.5%;
+
+              .totalPriceContainer {
+                .price {
+                  display: flex;
+                  align-items: start;
+                  font-weight: 600;
+                  font-size: 40px;
+                  line-height: 48px;
+                  letter-spacing: -2%;
+
+                  .currency {
+                    margin-right: 4px;
+                  }
+                  
+                  .currencyMinor {
+                    margin-left: 2px;
+                    font-weight: 800;
+                    font-size: 23px;
+                    line-height: 38px;
+                    vertical-align: super;
+                  }
+                }
+              }
+            }
+
+            .buttonsContainer {
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              margin-top: 24px;
+             
+              button {
+                padding-top: 7.5px;
+                padding-bottom: 7.5px;
+              }
+
+              .placeOrderButton {
+                border-radius: 8px;
+              }
+            }
+
+            .checkoutNotice {
+              margin-top: 8px;
+              text-align: center;
+              font-size: 12px;
+              line-height: 16px;
+              letter-spacing: 2%;
+              color: rgba(var(--main-color-halftone), 0.5);
+
+              @include desktop {
+                font-size: 16px;
+                line-height: 20px;
+              }
+
+              .highlight {
+                color: var(--main-color-secondary);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

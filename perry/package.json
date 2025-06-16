@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@reduxjs/toolkit": "^2.6.1",
+    "country-state-city": "^3.2.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.3",
@@ -34,6 +35,7 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
+    "vite-plugin-mkcert": "^1.17.8",
     "vite-plugin-svgr": "^4.3.0"
   }
 }

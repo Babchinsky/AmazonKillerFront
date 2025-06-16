@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ComboBoxOptionType from "../../types/combo-box-option-type";
-import Checkbox from "../Checkbox";
-import ArrowDown from "../../assets/icons/arrow-down.svg?react";
-import Search from "../../assets/icons/search.svg?react";
-import "./ComboBox.scss";
-import "./FilterComboBox.scss";
+import Checkbox from "../checkboxes/Checkbox";
+import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+import SearchIcon from "../../assets/icons/search.svg?react";
+import comboBoxStyles from "./ComboBox.module.scss";
+import filterComboBoxStyles from "./FilterComboBox.module.scss";
 
 
 interface FilterComboBoxProps {
@@ -20,7 +20,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const filteredOptions = props.options.filter(option => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
-  const optionsClass = `options-${props.type}`.trim();
+  const optionsClass = `options${props.type.charAt(0).toUpperCase() + props.type.slice(1)}`.trim();
 
   const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -36,33 +36,31 @@ function FilterComboBox(props: FilterComboBoxProps) {
 
   useEffect(() => {
     props.onSelect(selectedOptions);
-  }, [selectedOptions, props]);
+  }, [selectedOptions]);
 
   return (
-    <div className="filter-combo-box-container">
-      <div className="title-container" onClick={() => setIsFilterOpen(prev => !prev)}>
+    <div className={comboBoxStyles.comboBoxContainer}>
+      <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
         <p>{props.title}</p>
 
-        <button 
-          className="filter-combo-box-button" 
+        <button
           onClick={(e) => {
             e.stopPropagation();
             setIsFilterOpen(prev => !prev);
           }}
         >
-          <ArrowDown className={`arrow-down-icon ${isFilterOpen ? "arrow-down-icon-open" : ""}`} />
+          <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
         </button>
       </div>
 
       {isFilterOpen && (
         <>
           {(props.type === "list" || props.type === "grid") && (
-            <div className="search-bar-container">
-              <button className="search-bar-button">
-                <Search className="search-icon" />
+            <div className={filterComboBoxStyles.searchBarContainer}>
+              <button>
+                <SearchIcon className={filterComboBoxStyles.searchIcon} />
               </button>
               <input
-                className="search-bar-input"
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={changeSearch}
@@ -70,7 +68,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
             </div>
           )}
 
-          <div className="options-container">
+          <div className={comboBoxStyles.optionsContainer}>
             {props.type === "list" && (
               <ul className={optionsClass}>
                 {filteredOptions.map((option) => (

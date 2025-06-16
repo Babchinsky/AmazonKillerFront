@@ -5,6 +5,7 @@ type ProductCardType = {
   imageUrl: string;
   rating: number;
   reviewsCount: number;
+  quantity: number;
   discountPercent?: number | null;
 };
 

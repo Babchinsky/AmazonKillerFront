@@ -1,6 +1,6 @@
 type ProductFeatureType = {
-  key: string;
-  value: string;
+  name: string;
+  description: string;
 };
 
 export default ProductFeatureType;

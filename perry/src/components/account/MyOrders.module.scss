@@ -2,12 +2,13 @@
 @use "../../styles/media-queries.scss" as *;
 
 
-.order-list-container {
+.orderListContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 33px;
+  margin-top: 9px;
+  padding: 0px 20px;
 
-  .order-container {
+  .orderContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,12 +19,12 @@
       background-color: var(--minor-color-object);
     }
 
-    .order-left-container, .order-right-container {
+    .orderLeftContainer, .orderRightContainer {
       display: flex;
       flex-direction: column;
     }
 
-    .order-left-container {
+    .orderLeftContainer {
       gap: 5px;
       font-weight: 400;
       font-size: 18px;
@@ -38,15 +39,15 @@
         color: rgba(var(--main-color-halftone), 0.5);
       }
 
-      .received-status, .ready-for-pickup-status {
+      .receivedStatus, .readyForPickupStatus {
         color: var(--main-color-secondary);
       }
 
-      .shipped-status, .ordered-status {
+      .shippedStatus, .orderedStatus {
         color: rgba(var(--main-color-halftone), 0.5);
       }
 
-      .cancelled-status {
+      .cancelledStatus {
         color: var(--minor-color-destructive);
       }
 
@@ -57,11 +58,11 @@
       }
     }
 
-    .order-right-container {
+    .orderRightContainer {
       align-items: end;
       gap: 8px;
 
-      .item-count {
+      .itemCount {
         text-align: right;
         font-weight: 400;
         font-size: 16px;
@@ -70,7 +71,7 @@
         color: rgba(var(--main-color-halftone), 0.5);
       }
 
-      .price-container {
+      .itemPriceContainer {
         display: inline-flex;
 
         .price {
@@ -86,7 +87,7 @@
             margin-right: 4px;
           }
           
-          .currency-minor {
+          .currencyMinor {
             margin-left: 2px;
             font-weight: 700;
             font-size: 14px;
@@ -96,7 +97,7 @@
         }
       }
 
-      .details-button {
+      button {
         margin-left: 24px;
         padding: 5px 15px;
         font-size: 14px;
@@ -105,7 +106,7 @@
     }
   }
 
-  .order-summary {
+  .orderSummary {
     .item-count {
       font-size: 14px;
       color: #666;
@@ -131,6 +132,21 @@
         background: #0070e0;
         color: white;
       }
+    }
+  }
+
+  .orderListMessage {
+    padding: 0px 16px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 2%;
+    color: var(--minor-color-text);
+
+    @include desktop {
+      font-size: 18px;
+      line-height: 28px;
     }
   }
 }
