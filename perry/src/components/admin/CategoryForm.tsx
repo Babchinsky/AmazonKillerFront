@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, useMemo, useEffect } from 'react';
 import TextInput from '../inputs/TextInput';
 import './CategoryForm.scss';
 import { ADMIN_TOKEN } from '../../utils/authToken';
-import { Category, CategoryFormData, CategoryPropertyKeys } from '../../types/category';
+import { Category, CategoryPropertyKeys } from '../../types/category';
 import { API_BASE_URL } from '../../config/api';
 
 interface CategoryFormProps {
@@ -31,7 +31,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
   const [description, setDescription] = useState(category?.description || '');
   const [parentId, setParentId] = useState<string | null>(initialParentId || category?.parentId || null);
   const [status, setStatus] = useState<'active' | 'inactive'>(category?.status || 'active');
-  const [role, setRole] = useState<'parent' | 'child'>(initialParentId ? 'child' : (category?.role || 'parent'));
+  const [, setRole] = useState<'parent' | 'child'>(initialParentId ? 'child' : (category?.role || 'parent'));
   const [image, setImage] = useState<string | undefined>(category?.imageUrl);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [showParentDropdown, setShowParentDropdown] = useState(false);
@@ -104,37 +104,6 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
 
     fetchPropertyKeys();
   }, [category]);
-
-  const resetForm = () => {
-    setName('');
-    setDescription('');
-    setParentId(null);
-    setStatus('active');
-    setRole('parent');
-    setImage(undefined);
-    setImageFile(null);
-    setShowParentDropdown(false);
-    setShowStatusDropdown(false);
-    setErrors({});
-  };
-
-  const validateForm = (): boolean => {
-    const newErrors: ValidationErrors = {};
-    let isValid = true;
-
-    if (!name.trim()) {
-      newErrors.name = 'Name is required';
-      isValid = false;
-    }
-
-    if (!description.trim()) {
-      newErrors.description = 'Description is required';
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
 
   const handleParentSelect = (selectedParentId: string | null) => {
     setParentId(selectedParentId);
@@ -312,7 +281,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
                 fullError: errorData
               });
             } catch (e) {
-              console.error('Failed to parse error response for update');
+              console.error('Failed to parse error response for update', e);
             }
             throw new Error(`PUT failed: ${response.status}`);
           }
@@ -366,7 +335,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
               fullError: errorData
             });
           } catch (e) {
-            console.error('Failed to parse error response');
+            console.error('Failed to parse error response', e);
           }
           throw new Error(`HTTP error! status: ${response.status}`);
         }

@@ -26,10 +26,9 @@ function Authentication(props: AuthenticationProps) {
   
   const [action, setAction] = useState<string>(props.type);
   const [activeForm, setActiveForm] = useState<AuthFormType>(props.type);
-  const [prevForm, setPrevForm] = useState<AuthFormType>(props.type);
   const showBackButton = activeForm === "sendCode" || (!isDesktop && (activeForm === "forgotPassword" || activeForm === "resetPassword"));
 
-  const [formHistory, setFormHistory] = useState<AuthFormType[]>([props.type]);
+  const [, setFormHistory] = useState<AuthFormType[]>([props.type]);
 
   const pushForm = (newForm: AuthFormType) => {
     setFormHistory((prev) => [...prev, newForm]);

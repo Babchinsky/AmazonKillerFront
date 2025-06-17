@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UsersPanel.scss';
-import { SearchIcon, ArrowDownIcon, ArrowsUpDownIcon, MoreIcon } from '../../icons';
+import { SearchIcon, ArrowDownIcon, MoreIcon } from '../../icons';
 import { ConfirmModal } from '../common/ConfirmModal';
-import { ADMIN_TOKEN, REFRESH_TOKEN } from '../../utils/authToken';
+import { ADMIN_TOKEN } from '../../utils/authToken';
 import { API_BASE_URL } from '../../config/api';
 
 interface User {
@@ -420,7 +420,7 @@ export const UsersPanel: React.FC = () => {
 
         <div className="columns-filter">
           <div className="columns-select" onClick={() => setIsColumnsDropdownOpen(!isColumnsDropdownOpen)}>
-            <span>Filters</span>
+            <span>Columns</span>
             <ArrowDownIcon className={isColumnsDropdownOpen ? 'rotated' : ''} />
             {isColumnsDropdownOpen && (
               <div className="columns-dropdown">

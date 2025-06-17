@@ -53,7 +53,7 @@ export const ProductsPanel: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const itemsPerPage = 10;
 

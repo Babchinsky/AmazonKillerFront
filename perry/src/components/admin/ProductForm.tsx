@@ -107,8 +107,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [details, setDetails] = useState<ProductDetail[]>(initialProduct?.details || []);
   const [features, setFeatures] = useState<ProductFeature[]>(initialProduct?.features || []);
-  const [rowVersion, setRowVersion] = useState<string | undefined>(initialProduct?.rowVersion);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setRowVersion] = useState<string | undefined>(initialProduct?.rowVersion);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

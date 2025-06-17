@@ -42,10 +42,10 @@ function ProductList() {
 
   const [currentCategory, setCurrentCategory] = useState<CategoryType>();
   const [crumbs, setCrumbs] = useState<CrumbType[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [selectedFabricTypes, setSelectedFabricTypes] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [, setSelectedBrands] = useState<string[]>([]);
+  const [, setSelectedFabricTypes] = useState<string[]>([]);
+  const [, setSelectedSizes] = useState<string[]>([]);
+  const [, setSelectedColors] = useState<string[]>([]);
   const [minAvailablePrice, setMinAvailablePrice] = useState<number>(0);
   const [maxAvailablePrice, setMaxAvailablePrice] = useState<number>(100);
   const [minSelectedPrice, setMinSelectedPrice] = useState<number>(0);

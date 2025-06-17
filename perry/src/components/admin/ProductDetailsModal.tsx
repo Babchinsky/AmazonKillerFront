@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Product, ProductDetail, ProductFeature } from '../../types/Product';
+import { Product } from '../../types/Product';
 import { ADMIN_TOKEN } from '../../utils/authToken';
 import './ProductDetailsModal.scss';
 import {API_BASE_URL} from "../../config/api.ts";
@@ -44,7 +44,6 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [expandedFeatures, setExpandedFeatures] = useState<Set<number>>(new Set());
   const [product, setProduct] = useState<Product>(initialProduct);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
