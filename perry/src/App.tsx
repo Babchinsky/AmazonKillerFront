@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./state/store";
-import { BrowserRouter, Routes, Route } from "react-router";
 import { setAuthModalOpen } from "./state/auth/auth-slice";
-import ProtectedRoutes from "./utils/ProtectedRoutes";
+// import ProtectedRoutes from "./utils/ProtectedRoutes";
+// import { ProtectedRoute } from './components/routes/ProtectedRoute';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Main from "./pages/main/Main";
 import Account from "./pages/account/Account";
 import ProductList from "./pages/products/ProductList";
@@ -13,6 +14,14 @@ import PageNotFound from "./pages/error/PageNotFound";
 import Authentication from "./components/popups/authentication/Authentication";
 import { useEffect } from "react";
 import { initializeApp } from "./utils/appInit";
+import { LoginPage } from './pages/admin/LoginPage';
+import { AdminLayout } from './layouts/AdminLayout';
+import { CategoryPanel } from './components/admin/CategoryPanel';
+import { UsersPanel } from './components/admin/UsersPanel';
+import { ProductsPanel } from './components/admin/ProductsPanel';
+import { OrdersPanel } from './components/admin/OrdersPanel';
+import { ReviewsPanel } from './components/admin/ReviewsPanel';
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 
 function App() {
@@ -40,22 +49,36 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route path="/" element={<Main />} />
           
-          <Route element={<ProtectedRoutes />}>
+          <Route element={<ProtectedRoute />}>
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
+          </Route>
+
+          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<Navigate to="/admin/users" replace />} />
+            <Route path="users" element={<UsersPanel />} />
+            <Route path="category" element={<CategoryPanel />} />
+            <Route path="products" element={<ProductsPanel />} />
+            <Route path="orders" element={<OrdersPanel />} />
+            <Route path="reviews" element={<ReviewsPanel />} />
           </Route>
           
           <Route path="/products/:categoryName" element={<ProductList />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/legal-notice" element={<LegalNotice />} />
-          
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
 
       {isAuthModalOpen && <Authentication onClose={closeAuthModal} />}
     </>

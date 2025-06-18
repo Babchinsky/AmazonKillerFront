@@ -7,8 +7,6 @@ import { getProducts } from "../../state/products/products-slice";
 import { setAuthModalOpen, setAuthType } from "../../state/auth/auth-slice";
 import { getCssVariable } from "../../utils/getCssVariable";
 import { useBreakpoint } from "../../utils/useBreakpoint";
-import CategoryType from "../../types/categories/category-type";
-import ProductCardType from "../../types/products/product-card-type";
 import Header from "../../components/Header";
 import BackToTopButton from "../../components/buttons/BackToTopButton";
 import BannerCarousel from "../../components/carousels/BannerCarousel";

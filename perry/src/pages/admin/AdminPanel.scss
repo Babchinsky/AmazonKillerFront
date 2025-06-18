@@ -1,0 +1,15 @@
+.admin-panel {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--main-color-text);
+  display: flex;
+  flex-direction: column;
+
+  &__content {
+    flex: 1;
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 160px;
+  }
+} 
