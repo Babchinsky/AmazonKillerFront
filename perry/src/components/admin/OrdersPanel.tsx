@@ -3,7 +3,6 @@ import AdminInput from './AdminInput';
 import { ConfirmModal } from '../common/ConfirmModal';
 import './OrdersPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api";
 
 enum PaymentType {
   Cash = 'Cash',
@@ -86,7 +85,7 @@ const statusToNumberMap: Record<OrderStatus, number> = {
 
 const updateOrderStatusOnServer = async (orderId: string, newStatus: OrderStatus): Promise<boolean> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/orders/${orderId}/status`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/orders/${orderId}/status`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -122,7 +121,7 @@ export const OrdersPanel: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/orders`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/orders`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -199,7 +198,7 @@ export const OrdersPanel: React.FC = () => {
 
   const fetchOrderDetails = async (orderId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/orders/${orderId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/orders/${orderId}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',

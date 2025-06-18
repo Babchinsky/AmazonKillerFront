@@ -6,7 +6,6 @@ import { ProductDetailsModal } from './ProductDetailsModal';
 import { Product } from '../../types/admin/Product';
 import './ProductsPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
-import { API_BASE_URL } from '../../config/api';
 
 interface Category {
   id: string;
@@ -61,7 +60,7 @@ export const ProductsPanel: React.FC = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -85,7 +84,7 @@ export const ProductsPanel: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/products`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/products`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -190,7 +189,7 @@ export const ProductsPanel: React.FC = () => {
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/products/delete-many`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/products/delete-many`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,

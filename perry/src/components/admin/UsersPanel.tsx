@@ -4,7 +4,6 @@ import './UsersPanel.scss';
 import { SearchIcon, ArrowDownIcon, ArrowsUpDownIcon, MoreIcon } from '../../utils/admin/icons';
 import { ConfirmModal } from '../common/ConfirmModal';
 import { ADMIN_TOKEN, REFRESH_TOKEN } from '../../utils/auth/authToken';
-import { API_BASE_URL } from '../../config/api';
 
 interface User {
   id: number;
@@ -226,7 +225,7 @@ export const UsersPanel: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/users`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -267,7 +266,7 @@ export const UsersPanel: React.FC = () => {
 
   const promoteUser = async (userId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/users/${userId}/role/promote`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${userId}/role/promote`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -292,7 +291,7 @@ export const UsersPanel: React.FC = () => {
 
   const demoteUser = async (userId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/users/${userId}/role/demote`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${userId}/role/demote`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -320,7 +319,7 @@ export const UsersPanel: React.FC = () => {
       const body = JSON.stringify({ userIds: [userId] });
       console.log('Request body:', body); // Логирование тела запроса
 
-      const response = await fetch(`${API_BASE_URL}/api/admin/users/delete-many`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/delete-many`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -342,7 +341,7 @@ export const UsersPanel: React.FC = () => {
 
   const restoreUser = async (userId: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/users/restore-many`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/restore-many`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,

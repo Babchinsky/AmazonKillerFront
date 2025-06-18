@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductDetail, ProductFeature } from '../../types/admin/Product';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import './ProductDetailsModal.scss';
-import {API_BASE_URL} from "../../config/api";
 
 interface ProductDetailsModalProps {
   product: Product;
@@ -58,7 +57,7 @@ export const ProductDetailsModal: React.FC<ProductDetailsModalProps> = ({
 
   const fetchProductDetails = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/products/${initialProduct.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',

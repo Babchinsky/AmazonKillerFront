@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './Header.scss';
 import { ADMIN_TOKEN, clearAuth } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,7 +13,7 @@ export const Header: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/account/users/me`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/account/users/me`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',

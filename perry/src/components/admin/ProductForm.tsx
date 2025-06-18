@@ -3,7 +3,6 @@ import AdminInput from './AdminInput';
 import { Product, ProductDetail, ProductFeature } from '../../types/admin/Product';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import './ProductForm.scss';
-import {API_BASE_URL} from "../../config/api";
 
 interface ProductFormProps {
   product?: Product;
@@ -142,7 +141,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     if (!initialProduct) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/products/${initialProduct.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/products/${initialProduct.id}`, {
         headers: {
           'Authorization': `Bearer ${ADMIN_TOKEN}`,
           'Content-Type': 'application/json',
@@ -255,7 +254,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     // Если это редактирование, сначала обновим rowVersion
     if (initialProduct) {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/products/${initialProduct.id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/products/${initialProduct.id}`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -411,8 +410,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       }
 
       const url = initialProduct
-        ? `${API_BASE_URL}/api/admin/products/${initialProduct.id}`
-        : `${API_BASE_URL}/api/admin/products`;
+        ? `${import.meta.env.VITE_API_URL}/admin/products/${initialProduct.id}`
+        : `${import.meta.env.VITE_API_URL}/admin/products`;
 
       const response = await fetch(url, {
         method: initialProduct ? 'PUT' : 'POST',

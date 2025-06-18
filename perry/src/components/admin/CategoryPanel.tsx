@@ -5,7 +5,6 @@ import { CategoryForm } from './CategoryForm';
 import './CategoryPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import { Category } from '../../types/admin/category';
-import {API_BASE_URL} from "../../config/api";
 
 interface CategoryPanelProps {
   // Добавим пропсы позже при необходимости
@@ -57,7 +56,7 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories`, {
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,
             'Content-Type': 'application/json',
@@ -329,7 +328,7 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
       });
 
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories/delete-many`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories/delete-many`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,

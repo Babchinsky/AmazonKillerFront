@@ -3,7 +3,6 @@ import AdminInput from './AdminInput';
 import './CategoryForm.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import { Category, CategoryPropertyKeys } from '../../types/admin/category';
-import { API_BASE_URL } from '../../config/api';
 
 interface CategoryFormProps {
   category?: Category;
@@ -83,7 +82,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
     const fetchPropertyKeys = async () => {
       if (category) {
         try {
-          const response = await fetch(`${API_BASE_URL}/api/admin/categories/${category.id}/property-keys`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories/${category.id}/property-keys`, {
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
               'Content-Type': 'application/json',
@@ -238,7 +237,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
       }
       if (category && selectedCategoryId) {
         try {
-          const freshResponse = await fetch(`${API_BASE_URL}/api/admin/categories/${selectedCategoryId}`, {
+          const freshResponse = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories/${selectedCategoryId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -290,8 +289,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
             console.log(`${key}:`, value);
           }
       
-          console.log(`Sending PUT request to: ${API_BASE_URL}/api/admin/categories/${freshId}`);
-          const response = await fetch(`${API_BASE_URL}/api/admin/categories/${freshId}`, {
+          console.log(`Sending PUT request to: ${import.meta.env.VITE_API_URL}/admin/categories/${freshId}`);
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories/${freshId}`, {
             method: 'PUT',
             headers: {
               'Authorization': `Bearer ${ADMIN_TOKEN}`,
@@ -346,7 +345,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({
         else {
         // Создание новой категории
         console.log('Sending request to create category with FormData');
-        const response = await fetch(`${API_BASE_URL}/api/admin/categories`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/categories`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${ADMIN_TOKEN}`,

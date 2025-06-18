@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.scss';
 import { updateTokens, initializeTokens } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +35,7 @@ export const LoginPage: React.FC = () => {
         console.log('Using existing deviceId:', deviceId);
       }
 
-      const loginUrl = `${API_BASE_URL}/api/auth/login`;
+      const loginUrl = `${import.meta.env.VITE_API_URL}/auth/login`;
       console.log('Sending login request to:', loginUrl);
 
       const requestBody = { email, password, deviceId };
