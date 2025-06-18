@@ -79,9 +79,15 @@ export const getProductsByCategory = createAsyncThunk(
       const urlParams = new URLSearchParams();
       urlParams.append("categoryId", params.categoryId);
 
+      const plainKeys = ["productMinPrice", "productMaxPrice", "rating"];
+
       if (params.filters) {
         for (const [key, values] of Object.entries(params.filters)) {
-          values.forEach((val) => urlParams.append(key, val));
+          const paramName = plainKeys.includes(key)
+              ? key
+              : `Filters[${key}]`;
+
+          values.forEach(val => urlParams.append(paramName, val));
         }
       }
 
