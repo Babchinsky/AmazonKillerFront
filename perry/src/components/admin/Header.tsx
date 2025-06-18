@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './Header.scss';
-import { ADMIN_TOKEN, clearAuth } from '../../utils/auth/authToken';
+import { ADMIN_TOKEN, clearAuth } from '@/utils/auth/authToken';
+import LogoIcon from "@/assets/icons/logo.svg";
+import UsersIcon from "@/assets/icons/users.svg";
+import CategoryIcon from "@/assets/icons/category.svg";
+import ProductsIcon from "@/assets/icons/products.svg";
+import OrdersIcon from "@/assets/icons/orders.svg";
+import ReviewsIcon from "@/assets/icons/reviews.svg";
+import ExitIcon from "@/assets/icons/exit.svg";
+
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,7 +74,7 @@ export const Header: React.FC = () => {
             </svg>
           </button>
           <div className="admin-header__logo">
-            <img src="../../assets/icons/logo.svg" alt="Amazon Logo" />
+            <img src={LogoIcon} alt="Amazon Logo" />
           </div>
         </div>
       </div>
@@ -88,7 +96,7 @@ export const Header: React.FC = () => {
               className={`admin-header__nav-item ${isActive('users') ? 'admin-header__nav-item--active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <img src="../../assets/icons/users.svg" alt="Users" width="32" height="32" />
+              <img src={UsersIcon} alt="Users" width="32" height="32" />
               Users
             </Link>
             <Link 
@@ -96,7 +104,7 @@ export const Header: React.FC = () => {
               className={`admin-header__nav-item ${isActive('category') ? 'admin-header__nav-item--active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <img src="../../assets/icons/category.svg" alt="Category" width="32" height="32" />
+              <img src={CategoryIcon} alt="Category" width="32" height="32" />
               Category
             </Link>
             <Link 
@@ -104,7 +112,7 @@ export const Header: React.FC = () => {
               className={`admin-header__nav-item ${isActive('products') ? 'admin-header__nav-item--active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <img src="../../assets/icons/products.svg" alt="Products" width="32" height="32" />
+              <img src={ProductsIcon} alt="Products" width="32" height="32" />
               Products
             </Link>
             <Link 
@@ -112,7 +120,7 @@ export const Header: React.FC = () => {
               className={`admin-header__nav-item ${isActive('orders') ? 'admin-header__nav-item--active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <img src="../../assets/icons/orders.svg" alt="Orders" width="32" height="32" />
+              <img src={OrdersIcon} alt="Orders" width="32" height="32" />
               Orders
             </Link>
             <Link 
@@ -120,12 +128,12 @@ export const Header: React.FC = () => {
               className={`admin-header__nav-item ${isActive('reviews') ? 'admin-header__nav-item--active' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
-              <img src="../../assets/icons/reviews.svg" alt="Reviews" width="32" height="32" />
+              <img src={ReviewsIcon} alt="Reviews" width="32" height="32" />
               Reviews
             </Link>
           </nav>
           <button className="admin-header__logout" onClick={handleLogout}>
-            <img src="../../assets/icons/exit.svg" alt="Log out" width="32" height="32" />
+            <img src={ExitIcon} alt="Log out" width="32" height="32" />
             Log out
           </button>
         </div>

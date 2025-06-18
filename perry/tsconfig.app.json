@@ -23,9 +23,12 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+    "types": ["react", "react-dom"],
 
-    /* Type Checking */
-    "types": ["react", "react-dom"]
+    "baseUrl": ".", // ✅
+    "paths": {
+      "@/*": ["src/*"] // ✅
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
