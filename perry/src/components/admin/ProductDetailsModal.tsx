@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Product, ProductDetail, ProductFeature } from '../../types/admin/Product';
+import { Product } from '../../types/admin/Product';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import './ProductDetailsModal.scss';
 

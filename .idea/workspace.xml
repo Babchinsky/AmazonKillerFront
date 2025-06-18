@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="fix(ci): set output_location to dist for Vite build">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/CategoryForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/CategoryForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/CategoryPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/CategoryPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/Header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/OrdersPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/OrdersPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/ProductDetailsModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/ProductDetailsModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/ProductForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/ProductForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/ProductsPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/ProductsPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/ReviewsPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/ReviewsPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/components/admin/UsersPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/admin/UsersPanel.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/config/api.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/perry/src/pages/admin/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/pages/admin/LoginPage.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,7 +31,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -69,6 +56,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.vite dev.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "ts.external.directory.path": "C:\\MyProjects\\AmazonKiller\\AmazonKillerFront\\perry\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -101,7 +89,7 @@
       <workItem from="1749753305699" duration="285000" />
       <workItem from="1750098447527" duration="1897000" />
       <workItem from="1750253351781" duration="4809000" />
-      <workItem from="1750259735175" duration="2103000" />
+      <workItem from="1750259735175" duration="2404000" />
     </task>
     <task id="LOCAL-00001" summary="refactor(api): replace hardcoded URLs with API_BASE_URL constant">
       <option name="closed" value="true" />
@@ -151,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750260356776</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL">
+      <option name="closed" value="true" />
+      <created>1750262004313</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1750262004313</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +171,7 @@
     <MESSAGE value="fix(imports): remove .ts/.tsx extensions from import paths for CI compatibility" />
     <MESSAGE value="chore: regenerate lockfile to fix rollup native build issue" />
     <MESSAGE value="fix(ci): set output_location to dist for Vite build" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(ci): set output_location to dist for Vite build" />
+    <MESSAGE value="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
   </component>
 </project>
