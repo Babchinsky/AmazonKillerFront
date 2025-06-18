@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="style: remove unused imports">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/azure-static-web-apps-kind-cliff-0bfc38b03.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/azure-static-web-apps-kind-cliff-0bfc38b03.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/perry/src/components/routes/ProtectedRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/perry/src/components/routes/ProtectedRoute.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,7 +16,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="dev" />
+        <entry key="$PROJECT_DIR$" value="admin-panel" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,7 +34,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -93,6 +93,7 @@
       <workItem from="1750098447527" duration="1897000" />
       <workItem from="1750253351781" duration="4809000" />
       <workItem from="1750259735175" duration="4050000" />
+      <workItem from="1750270281080" duration="263000" />
     </task>
     <task id="LOCAL-00001" summary="refactor(api): replace hardcoded URLs with API_BASE_URL constant">
       <option name="closed" value="true" />
