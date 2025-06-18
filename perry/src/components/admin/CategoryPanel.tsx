@@ -233,7 +233,6 @@ export const CategoryPanel: React.FC<CategoryPanelProps> = () => {
   };
 
   const parentCategories = getParentCategories();
-  const mainCategories = categories.filter(cat => !cat.parentId);
 
   const handleFormSubmit = (categoryData: Category) => {
     if (editingCategory) {
