@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
+    <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="style: remove unused imports">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/azure-static-web-apps-kind-cliff-0bfc38b03.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/azure-static-web-apps-kind-cliff-0bfc38b03.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,7 +34,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -89,7 +92,7 @@
       <workItem from="1749753305699" duration="285000" />
       <workItem from="1750098447527" duration="1897000" />
       <workItem from="1750253351781" duration="4809000" />
-      <workItem from="1750259735175" duration="2404000" />
+      <workItem from="1750259735175" duration="3669000" />
     </task>
     <task id="LOCAL-00001" summary="refactor(api): replace hardcoded URLs with API_BASE_URL constant">
       <option name="closed" value="true" />
@@ -147,7 +150,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750262004313</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="style: remove unused imports">
+      <option name="closed" value="true" />
+      <created>1750262307748</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750262307748</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,6 +183,7 @@
     <MESSAGE value="chore: regenerate lockfile to fix rollup native build issue" />
     <MESSAGE value="fix(ci): set output_location to dist for Vite build" />
     <MESSAGE value="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(api): replace API_BASE_URL with import.meta.env.VITE_API_URL" />
+    <MESSAGE value="style: remove unused imports" />
+    <option name="LAST_COMMIT_MESSAGE" value="style: remove unused imports" />
   </component>
 </project>
