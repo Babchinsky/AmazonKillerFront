@@ -4,7 +4,7 @@ import { ConfirmModal } from '../common/ConfirmModal';
 import { ImageViewer } from '../common/ImageViewer';
 import './ReviewsPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 interface ReviewContent {
   id: string;

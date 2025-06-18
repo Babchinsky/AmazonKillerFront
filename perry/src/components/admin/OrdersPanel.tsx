@@ -3,7 +3,7 @@ import AdminInput from './AdminInput';
 import { ConfirmModal } from '../common/ConfirmModal';
 import './OrdersPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 enum PaymentType {
   Cash = 'Cash',

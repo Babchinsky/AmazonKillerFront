@@ -3,7 +3,7 @@ import AdminInput from './AdminInput';
 import { Product, ProductDetail, ProductFeature } from '../../types/admin/Product';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import './ProductForm.scss';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 interface ProductFormProps {
   product?: Product;

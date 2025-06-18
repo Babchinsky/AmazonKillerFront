@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.scss';
 import { updateTokens, initializeTokens } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');

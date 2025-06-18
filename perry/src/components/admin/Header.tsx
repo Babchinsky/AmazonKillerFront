@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import './Header.scss';
 import { ADMIN_TOKEN, clearAuth } from '../../utils/auth/authToken';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

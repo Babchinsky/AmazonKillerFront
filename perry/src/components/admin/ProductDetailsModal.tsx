@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Product, ProductDetail, ProductFeature } from '../../types/admin/Product';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
 import './ProductDetailsModal.scss';
-import {API_BASE_URL} from "../../config/api.ts";
+import {API_BASE_URL} from "../../config/api";
 
 interface ProductDetailsModalProps {
   product: Product;

@@ -4,8 +4,8 @@ import { ConfirmModal } from '../common/ConfirmModal';
 import { CategoryForm } from './CategoryForm';
 import './CategoryPanel.scss';
 import { ADMIN_TOKEN } from '../../utils/auth/authToken';
-import { Category } from '../../types/admin/category.ts';
-import {API_BASE_URL} from "../../config/api.ts";
+import { Category } from '../../types/admin/category';
+import {API_BASE_URL} from "../../config/api";
 
 interface CategoryPanelProps {
   // Добавим пропсы позже при необходимости
