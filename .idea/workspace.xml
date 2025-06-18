@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="fix(imports): remove .ts/.tsx extensions from import paths for CI compatibility">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/perry/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/perry/package-lock.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Babchinsky&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Babchinsky/AmazonKillerFront.git&quot;,
+    &quot;accountId&quot;: &quot;ec2b54aa-591f-4c94-8dd3-c8f88e73ef4d&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2xwzCfeu42FMwpZ1qaS296BqOgx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "C:/MyProjects/AmazonKiller/AmazonKillerFront",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.vite dev.executor": "Run",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\WebStorm 2024.3.5\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\MyProjects\AmazonKiller\AmazonKillerFront\perry\src\config" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-WS-251.26094.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="944bc800-8831-4b38-b9fb-6676146607b0" name="Changes" comment="" />
+      <created>1748863798291</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748863798291</updated>
+      <workItem from="1748863800321" duration="80000" />
+      <workItem from="1748864022503" duration="8666000" />
+      <workItem from="1749196624344" duration="698000" />
+      <workItem from="1749494869689" duration="20000" />
+      <workItem from="1749494956979" duration="1269000" />
+      <workItem from="1749722891722" duration="8080000" />
+      <workItem from="1749753305699" duration="285000" />
+      <workItem from="1750098447527" duration="1897000" />
+      <workItem from="1750253351781" duration="4809000" />
+      <workItem from="1750259735175" duration="334000" />
+    </task>
+    <task id="LOCAL-00001" summary="refactor(api): replace hardcoded URLs with API_BASE_URL constant">
+      <option name="closed" value="true" />
+      <created>1749732723685</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749732723685</updated>
+    </task>
+    <task id="LOCAL-00002" summary="git commit -m &quot;fix: disable unused checks for successful Azure CI build&quot;">
+      <option name="closed" value="true" />
+      <created>1750255661334</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750255661335</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix(ci): removed allowImportingTsExtensions for emit compatibility">
+      <option name="closed" value="true" />
+      <created>1750256076651</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1750256076651</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix(imports): remove .ts/.tsx extensions from import paths for CI compatibility">
+      <option name="closed" value="true" />
+      <created>1750257124999</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1750257124999</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="refactor(api): replace hardcoded URLs with API_BASE_URL constant" />
+    <MESSAGE value="git commit -m &quot;fix: disable unused checks for successful Azure CI build&quot;" />
+    <MESSAGE value="fix(ci): removed allowImportingTsExtensions for emit compatibility" />
+    <MESSAGE value="fix(imports): remove .ts/.tsx extensions from import paths for CI compatibility" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(imports): remove .ts/.tsx extensions from import paths for CI compatibility" />
+  </component>
+</project>
