@@ -11,7 +11,6 @@ interface FilterComboBoxProps {
   type: "list" | "grid";
   title: string;
   options: ComboBoxOptionType[];
-  selectedOptions: string[];
   isOpen: boolean;
   onSelect: (selectedOptions: string[]) => void;
 }
@@ -19,18 +18,8 @@ interface FilterComboBoxProps {
 function FilterComboBox(props: FilterComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  // const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(props.selectedOptions);
-  // const filteredOptions = props.options.filter(option => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
-  // const optionsClass = `options${props.type.charAt(0).toUpperCase() + props.type.slice(1)}`.trim();
-
-  useEffect(() => {
-    setSelectedOptions(props.selectedOptions);
-  }, [props.selectedOptions]);
-
-  const filteredOptions = props.options.filter(option =>
-    option.label.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const filteredOptions = props.options.filter(option => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
   const optionsClass = `options${props.type.charAt(0).toUpperCase() + props.type.slice(1)}`.trim();
 
   const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,22 +37,6 @@ function FilterComboBox(props: FilterComboBoxProps) {
   useEffect(() => {
     props.onSelect(selectedOptions);
   }, [selectedOptions]);
-
-  // const changeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchQuery(e.target.value);
-  // };
-
-  // const toggleOption = (option: string) => {
-  //   setSelectedOptions(prevSelected =>
-  //     prevSelected.includes(option)
-  //       ? prevSelected.filter(o => o !== option)
-  //       : [...prevSelected, option]
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   props.onSelect(selectedOptions);
-  // }, [selectedOptions]);
 
   return (
     <div className={comboBoxStyles.comboBoxContainer}>

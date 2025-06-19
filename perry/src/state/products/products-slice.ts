@@ -79,7 +79,7 @@ export const getProductsByCategory = createAsyncThunk(
       const urlParams = new URLSearchParams();
       urlParams.append("categoryId", params.categoryId);
 
-      const plainKeys = ["minPrice", "maxPrice", "rating"];
+      const plainKeys = ["productMinPrice", "productMaxPrice", "rating"];
 
       if (params.filters) {
         for (const [key, values] of Object.entries(params.filters)) {
@@ -91,7 +91,6 @@ export const getProductsByCategory = createAsyncThunk(
         }
       }
 
-      console.log("Params:", urlParams.toString());
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/products?${urlParams.toString()}`
       );

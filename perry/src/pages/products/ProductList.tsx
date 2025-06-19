@@ -64,7 +64,6 @@ function ProductList() {
       isOpen={true}
       onSelect={(selected: string[]) => selectFilter(filterName, selected)}
       options={filterValues.map((val: any) => ({ id: val, label: val }))}
-      selectedOptions={selectedFilters[filterName] || []}
     />
   ))
   : null;
@@ -195,8 +194,6 @@ function ProductList() {
   }, [currentPage]);
 
   useEffect(() => {
-    if (!hasInitializedCategory) return;
-
     const filterState: { [key: string]: string[] } = {};
 
     if (currentCategory?.filters) {
@@ -208,18 +205,24 @@ function ProductList() {
       });
     }
 
-    const min = searchParams.get("minPrice");
-    const max = searchParams.get("maxPrice");
+    const min = searchParams.get("productMinPrice");
+    const max = searchParams.get("productMaxPrice");
 
-    if (min) setMinSelectedPrice(Number(min));
-    if (max) setMaxSelectedPrice(Number(max));
+    if (min) {
+      setMinSelectedPrice(Number(min));
+    }
+    if (max) {
+      setMaxSelectedPrice(Number(max));
+    }
 
     const ratings = searchParams.getAll("rating").map(r => parseInt(r, 10));
-    if (ratings.length > 0) setSelectedRatings(ratings);
+    
+    if (ratings.length > 0) {
+      setSelectedRatings(ratings);
+    }
 
     setSelectedFilters(filterState);
-  }, [searchParams, currentCategory, hasInitializedCategory]);
-
+  }, [searchParams, currentCategory]);
 
   useEffect(() => {
     const newParams = new URLSearchParams(searchParams);
@@ -227,8 +230,8 @@ function ProductList() {
     Object.keys(selectedFilters).forEach((key) => {
       newParams.delete(key);
     });
-    newParams.delete("minPrice");
-    newParams.delete("maxPrice");
+    newParams.delete("productMinPrice");
+    newParams.delete("productMaxPrice");
     newParams.delete("rating");
 
     Object.entries(selectedFilters).forEach(([key, values]) => {
@@ -236,10 +239,10 @@ function ProductList() {
     });
 
     if (minSelectedPrice !== null) {
-      newParams.set("minPrice", String(minSelectedPrice));
+      newParams.set("productMinPrice", String(minSelectedPrice));
     }
     if (maxSelectedPrice !== null) {
-      newParams.set("maxPrice", String(maxSelectedPrice));
+      newParams.set("productMaxPrice", String(maxSelectedPrice));
     }
 
     if (selectedRatings.length > 0) {
@@ -275,12 +278,19 @@ function ProductList() {
   }, [dispatch, currentCategoryId, currentCategory?.id]); 
 
   useEffect(() => {
+    setSelectedFilters({});
+    setMinSelectedPrice(null);
+    setMaxSelectedPrice(null);
+    setSelectedRatings([]);
+  }, [currentCategoryId]);
+
+  useEffect(() => {
     if (currentCategoryId) {
       const extendedFilters: { [key: string]: string[] } = { ...selectedFilters };
 
       if (minSelectedPrice !== null && maxSelectedPrice !== null) {
-        extendedFilters["minPrice"] = [String(minSelectedPrice)];
-        extendedFilters["maxPrice"] = [String(maxSelectedPrice)];
+        extendedFilters["productMinPrice"] = [String(minSelectedPrice)];
+        extendedFilters["productMaxPrice"] = [String(maxSelectedPrice)];
       }
 
       if (selectedRatings.length > 0) {
