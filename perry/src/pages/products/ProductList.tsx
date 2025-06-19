@@ -220,7 +220,6 @@ function ProductList() {
     setSelectedFilters(filterState);
   }, [searchParams, currentCategory, hasInitializedCategory]);
 
-
   useEffect(() => {
     const newParams = new URLSearchParams(searchParams);
 
@@ -375,7 +374,27 @@ function ProductList() {
                   <div className={productListStyles.comboBoxesContainer}>
                     <div className={productListStyles.appliedFiltersContainer}>
                       {isDesktop ? (
-                        <AppliedFiltersComboBox isOpen={false} />
+                        <AppliedFiltersComboBox
+                          isOpen={false}
+                          selectedFilters={selectedFilters}
+                          onRemoveFilter={(filterName, val) => {
+                            setSelectedFilters((prev) => {
+                              const updated = prev[filterName].filter(v => v !== val);
+                              const result = { ...prev, [filterName]: updated };
+
+                              if (updated.length === 0) {
+                                delete result[filterName];
+                              }
+                              return result;
+                            });
+                          }}
+                          onClearAll={() => {
+                            setSelectedFilters({});
+                            setMinSelectedPrice(null);
+                            setMaxSelectedPrice(null);
+                            setSelectedRatings([]);
+                          }}
+                        />
                       ) : (
                         <button>
                           <FilterEmptyIcon className={productListStyles.filterIcon} />

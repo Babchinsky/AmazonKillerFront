@@ -164,7 +164,7 @@ function Main() {
             </div>
           </div>
 
-          <hr className="divider"></hr>
+          <hr className="divider" />
         </section>
 
         <section className={mainStyles.bannerSection}>
