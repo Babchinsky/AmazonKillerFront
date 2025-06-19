@@ -6,12 +6,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-bottom: 14px;
 
   .filterTagContainer {
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-bottom: 14px;
     padding: 8px 20px;
     background-color: var(--minor-color-blue-light);
     border-radius: 4px;

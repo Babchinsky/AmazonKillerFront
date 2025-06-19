@@ -29,7 +29,7 @@ function AppliedFiltersComboBox(props: AppliedFiltersComboBoxProps) {
       <div className={comboBoxStyles.smallComboBoxContainer}>
         <div className={comboBoxStyles.smallComboBoxTopContainer}>
           <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
-            <p>{totalFilters} filter{totalFilters !== 1 ? "s" : ""} applied</p>
+            <p>{totalFilters} filters applied</p>
 
             <button
               onClick={(e) => {
