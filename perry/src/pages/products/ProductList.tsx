@@ -37,7 +37,7 @@ import {
 
 
 function ProductList() {
-  const dispatch = useDispatch<AppDispatch>();
+   const dispatch = useDispatch<AppDispatch>();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -245,33 +245,12 @@ function ProductList() {
   };
 
   useEffect(() => {
-    const newParams = new URLSearchParams();
-
-    if (currentCategory?.id) {
-      newParams.set("CategoryId", currentCategory.id);
-    }
-
-    Object.entries(selectedFilters).forEach(([key, values]) => {
-      values.forEach(value => newParams.append(key, value));
-    });
-
-    if (minSelectedPrice !== null) newParams.set("minPrice", String(minSelectedPrice));
-    if (maxSelectedPrice !== null) newParams.set("maxPrice", String(maxSelectedPrice));
-
-    selectedRatings.forEach(r => newParams.append("rating", String(r)));
-
-    newParams.set("page", currentPage.toString());
-
-    setSearchParams(newParams, { replace: true });
-  }, [selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings, currentPage, currentCategory?.id]);
-
-  useEffect(() => {
-    if (!hasInitializedCategory || !currentCategory) return;
+    if (!hasInitializedCategory) return;
 
     const filterState: { [key: string]: string[] } = {};
 
-    if (currentCategory.filters) {
-      Object.keys(currentCategory.filters).forEach(filterName => {
+    if (currentCategory?.filters) {
+      Object.keys(currentCategory.filters).forEach((filterName) => {
         const values = searchParams.getAll(filterName);
         if (values.length > 0) {
           filterState[filterName] = values;
@@ -281,13 +260,38 @@ function ProductList() {
 
     const min = searchParams.get("minPrice");
     const max = searchParams.get("maxPrice");
-    const ratings = searchParams.getAll("rating").map(r => parseInt(r, 10)).filter(r => !isNaN(r));
+    const ratings = searchParams.getAll("rating").map(r => parseInt(r, 10));
 
     dispatch(setSelectedFilters(filterState));
     dispatch(setMinPrice(min ? Number(min) : null));
     dispatch(setMaxPrice(max ? Number(max) : null));
-    dispatch(setSelectedRatings(ratings));
+    dispatch(setSelectedRatings(ratings.length > 0 ? ratings : []));
   }, [searchParams, currentCategory, hasInitializedCategory, dispatch]);
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(searchParams);
+
+    if (currentCategory?.filters) {
+      Object.keys(currentCategory.filters).forEach((key) => {
+        newParams.delete(key);
+      });
+    }
+    newParams.delete("minPrice");
+    newParams.delete("maxPrice");
+    newParams.delete("rating");
+
+    Object.entries(selectedFilters).forEach(([key, values]) => {
+      values.forEach(val => newParams.append(key, val));
+    });
+
+    if (minSelectedPrice !== null) newParams.set("minPrice", String(minSelectedPrice));
+    if (maxSelectedPrice !== null) newParams.set("maxPrice", String(maxSelectedPrice));
+    if (selectedRatings.length > 0) selectedRatings.forEach(r => newParams.append("rating", String(r)));
+
+    newParams.set("page", "1");
+
+    setSearchParams(newParams, { replace: true });
+  }, [selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings, searchParams, setSearchParams, currentCategory]);
 
   const filterComboBoxes = currentCategory?.filters
     ? Object.entries(currentCategory.filters).map(([filterName, filterValues]) => (
