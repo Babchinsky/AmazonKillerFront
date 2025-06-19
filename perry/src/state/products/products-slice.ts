@@ -91,6 +91,7 @@ export const getProductsByCategory = createAsyncThunk(
         }
       }
 
+      console.log("Params:", urlParams.toString());
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/products?${urlParams.toString()}`
       );
