@@ -7,6 +7,7 @@ import wishlistSliceReducer from "./wishlist/wishlist-slice";
 import cartSliceReducer from "./cart/cart-slice";
 import ordersSliceReducer from "./orders/orders-slice";
 import reviewsSliceReducer from "./reviews/reviews-slice";
+import filtersSliceReducer from "./filters/filters-slice";
 
 
 export const store = configureStore({
@@ -18,7 +19,8 @@ export const store = configureStore({
     wishlist: wishlistSliceReducer,
     cart: cartSliceReducer,
     orders: ordersSliceReducer,
-    reviews: reviewsSliceReducer
+    reviews: reviewsSliceReducer,
+    filters: filtersSliceReducer
   }
 });
 

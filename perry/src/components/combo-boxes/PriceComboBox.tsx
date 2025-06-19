@@ -11,6 +11,8 @@ interface PriceComboBoxProps {
   minPrice: number;
   maxPrice: number;
   onPriceChange?: (minPrice: number, maxPrice: number) => void;
+  minSelectedPrice: number | null;
+  maxSelectedPrice: number | null;
 }
 
 function PriceComboBox(props: PriceComboBoxProps) {
