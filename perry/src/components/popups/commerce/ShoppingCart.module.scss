@@ -1,3 +1,7 @@
+@use "../../../styles/themes/default.scss" as *;
+@use "../../../styles/media-queries.scss" as *;
+
+
 .shoppingCartButton {
   padding: 9.5px 29.5px;
 }
@@ -24,6 +28,24 @@
         stroke-width: 1.5px;
         stroke: var(--minor-color-text);
       }
+    }
+  }
+}
+
+.contentBottomContainer{
+  height: 100%;
+
+  .productCardList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 0px 16px;
+
+    @include desktop {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 0px;
     }
   }
 }

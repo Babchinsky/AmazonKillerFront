@@ -9,7 +9,7 @@
   height: 100%;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.25);
-  z-index: 200;
+  z-index: 100;
 }
 
 .commerceContainer {
@@ -24,7 +24,7 @@
   max-width: 1350px;
   border-radius: 8px;
   overflow-x: auto;
-  z-index: 210;
+  z-index: 110;
 
   &::-webkit-scrollbar {
     display: none;
@@ -35,7 +35,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
     background-color: var(--minor-color-object);
     border-radius: 8px;
 
@@ -64,6 +63,7 @@
         padding-top: 24px;
         padding-bottom: 24px;
         background-color: var(--minor-color-object);
+        z-index: 40;
 
         .titleBarContainer {
           display: flex;
@@ -119,24 +119,21 @@
       .contentMiddleContainer {
         flex-direction: column;
 
-        .itemListContainer, .itemListMessageContainer {
+        .itemListContainer, .smallItemListContainer, .itemListMessageContainer {
           display: flex;
           flex-direction: column;
         }
 
-        .itemListContainer {
+        .itemListContainer, .smallItemListContainer {
           display: flex;
           flex-direction: column;
 
-          .itemContainer {
+          .itemContainer, .smallItemContainer {
             display: flex;
             gap: 24px;
-            padding: 24px;
 
             img {
               display: block;
-              height: 170px;
-              width: 170px;
               border-radius: 4px;
               object-fit: cover;
               object-position: center;
@@ -239,6 +236,28 @@
               }
             }
           }
+
+          .itemContainer {
+            padding: 24px;
+            
+            img {
+              height: 170px;
+              width: 170px;
+            }
+          }
+
+          .smallItemContainer {
+            padding: 16px;
+
+            img {
+              height: 100px;
+              width: 100px;
+            }
+          }
+        }
+
+        .smallItemListContainer {
+          margin-bottom: 24px;
         }
 
         .itemListMessageContainer {
@@ -252,7 +271,6 @@
         flex-direction: column;
         gap: 24px;
         padding: 24px;
-        height: 544px;
         border-radius: 8px;
         box-shadow: 0px 4px 16px 0px rgba(32, 80, 173, 0.25);
 

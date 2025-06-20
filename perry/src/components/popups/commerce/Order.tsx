@@ -5,6 +5,8 @@ import { getOrderDetails } from "../../../state/orders/orders-slice";
 import DefaultImage from "../../../assets/images/default.jpg";
 import CloseIcon from "../../../assets/icons/close.svg?react";
 import commerceStyles from "./Commerce.module.scss";
+import orderStyles from "./Order.module.scss";
+import { getFormattedDate } from "@/utils/getFormattedValue";
 
 
 interface OrderProps {
@@ -49,9 +51,9 @@ function Order(props: OrderProps) {
   
             <div className={commerceStyles.contentScrollableContainer}>
               <div className={commerceStyles.contentMiddleContainer}>   
-                <div className={commerceStyles.itemListContainer}>
+                <div className={commerceStyles.smallItemListContainer}>
                   {order?.items.map((item, index) => (
-                    <div key={index} className={commerceStyles.itemContainer}>
+                    <div key={index} className={commerceStyles.smallItemContainer}>
                       <div>
                         <img alt={item.name} src={item.imageUrl || DefaultImage} />
                       </div>
@@ -62,7 +64,7 @@ function Order(props: OrderProps) {
                         </div>
 
                         <div className={commerceStyles.itemDataBottomContainer}>
-                          <div className={commerceStyles.itemPriceContainer}>
+                          <div className={`${commerceStyles.itemPriceContainer} ${orderStyles.itemPriceContainer}`}>
                             {(() => {
                               const totalItemPrice = (item.price * item.quantity).toFixed(2);
                               const [currencyMajor, currencyMinor] = item.price.toFixed(2).split(".");
@@ -70,14 +72,6 @@ function Order(props: OrderProps) {
 
                               return (
                                 <>
-                                  <div className={commerceStyles.totalItemPriceContainer}>
-                                    <p className={commerceStyles.price}>
-                                      <span className={commerceStyles.currency}>$</span>
-                                      <span>{totalItemCurrencyMajor}</span>
-                                      <span className={commerceStyles.currencyMinor}>{totalItemCurrencyMinor}</span>
-                                    </p>
-                                  </div>
-
                                   <div className={commerceStyles.itemQuantityPriceContainer}>
                                     <p className={commerceStyles.price}>
                                       <span className={commerceStyles.quantity}>{item.quantity}</span>
@@ -85,6 +79,14 @@ function Order(props: OrderProps) {
                                       <span className={commerceStyles.currency}>$</span>
                                       <span>{currencyMajor}</span>
                                       <span className={commerceStyles.currencyMinor}>{currencyMinor}</span>
+                                    </p>
+                                  </div>
+
+                                  <div className={commerceStyles.totalItemPriceContainer}>
+                                    <p className={commerceStyles.price}>
+                                      <span className={commerceStyles.currency}>$</span>
+                                      <span>{totalItemCurrencyMajor}</span>
+                                      <span className={commerceStyles.currencyMinor}>{totalItemCurrencyMinor}</span>
                                     </p>
                                   </div>
                                 </>
@@ -98,14 +100,13 @@ function Order(props: OrderProps) {
                 </div>
               </div>
     
-              <div className={commerceStyles.contentBottomContainer}>
+              <div className={`${commerceStyles.contentBottomContainer} ${orderStyles.contentBottomContainer}`}>
                 <div>
                   <hr className="divider" />
   
-                  <div className={commerceStyles.contentDataContainer}>
-    
+                  <div className={`${commerceStyles.contentDataContainer} ${orderStyles.contentDataContainer}`}>
                     <div className={commerceStyles.totalContainer}>
-                      <div className={commerceStyles.totalDataContainer}>
+                      <div className={`${commerceStyles.totalDataContainer} ${orderStyles.totalDataContainer}`}>
                         <p>Total:</p>
                         <div className={commerceStyles.totalPriceContainer}>
                           <p className={commerceStyles.price}>
@@ -115,31 +116,30 @@ function Order(props: OrderProps) {
                           </p>
                         </div>
                       </div>
-
                     </div>                 
                   </div>
                   
                   <hr className="divider" />
                 </div>
-                
-                <h3>Additional information</h3>
-    
+                    
                 <div>
-                  <div>
+                  <h3>Additional information</h3>
+
+                  <div className={orderStyles.additionalInfoContainer}>
                     <p>Recipient’s name:</p>
                     <p>{order?.recipient}</p>
                   </div>
-                  <div>
+                  <div className={orderStyles.additionalInfoContainer}>
                     <p>Address</p>
                     <p>{order?.address}</p>
                   </div>
-                  <div>
+                  <div className={orderStyles.additionalInfoContainer}>
                     <p>Payment type</p>
                     <p>{order?.paymentType}</p>
                   </div>
-                  <div>
+                  <div className={orderStyles.additionalInfoContainer}>
                     <p>Ordered on</p>
-                    <p>{order?.orderedAt}</p>
+                    <p>{order && getFormattedDate(order.orderedAt)}</p>
                   </div>
                 </div>
               </div>

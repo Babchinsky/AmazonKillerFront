@@ -1,0 +1,29 @@
+.itemPriceContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px !important;
+}
+
+.contentBottomContainer {
+  .contentDataContainer {
+    justify-content: right !important;
+
+    .totalDataContainer {
+      gap: 32px !important;
+    }
+  }
+
+  h3 {
+    padding: 12px 24px;
+    text-align: center;
+  }
+
+  .additionalInfoContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 24px;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 2%;
+  }
+}

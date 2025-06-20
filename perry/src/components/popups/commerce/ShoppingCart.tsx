@@ -12,6 +12,8 @@ import MinusIcon from "../../../assets/icons/minus.svg?react";
 import PlusIcon from "../../../assets/icons/plus.svg?react";
 import commerceStyles from "./Commerce.module.scss";
 import shoppingCartStyles from "./ShoppingCart.module.scss";
+import ProductCard from "@/components/cards/ProductCard";
+import { getProducts } from "@/state/products/products-slice";
 
 
 interface ShoppingCartProps {
@@ -28,11 +30,20 @@ function ShoppingCart(props: ShoppingCartProps) {
   const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2);
   const [totalCurrencyMajor, totalCurrencyMinor] = totalPrice.split(".");
 
-  useEffect(() => {
-    if (accessToken) {
-      dispatch(getCart());
-    }
-  }, [dispatch, accessToken]);
+  const products = useSelector((state: RootState) => state.products.products);
+  const productCards = [...products].slice(0, 10).map((product) => (
+    <ProductCard
+      key={product.id}
+      link={`/product/${product.id}`}
+      imageUrl={product.imageUrl.trim().length !== 0 ? product.imageUrl : DefaultImage}
+      name={product.name}
+      rating={product.rating}
+      reviewsCount={product.reviewsCount}
+      quantity={product.quantity}
+      price={product.price}
+      discountPercent={product.discountPercent ?? 0}
+    />
+  ));
 
   const removeItem = (productId: string) => {
     dispatch(removeProductFromCart(productId));
@@ -55,6 +66,16 @@ function ShoppingCart(props: ShoppingCartProps) {
   const checkout = () => {
     navigate("/checkout");
   };
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getCart());
+    }
+  }, [dispatch, accessToken]);
 
   return (
     <>
@@ -149,7 +170,7 @@ function ShoppingCart(props: ShoppingCartProps) {
                 )}
               </div>
     
-              <div className={commerceStyles.contentBottomContainer}>
+              <div className={`${commerceStyles.contentBottomContainer} ${shoppingCartStyles.contentBottomContainer}`}>
                 {cartItems.length > 0 && (
                   <div>
                     <hr className="divider" />
@@ -184,8 +205,8 @@ function ShoppingCart(props: ShoppingCartProps) {
                 
                 <h3>{cartItems.length > 0 ? "You might also like" : "Suggestions"}</h3>
     
-                <div>
-    
+                <div className={shoppingCartStyles.productCardList}>
+                  {productCards}
                 </div>
               </div>
             </div>

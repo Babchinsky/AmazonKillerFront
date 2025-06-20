@@ -6,6 +6,7 @@ import Button from "../buttons/Button";
 import Order from "../popups/commerce/Order";
 import accountDataStyles from "./AccountData.module.scss";
 import myOrdersStyles from "./MyOrders.module.scss";
+import { getFormattedDate } from "@/utils/getFormattedValue";
 
 
 function MyOrders() {
@@ -94,14 +95,7 @@ function MyOrders() {
                           </p>
                         </div>
                         <div className={myOrdersStyles.date}>
-                          Ordered on{" "}
-                          {(() => {
-                            const date = new Date(order.orderedAt);
-                            const day = String(date.getDate()).padStart(2, "0");
-                            const month = String(date.getMonth() + 1).padStart(2, "0");
-                            const year = date.getFullYear();
-                            return `${day}.${month}.${year}`;
-                          })()}
+                          Ordered on {order && getFormattedDate(order.orderedAt)}
                         </div>
                       </div>
   
