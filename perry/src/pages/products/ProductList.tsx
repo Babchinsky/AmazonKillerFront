@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../state/store";
@@ -37,17 +37,17 @@ function ProductList() {
   const breakpointDesktop = parseInt(getCssVariable("--breakpoint-desktop"), 10);
   const isDesktop = useBreakpoint(breakpointDesktop);
 
-  const [hasInitializedCategory, setHasInitializedCategory] = useState(false);
-  const [hasInitializedProducts, setHasInitializedProducts] = useState(false);
-
   const [crumbs, setCrumbs] = useState<CrumbType[]>([]);
-
   const categories = useSelector((state: RootState) => state.categories.categories);
-  const categoryProducts = useSelector((state: RootState) => state.products.categoryProducts);
+
+  const [hasInitialized, setHasInitialized] = useState(false);
+
   const currentCategory = useSelector((state: RootState) => state.categories.currentCategory);
 
-  const [selectedFilters, setSelectedFilters] = useState<{ [filterName: string]: string[] }>({});
+  const categoryProductsLoading = useSelector((state: RootState) => state.products.categoryProductsLoading);
+  const categoryProducts = useSelector((state: RootState) => state.products.categoryProducts);
 
+  const [selectedFilters, setSelectedFilters] = useState<{ [filterName: string]: string[] }>({});
   const selectFilter = (filterName: string, selectedValues: string[]) => {
     setSelectedFilters(prev => ({
       ...prev,
@@ -57,21 +57,22 @@ function ProductList() {
 
   const filterComboBoxes = currentCategory?.filters
   ? Object.entries(currentCategory.filters).map(([filterName, filterValues]) => (
-    <FilterComboBox
-      key={filterName}
-      type="list"
-      title={filterName}
-      isOpen={true}
-      onSelect={(selected: string[]) => selectFilter(filterName, selected)}
-      options={filterValues.map((val: any) => ({ id: val, label: val }))}
-    />
-  ))
+      <FilterComboBox
+        key={filterName}
+        type="list"
+        title={filterName}
+        isOpen={true}
+        onSelect={(selected: string[]) => selectFilter(filterName, selected)}
+        options={filterValues.map((val: any) => ({ id: val, label: val }))}
+        selectedOptions={selectedFilters[filterName] || []}
+      />
+    ))
   : null;
 
-  const [minAvailablePrice, setMinAvailablePrice] = useState<number>(0);
-  const [maxAvailablePrice, setMaxAvailablePrice] = useState<number>(1000);
-  const [minSelectedPrice, setMinSelectedPrice] = useState<number | null>(null);
-  const [maxSelectedPrice, setMaxSelectedPrice] = useState<number | null>(null);
+  const [initialMinPrice, setInitialMinPrice] = useState<number>(0);
+  const [initialMaxPrice, setInitialMaxPrice] = useState<number>(100);
+  const [pendingPriceRange, setPendingPriceRange] = useState<{min: number, max: number}>({min: initialMinPrice, max: initialMaxPrice});
+  const [selectedPriceRange, setSelectedPriceRange] = useState<{min: number, max: number}>({min: initialMinPrice, max: initialMaxPrice});
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
 
   const sortOptions = [
@@ -82,13 +83,19 @@ function ProductList() {
   ];
   const [sortOption, setSortOption] = useState<ComboBoxOptionType>(sortOptions[0]);
 
-  const sortedFilteredProducts = [...categoryProducts]
+  const filteredProducts = categoryProducts.filter(product => {
+    const discountedPrice = product.price * (1 - (product.discountPercent ?? 0) / 100);
+    const inPriceRange = discountedPrice >= selectedPriceRange.min && discountedPrice <= selectedPriceRange.max;
+
+    const inRating = selectedRatings.length === 0 || selectedRatings.includes(Math.floor(product.rating));
+
+    return inPriceRange && inRating;
+  });
+  const sortedFilteredProducts = [...filteredProducts]
   .sort((a, b) => {
     switch (sortOption.label) {
       case "By rating":
         return b.rating - a.rating;
-      // case "Novelty":
-      //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       case "Cheap to expensive":
         return a.price - b.price;
       case "Expensive to cheap":
@@ -129,10 +136,31 @@ function ProductList() {
     />
   ));
 
+  const getProducts = () => {
+    const combinedFilters = {
+      ...selectedFilters,
+      MinPrice: [String(selectedPriceRange.min)],
+      MaxPrice: [String(selectedPriceRange.max)],
+      Rating: selectedRatings.map(String),
+    };
+
+    if (currentCategoryId) {
+      dispatch(getProductsByCategory({categoryId: currentCategoryId, filters: combinedFilters}));
+    }
+  };
+
+  const selectPrice = (range: { min: number; max: number }) => {
+    setPendingPriceRange(range);
+  };
+
+  const savePriceRange = () => {
+    setSelectedPriceRange(pendingPriceRange);
+  };
+  
   const changeSort = (option: ComboBoxOptionType) => {
     setSortOption(option);
   };
-  
+
   const changeRowToggle = (side: "left" | "right") => {
     const isBig = side === "left";
     setIsBigProductCard(isBig);
@@ -142,8 +170,37 @@ function ProductList() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
 
-    dispatch(getCategories());
+    if (currentCategoryId) {
+      dispatch(getCategoryById(currentCategoryId));
+      dispatch(getProductsByCategory({categoryId: currentCategoryId, filters: {}}));
+      dispatch(getCategories());
+    }
   }, []);
+
+  useEffect(() => {
+    if (categoryProducts.length > 0 && !categoryProductsLoading && !hasInitialized) {
+      const discountedPrices = categoryProducts.map((p) => {
+        const discount = p.discountPercent ?? 0;
+        return p.price * (1 - discount / 100);
+      });
+
+      const minPrice = Math.floor(Math.min(...discountedPrices));
+      const maxPrice = Math.ceil(Math.max(...discountedPrices));
+
+      setInitialMinPrice(minPrice);
+      setInitialMaxPrice(maxPrice);
+
+      setSelectedPriceRange({min: minPrice, max: maxPrice});
+
+      setHasInitialized(true);
+    }
+  }, [categoryProducts]);
+
+  useEffect(() => {
+    if (hasInitialized) {
+      getProducts();
+    }
+  }, [selectedFilters, selectedRatings]);
 
   useEffect(() => {
     if (categories.length === 0 || !currentCategoryId) {
@@ -180,81 +237,6 @@ function ProductList() {
   }, [categories, currentCategoryId]);
 
   useEffect(() => {
-    if (currentCategory) {
-      setHasInitializedCategory(true);
-    }
-  }, [currentCategory]);
-
-  useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", currentPage.toString());
-    setSearchParams(newParams, { replace: true });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage]);
-
-  useEffect(() => {
-    const filterState: { [key: string]: string[] } = {};
-
-    if (currentCategory?.filters) {
-      Object.keys(currentCategory.filters).forEach((filterName) => {
-        const values = searchParams.getAll(filterName);
-        if (values.length > 0) {
-          filterState[filterName] = values;
-        }
-      });
-    }
-
-    const min = searchParams.get("productMinPrice");
-    const max = searchParams.get("productMaxPrice");
-
-    if (min) {
-      setMinSelectedPrice(Number(min));
-    }
-    if (max) {
-      setMaxSelectedPrice(Number(max));
-    }
-
-    const ratings = searchParams.getAll("rating").map(r => parseInt(r, 10));
-    
-    if (ratings.length > 0) {
-      setSelectedRatings(ratings);
-    }
-
-    setSelectedFilters(filterState);
-  }, [searchParams, currentCategory]);
-
-  useEffect(() => {
-    const newParams = new URLSearchParams(searchParams);
-
-    Object.keys(selectedFilters).forEach((key) => {
-      newParams.delete(key);
-    });
-    newParams.delete("productMinPrice");
-    newParams.delete("productMaxPrice");
-    newParams.delete("rating");
-
-    Object.entries(selectedFilters).forEach(([key, values]) => {
-      values.forEach((val) => newParams.append(key, val));
-    });
-
-    if (minSelectedPrice !== null) {
-      newParams.set("productMinPrice", String(minSelectedPrice));
-    }
-    if (maxSelectedPrice !== null) {
-      newParams.set("productMaxPrice", String(maxSelectedPrice));
-    }
-
-    if (selectedRatings.length > 0) {
-      selectedRatings.forEach(r => newParams.append("rating", String(r)));
-    }
-
-    newParams.set("page", "1");
-
-    setSearchParams(newParams, { replace: true });
-  }, [selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings]);
-
-  useEffect(() => {
     if (!isDesktop) {
       setIsBigProductCard(false);
     } 
@@ -270,66 +252,6 @@ function ProductList() {
       }
     }
   }, [isDesktop]);
-
-  useEffect(() => {
-    if (currentCategoryId && (!currentCategory || currentCategory.id !== currentCategoryId)) {
-      dispatch(getCategoryById(currentCategoryId));
-    }
-  }, [dispatch, currentCategoryId, currentCategory?.id]); 
-
-  useEffect(() => {
-    setSelectedFilters({});
-    setMinSelectedPrice(null);
-    setMaxSelectedPrice(null);
-    setSelectedRatings([]);
-  }, [currentCategoryId]);
-
-  useEffect(() => {
-    if (currentCategoryId) {
-      const extendedFilters: { [key: string]: string[] } = { ...selectedFilters };
-
-      if (minSelectedPrice !== null && maxSelectedPrice !== null) {
-        extendedFilters["productMinPrice"] = [String(minSelectedPrice)];
-        extendedFilters["productMaxPrice"] = [String(maxSelectedPrice)];
-      }
-
-      if (selectedRatings.length > 0) {
-        extendedFilters["rating"] = selectedRatings.map(r => String(r));
-      }
-
-      dispatch(getProductsByCategory({
-        categoryId: currentCategoryId,
-        filters: extendedFilters,
-      }));
-    }
-  }, [dispatch, currentCategoryId, selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings]);
-
-  useEffect(() => {
-    if (
-      categoryProducts.length > 0 &&
-      Object.keys(selectedFilters).length === 0 &&
-      minSelectedPrice === null &&
-      maxSelectedPrice === null &&
-      selectedRatings.length === 0
-    ) {
-      const discountedPrices = categoryProducts.map((p) => {
-        const discount = p.discountPercent ?? 0;
-        return p.price * (1 - discount / 100);
-      });
-
-      const minPrice = Math.floor(Math.min(...discountedPrices));
-      const maxPrice = Math.ceil(Math.max(...discountedPrices));
-
-      setMinAvailablePrice(minPrice);
-      setMaxAvailablePrice(maxPrice);
-
-      if (!hasInitializedProducts) {
-        setMinSelectedPrice(minPrice);
-        setMaxSelectedPrice(maxPrice);
-        setHasInitializedProducts(true);
-      }
-    }
-  }, [categoryProducts, selectedFilters, minSelectedPrice, maxSelectedPrice, selectedRatings, hasInitializedProducts]);
 
   useEffect(() => {
     const total = Math.ceil(categoryProducts.length / productsPerPage);
@@ -352,80 +274,97 @@ function ProductList() {
 
             <h1>{currentCategory?.name}</h1>
 
-            {hasInitializedCategory && (
-              <div className={productListStyles.listContainer}>
-                {hasInitializedProducts && (
-                  <div className={productListStyles.listLeftContainer}>
-                    {currentCategory && (
-                      <>
-                        {filterComboBoxes}
+            <div className={productListStyles.listContainer}>
+              <div className={productListStyles.listLeftContainer}>
+                <>
+                  {filterComboBoxes}
 
-                        <PriceComboBox
-                          title="Price"
-                          isOpen={true}
-                          minPrice={minAvailablePrice}
-                          maxPrice={maxAvailablePrice}
-                          onPriceChange={(min, max) => {
-                            setMinSelectedPrice(min);
-                            setMaxSelectedPrice(max);
-                          }}
-                        />
-
-                        <RatingComboBox
-                          title="Customer reviews"
-                          isOpen={true}
-                          onSelect={(ratings: number[]) => setSelectedRatings(ratings)}
-                        />
-                      </>
-                    )}
-                  </div>
-                )}
-
-                <div className={productListStyles.listRightContainer}>
-                  <div className={productListStyles.comboBoxesContainer}>
-                    <div className={productListStyles.appliedFiltersContainer}>
-                      {isDesktop ? (
-                        <AppliedFiltersComboBox isOpen={false} />
-                      ) : (
-                        <button>
-                          <FilterEmptyIcon className={productListStyles.filterIcon} />
-                        </button>
-                      )}
-                    </div>
-
-                    <SortComboBox 
-                      isOpen={false} 
-                      options={sortOptions}
-                      selectedOption={sortOption}
-                      onSortChange={changeSort} 
-                    />
-                    <RowNumberToggle 
-                      className={productListStyles.rowNumberToggle} 
-                      side={isBigProductCard ? "left" : "right"}
-                      onToggleChange={changeRowToggle} 
-                    />
-                  </div>
-
-                  <hr className={`${productListStyles.listDivider} divider`} />
-
-                  {categoryProducts.length > 0 ? (
+                  {hasInitialized && (
                     <>
-                      <div className={`${isBigProductCard ? productListStyles.bigProductCardList : productListStyles.productCardList}`}>
-                        {productCards}
-                      </div>
-                      <Pagination
-                        className={productListStyles.pagination}
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        onPageChange={setCurrentPage}
+                      <PriceComboBox
+                        title="Price"
+                        isOpen={true}
+                        initialMinPrice={initialMinPrice}
+                        initialMaxPrice={initialMaxPrice}
+                        selectedMinPrice={selectedPriceRange.min}
+                        selectedMaxPrice={selectedPriceRange.max}
+                        onPriceChange={selectPrice}
+                        onSave={savePriceRange}
+                      />
+
+                      <RatingComboBox
+                        title="Customer reviews"
+                        isOpen={true}
+                        onSelect={(ratings: number[]) => setSelectedRatings(ratings)}
+                        selectedRatings={selectedRatings}
                       />
                     </>
-                  ) : (
-                    <p className={productListStyles.productCardListMessage}>No products found</p>
                   )}
-                </div>
+                </>
               </div>
-            )}
+
+              <div className={productListStyles.listRightContainer}>
+                <div className={productListStyles.comboBoxesContainer}>
+                  <div className={productListStyles.appliedFiltersContainer}>
+                    {isDesktop ? (
+                      <AppliedFiltersComboBox 
+                        isOpen={false}
+                        selectedFilters={selectedFilters}
+                        onRemoveFilter={(filterName, value) => {
+                          setSelectedFilters(prev => {
+                            const updated = { ...prev };
+                            updated[filterName] = updated[filterName].filter(v => v !== value);
+                            if (updated[filterName].length === 0) {
+                              delete updated[filterName];
+                            }
+                            return updated;
+                          });
+                        }}
+                        onClearAll={() => setSelectedFilters({})}
+                      />
+                    ) : (
+                      <button>
+                        <FilterEmptyIcon className={productListStyles.filterIcon} />
+                      </button>
+                    )}
+                  </div>
+
+                  <SortComboBox 
+                    isOpen={false} 
+                    options={sortOptions}
+                    selectedOption={sortOption}
+                    onSortChange={changeSort} 
+                  />
+                  <RowNumberToggle 
+                    className={productListStyles.rowNumberToggle} 
+                    side={isBigProductCard ? "left" : "right"}
+                    onToggleChange={changeRowToggle} 
+                  />
+                </div>
+
+                <hr className={`${productListStyles.listDivider} divider`} />
+
+                {(categoryProducts.length > 0 && productCards.length > 0) ? (
+                  <>
+                    <div className={`${isBigProductCard ? productListStyles.bigProductCardList : productListStyles.productCardList}`}>
+                      {productCards}
+                    </div>
+                    <Pagination
+                      className={productListStyles.pagination}
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={setCurrentPage}
+                    />
+                  </>
+                ) : (
+                  categoryProductsLoading ? (
+                    <p className={productListStyles.productCardListMessage}>Loading products...</p>
+                  ) : (
+                    <p className={productListStyles.productCardListMessage}>No products found.</p>
+                  )
+                )}
+              </div>
+            </div>
           </div>
         </section>
       </main>

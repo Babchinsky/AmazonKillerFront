@@ -8,12 +8,13 @@ import comboBoxStyles from "./ComboBox.module.scss";
 interface RatingComboBoxProps {
   title: string;
   isOpen: boolean;
+  selectedRatings: number[];
   onSelect: (selectedRatings: number[]) => void;
 }
 
 function RatingComboBox(props: RatingComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
-  const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<number[]>(props.selectedRatings);
 
   const toggleRating = (rating: number) => {
     setSelectedOptions((prev) =>
@@ -27,6 +28,10 @@ function RatingComboBox(props: RatingComboBoxProps) {
     props.onSelect(selectedOptions);
   }, [selectedOptions, props.onSelect]);
 
+  useEffect(() => {
+    setSelectedOptions(props.selectedRatings);
+  }, [props.selectedRatings]);
+  
   return (
     <div className={comboBoxStyles.comboBoxContainer}>
       <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>

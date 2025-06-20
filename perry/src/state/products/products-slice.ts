@@ -6,21 +6,21 @@ import ProductType from "../../types/products/product-type";
 type ProductsStateType = {
   products: ProductCardType[];
   productById: ProductType | null;
+  categoryProductsLoading: boolean;
   categoryProducts: ProductCardType[];
   trendingProducts: ProductCardType[];
   saleProducts: ProductCardType[];
   productExists: boolean | null;
-  categoryProductsLoading: boolean;
 };
 
 const initialState: ProductsStateType = {
   products: [],
   productById: null,
+  categoryProductsLoading: false,
   categoryProducts: [],
   trendingProducts: [],
   saleProducts: [],
-  productExists: null,
-  categoryProductsLoading: false
+  productExists: null
 };
 
 export const getProducts = createAsyncThunk(
@@ -77,9 +77,9 @@ export const getProductsByCategory = createAsyncThunk(
   ) => {
     try {
       const urlParams = new URLSearchParams();
-      urlParams.append("categoryId", params.categoryId);
+      urlParams.append("CategoryId", params.categoryId);
 
-      const plainKeys = ["productMinPrice", "productMaxPrice", "rating"];
+      const plainKeys = ["MinPrice", "MaxPrice", "Rating"];
 
       if (params.filters) {
         for (const [key, values] of Object.entries(params.filters)) {

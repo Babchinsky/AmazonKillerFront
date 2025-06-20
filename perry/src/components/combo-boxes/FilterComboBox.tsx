@@ -11,6 +11,7 @@ interface FilterComboBoxProps {
   type: "list" | "grid";
   title: string;
   options: ComboBoxOptionType[];
+  selectedOptions: string[];
   isOpen: boolean;
   onSelect: (selectedOptions: string[]) => void;
 }
@@ -18,7 +19,7 @@ interface FilterComboBoxProps {
 function FilterComboBox(props: FilterComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
   const filteredOptions = props.options.filter(option => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
   const optionsClass = `options${props.type.charAt(0).toUpperCase() + props.type.slice(1)}`.trim();
 
@@ -27,16 +28,11 @@ function FilterComboBox(props: FilterComboBoxProps) {
   };
 
   const toggleOption = (option: string) => {
-    setSelectedOptions(prevSelected =>
-      prevSelected.includes(option)
-        ? prevSelected.filter(o => o !== option)
-        : [...prevSelected, option]
-    );
+    const newSelected = props.selectedOptions.includes(option)
+      ? props.selectedOptions.filter(o => o !== option)
+      : [...props.selectedOptions, option];
+    props.onSelect(newSelected);
   };
-
-  useEffect(() => {
-    props.onSelect(selectedOptions);
-  }, [selectedOptions]);
 
   return (
     <div className={comboBoxStyles.comboBoxContainer}>
@@ -75,7 +71,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
                   <li key={option.id}>
                     <Checkbox 
                       label={option.label} 
-                      isChecked={selectedOptions.includes(option.id)} 
+                      isChecked={props.selectedOptions.includes(option.id)} 
                       onChange={() => toggleOption(option.id)} 
                     />
                   </li>
@@ -88,7 +84,7 @@ function FilterComboBox(props: FilterComboBoxProps) {
                 {filteredOptions.map((option) => (
                   <div key={option.id}>
                     <Checkbox
-                      isChecked={selectedOptions.includes(option.id)} 
+                      isChecked={props.selectedOptions.includes(option.id)} 
                       check={option.label}
                       onChange={() => toggleOption(option.id)} 
                     />

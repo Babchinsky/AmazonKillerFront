@@ -9,6 +9,7 @@ type CategoriesState = {
   categories: CategoryType[];
   categoryTree: CategoryTreeType[];
   categoryFilters: CategoryFiltersType | null;
+  currentCategoryLoading: boolean;
   currentCategory: CategoryType | null;
   categoryExists: boolean | null;
 };
@@ -18,6 +19,7 @@ const initialState: CategoriesState = {
   categories: [],
   categoryTree: [],
   categoryFilters: null,
+  currentCategoryLoading: false,
   currentCategory: null,
   categoryExists: null
 };
@@ -178,8 +180,15 @@ const categoriesSlice = createSlice({
     .addCase(checkCategoryExists.fulfilled, (state, action) => {
       state.categoryExists = action.payload;
     })
+    .addCase(getCategoryById.pending, (state) => {
+      state.currentCategoryLoading = true;
+    })
     .addCase(getCategoryById.fulfilled, (state, action) => {
       state.currentCategory = action.payload;
+      state.currentCategoryLoading = false;
+    })
+    .addCase(getCategoryById.rejected, (state) => {
+      state.currentCategoryLoading = false;
     });
   }
 }); 

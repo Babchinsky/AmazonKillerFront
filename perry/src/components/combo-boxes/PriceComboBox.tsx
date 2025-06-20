@@ -1,4 +1,160 @@
-import { useEffect, useRef, useState } from "react";
+// import { useCallback, useEffect, useRef, useState } from "react";
+// import Button from "../buttons/Button";
+// import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
+// import comboBoxStyles from "./ComboBox.module.scss";
+// import priceComboBoxStyles from "./PriceComboBox.module.scss";
+
+
+// interface PriceComboBoxProps {
+//   title: string;
+//   isOpen: boolean;
+//   initialMinPrice: number;
+//   initialMaxPrice: number;
+//   onPriceChange: (range: { min: number; max: number }) => void;
+//   onSave: () => void;
+// }
+
+// function PriceComboBox(props: PriceComboBoxProps) {
+//   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
+  
+//   const [minPrice, setMinPrice] = useState<number>(props.initialMinPrice);
+//   const [maxPrice, setMaxPrice] = useState<number>(props.initialMaxPrice);
+//   const minPriceRef = useRef(props.initialMinPrice);
+//   const maxPriceRef = useRef(props.initialMaxPrice);
+//   const range = useRef<HTMLSpanElement>(null);
+//   const gap = 1;
+
+//   const getPercent = useCallback(
+//     (value: number) => Math.round(((value - props.initialMinPrice) / (props.initialMaxPrice - props.initialMinPrice)) * 100),
+//     [props.initialMinPrice, props.initialMaxPrice]
+//   );
+
+//   useEffect(() => {
+//     setMinPrice(props.initialMinPrice);
+//     setMaxPrice(props.initialMaxPrice);
+//   }, [props.initialMinPrice, props.initialMaxPrice]);
+
+//   useEffect(() => {
+//     const minPercent = getPercent(minPrice);
+//     const maxPercent = getPercent(maxPriceRef.current);
+
+//     if (range.current) {
+//       range.current.style.left = `${minPercent}%`;
+//       range.current.style.width = `${maxPercent - minPercent}%`;
+//     }
+//   }, [minPrice, getPercent]);
+
+//   useEffect(() => {
+//     const minPercent = getPercent(minPriceRef.current);
+//     const maxPercent = getPercent(maxPrice);
+
+//     if (range.current) {
+//       range.current.style.width = `${maxPercent - minPercent}%`;
+//     }
+//   }, [maxPrice, getPercent]);
+
+//   useEffect(() => {
+//     if (minPrice != minPriceRef.current || maxPrice != maxPriceRef.current) {
+//       props.onPriceChange({min: minPrice, max: maxPrice});
+//       minPriceRef.current = minPrice;
+//       maxPriceRef.current = maxPrice;
+//     }
+//   }, [minPrice, maxPrice, props.onPriceChange]);
+
+//   return (
+//     <div className={comboBoxStyles.comboBoxContainer}>
+//       <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
+//         <p>{props.title}</p>
+
+//         <button
+//           onClick={(e) => {
+//             e.stopPropagation();
+//             setIsFilterOpen(prev => !prev);
+//           }}
+//         >
+//           <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
+//         </button>
+//       </div>
+
+//       {isFilterOpen && (
+//         <div className={priceComboBoxStyles.priceContainer}>
+//           <div className={priceComboBoxStyles.priceTopContainer}>
+//             <div className={priceComboBoxStyles.priceInputContainer}>
+//               <input
+//                 className={priceComboBoxStyles.priceInput}
+//                 type="number"
+//                 min={props.initialMinPrice}
+//                 max={maxPrice - gap}
+//                 value={minPrice}
+//                 onChange={(e) => {
+//                   let value = Number(e.target.value);
+//                   value = Math.max(props.initialMinPrice, Math.min(value, maxPrice - gap));
+//                   setMinPrice(value);
+//                 }}
+//               />
+
+//               <hr />
+
+//               <input
+//                 className={priceComboBoxStyles.priceInput}
+//                 type="number"
+//                 min={minPrice + gap}
+//                 max={props.initialMaxPrice}
+//                 value={maxPrice}
+//                 onChange={(e) => {
+//                   let value = Number(e.target.value);
+//                   value = Math.min(props.initialMaxPrice, Math.max(value, minPrice + gap));
+//                   setMaxPrice(value);
+//                 }}
+//               />
+//             </div>
+
+//             <Button
+//               className={priceComboBoxStyles.saveButton}
+//               type="primary"
+//               content="Save"
+//               onClick={props.onSave}
+//             />
+//           </div>
+
+//           <div className={priceComboBoxStyles.priceBottomContainer}>
+//             <div className={priceComboBoxStyles.priceSliderContainer}>
+//               <span ref={range} className={priceComboBoxStyles.sliderTrack}></span>
+//               <input
+//                 className={priceComboBoxStyles.sliderMin}
+//                 type="range"
+//                 min={props.initialMinPrice}
+//                 max={props.initialMaxPrice}
+//                 value={minPrice}
+//                 onChange={(e) => {
+//                   const value = Math.min(Number(e.target.value), maxPrice - gap);
+//                   setMinPrice(value);
+//                 }}
+//               />
+//               <input
+//                 className={priceComboBoxStyles.sliderMax}
+//                 type="range"
+//                 min={props.initialMinPrice}
+//                 max={props.initialMaxPrice}
+//                 value={maxPrice}
+//                 onChange={(e) => {
+//                   const value = Math.max(Number(e.target.value), minPrice + gap);
+//                   setMaxPrice(value);
+//                 }}
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default PriceComboBox;
+
+
+
+import { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../buttons/Button";
 import ArrowDownIcon from "../../assets/icons/arrow-down.svg?react";
 import comboBoxStyles from "./ComboBox.module.scss";
@@ -8,94 +164,71 @@ import priceComboBoxStyles from "./PriceComboBox.module.scss";
 interface PriceComboBoxProps {
   title: string;
   isOpen: boolean;
-  minPrice: number;
-  maxPrice: number;
-  onPriceChange?: (minPrice: number, maxPrice: number) => void;
+  initialMinPrice: number;
+  initialMaxPrice: number;
+  selectedMinPrice: number;
+  selectedMaxPrice: number;
+  onPriceChange: (range: { min: number; max: number }) => void;
+  onSave: () => void;
 }
 
 function PriceComboBox(props: PriceComboBoxProps) {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(props.isOpen);
-  const [minPrice, setMinPrice] = useState<number>(props.minPrice);
-  const [maxPrice, setMaxPrice] = useState<number>(props.maxPrice);
-  const minGap = 1;
 
-  const trackRef = useRef<HTMLSpanElement>(null);
-  
-  const changePriceInput = (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
-    const value = Number(e.target.value);
+  const [localMin, setLocalMin] = useState<number>(props.selectedMinPrice);
+  const [localMax, setLocalMax] = useState<number>(props.selectedMaxPrice);
 
-    if (type === "min") {
-      if (value < props.minPrice) {
-        setMinPrice(props.minPrice);
-      }
-      else if (value >= props.maxPrice) {
-        setMinPrice(props.maxPrice - minGap);
-      }
-      else {
-        setMinPrice(value);
-      }
-    } 
-    else {
-      if (value > props.maxPrice) {
-        setMaxPrice(props.maxPrice);
-      }
-      else if (value <= props.minPrice) {
-        setMaxPrice(props.minPrice + minGap);
-      }
-      else {
-        setMaxPrice(value);
-      }
-    }
-  };
+  const range = useRef<HTMLSpanElement>(null);
+  const gap = 1;
 
-  const changePriceSlider = (e: React.ChangeEvent<HTMLInputElement>, type: "min" | "max") => {
-    const value = Number(e.target.value);
-    
-    let gap = 0;
-    if (type === "min") {
-      gap = maxPrice - value;
-
-      if (gap <= minGap) {
-        setMinPrice(maxPrice - minGap);
-      }
-      else {
-        setMinPrice(value);
-      }
-    }
-    else {
-      gap = value - minPrice;
-      
-      if (gap <= minGap) {
-        setMaxPrice(minPrice + minGap);
-      } 
-      else {
-        setMaxPrice(value);
-      }
-    }
-  };
+  const getPercent = useCallback(
+    (value: number) =>
+      Math.round(
+        ((value - props.initialMinPrice) /
+          (props.initialMaxPrice - props.initialMinPrice)) *
+          100
+      ),
+    [props.initialMinPrice, props.initialMaxPrice]
+  );
 
   useEffect(() => {
-    if (trackRef.current) {
-      trackRef.current.style.left =
-        ((minPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100 + "%";
+    setLocalMin(props.selectedMinPrice);
+    setLocalMax(props.selectedMaxPrice);
+  }, [props.selectedMinPrice, props.selectedMaxPrice]);
 
-      trackRef.current.style.right =
-        100 - ((maxPrice - props.minPrice) / (props.maxPrice - props.minPrice)) * 100 + "%";
+  useEffect(() => {
+    const minPercent = getPercent(localMin);
+    const maxPercent = getPercent(localMax);
+
+    if (range.current) {
+      range.current.style.left = `${minPercent}%`;
+      range.current.style.width = `${maxPercent - minPercent}%`;
     }
-  }, [minPrice, maxPrice]);
+  }, [localMin, localMax, getPercent]);
+
+  useEffect(() => {
+    props.onPriceChange({ min: localMin, max: localMax });
+  }, [localMin, localMax]);
 
   return (
     <div className={comboBoxStyles.comboBoxContainer}>
-      <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
+      <div
+        className={comboBoxStyles.titleContainer}
+        onClick={() => setIsFilterOpen((prev) => !prev)}
+      >
         <p>{props.title}</p>
 
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setIsFilterOpen(prev => !prev);
+            setIsFilterOpen((prev) => !prev);
           }}
         >
-          <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
+          <ArrowDownIcon
+            className={`${comboBoxStyles.arrowDownIcon} ${
+              isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""
+            }`}
+          />
         </button>
       </div>
 
@@ -106,8 +239,17 @@ function PriceComboBox(props: PriceComboBoxProps) {
               <input
                 className={priceComboBoxStyles.priceInput}
                 type="number"
-                value={minPrice}
-                onChange={(e) => changePriceInput(e, "min")}
+                min={props.initialMinPrice}
+                max={localMax - gap}
+                value={localMin}
+                onChange={(e) => {
+                  let value = Number(e.target.value);
+                  value = Math.max(
+                    props.initialMinPrice,
+                    Math.min(value, localMax - gap)
+                  );
+                  setLocalMin(value);
+                }}
               />
 
               <hr />
@@ -115,8 +257,17 @@ function PriceComboBox(props: PriceComboBoxProps) {
               <input
                 className={priceComboBoxStyles.priceInput}
                 type="number"
-                value={maxPrice}
-                onChange={(e) => changePriceInput(e, "max")}
+                min={localMin + gap}
+                max={props.initialMaxPrice}
+                value={localMax}
+                onChange={(e) => {
+                  let value = Number(e.target.value);
+                  value = Math.min(
+                    props.initialMaxPrice,
+                    Math.max(value, localMin + gap)
+                  );
+                  setLocalMax(value);
+                }}
               />
             </div>
 
@@ -124,30 +275,40 @@ function PriceComboBox(props: PriceComboBoxProps) {
               className={priceComboBoxStyles.saveButton}
               type="primary"
               content="Save"
-              onClick={() => {
-                props.onPriceChange?.(minPrice, maxPrice);
-              }}
+              onClick={props.onSave}
             />
           </div>
 
           <div className={priceComboBoxStyles.priceBottomContainer}>
             <div className={priceComboBoxStyles.priceSliderContainer}>
-              <span ref={trackRef} className={priceComboBoxStyles.sliderTrack}></span>
+              <span ref={range} className={priceComboBoxStyles.sliderTrack}></span>
               <input
                 className={priceComboBoxStyles.sliderMin}
                 type="range"
-                min={props.minPrice}
-                max={props.maxPrice}
-                value={minPrice}
-                onChange={(e) => changePriceSlider(e, "min")}
+                min={props.initialMinPrice}
+                max={props.initialMaxPrice}
+                value={localMin}
+                onChange={(e) => {
+                  const value = Math.min(
+                    Number(e.target.value),
+                    localMax - gap
+                  );
+                  setLocalMin(value);
+                }}
               />
               <input
                 className={priceComboBoxStyles.sliderMax}
                 type="range"
-                min={props.minPrice}
-                max={props.maxPrice}
-                value={maxPrice}
-                onChange={(e) => changePriceSlider(e, "max")}
+                min={props.initialMinPrice}
+                max={props.initialMaxPrice}
+                value={localMax}
+                onChange={(e) => {
+                  const value = Math.max(
+                    Number(e.target.value),
+                    localMin + gap
+                  );
+                  setLocalMax(value);
+                }}
               />
             </div>
           </div>

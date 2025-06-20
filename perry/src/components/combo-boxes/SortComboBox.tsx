@@ -24,18 +24,10 @@ function SortComboBox(props: SortComboBoxProps) {
 
   return (
     <div className={comboBoxStyles.smallComboBoxContainer}>
-      <div className={comboBoxStyles.smallComboBoxTopContainer}>
-        <div className={comboBoxStyles.titleContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
+      <div className={comboBoxStyles.smallComboBoxTopContainer} onClick={() => setIsFilterOpen(prev => !prev)}>
+        <div className={comboBoxStyles.titleContainer}>
           <p>{selectedOption.label}</p>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsFilterOpen(prev => !prev);
-            }}
-          >
-            <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
-          </button>
+          <ArrowDownIcon className={`${comboBoxStyles.arrowDownIcon} ${isFilterOpen ? comboBoxStyles["arrowDownIconOpen"] : ""}`} />
         </div>
       </div>
 
